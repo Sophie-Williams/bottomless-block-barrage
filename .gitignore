@@ -26,3 +26,12 @@
 *.exe
 *.out
 *.app
+
+build/
+output/
+*.3dsx
+*.smdh
+*.3ds
+*.cia
+*.elf
+panel_table_test
