@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include "panels_gfx.h"
 
 int main(int argc, char **argv)
 {
