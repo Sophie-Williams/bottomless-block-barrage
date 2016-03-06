@@ -1,5 +1,5 @@
-APP_TITLE = Homebrew Template
-APP_DESCRIPTION = 3DS homebrew template.
-APP_AUTHOR = YourName
-APP_PRODUCT_CODE = Your-Code
-APP_UNIQUE_ID = 0x1929
+APP_TITLE = Bottomless Block Barrage
+APP_DESCRIPTION = Clone of Tetris Attack for the 3ds
+APP_AUTHOR = TricksterGuy
+APP_PRODUCT_CODE = CTR-P-BBB
+APP_UNIQUE_ID = 0xBBB
