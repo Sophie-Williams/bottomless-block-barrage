@@ -70,19 +70,19 @@ int recursive_combo_score(int combo, int combonum)
     return scored;
 }
 
-void AnimationParams::Update(const PanelTable::State& state, bool danger)
+void AnimationParams::Update(const PanelTable& table, bool danger)
 {
     static const std::vector<int> panel_frames = {0, 1, 2, 1, 0, 3};
     if (!danger)
         panel_counter = 0;
 
-    if ((state.is_rising() && !danger) || state.is_rised() || state.is_stopped() || state.is_stopping())
+    if ((table.is_rising() && !danger) || table.is_rised() || table.is_stopped() || table.is_stopping())
         panel = 0;
-    else if (state.is_gameover())
+    else if (table.is_gameover())
         panel = 7;
-    else if (state.is_clogged())
+    else if (table.is_clogged())
         panel = 2;
-    else if (state.is_rising() && danger)
+    else if (table.is_rising() && danger)
     {
         panel_counter++;
         panel = panel_frames[(panel_counter >> 2) % panel_frames.size()];
@@ -132,7 +132,7 @@ void GameState::Update()
     if (trigger & KEY_Y)
         level--;
 
-    if (panel_table->get_state().is_rised())
+    if (panel_table->is_rised())
     {
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
         last_rise = osGetTime();
@@ -145,17 +145,16 @@ void GameState::Update()
 
     panel_table->update(osGetTime() - last_frame, max_wait, held & KEY_R);
 
-    frames.Update(panel_table->get_state(), panel_table->is_warning());
+    frames.Update(*panel_table, panel_table->is_warning());
     last_frame = osGetTime();
 }
 
 void GameState::Render()
 {
-    const PanelTable::State& state = panel_table->get_state();
     const int panel_size = PANEL_SIZE + 2;
     const int step = get_current_speed(level) / panel_size;
-    int offset = state.value() / step;
-    if (state.is_clogged() || state.is_gameover() || state.is_rised())
+    int offset = panel_table->rise / step;
+    if (panel_table->is_clogged() || panel_table->is_gameover() || panel_table->is_rised())
         offset = panel_size;
     int startx = (BOTTOM_SCREEN_WIDTH - border->width()) / 2;
     int starty = (BOTTOM_SCREEN_HEIGHT - border->height());
@@ -166,11 +165,10 @@ void GameState::Render()
         for (int j = 0; j < panel_table->width(); j++)
         {
             const Panel& panel = panel_table->get(i, j);
-            const Panel::State& state = panel.get_state();
             int x = j * panel_size + 2 + startx + panel_size / 2;
             int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
-            if (state.is_right_swap()) x -= panel_size / 2;
-            if (state.is_left_swap()) x += panel_size / 2;
+            if (panel.is_right_swap()) x -= panel_size / 2;
+            if (panel.is_left_swap()) x += panel_size / 2;
             int type = (int)panel.value - 1;
             if (type == -1) continue;
             panels->draw(x, y, type * PANEL_SIZE, frames.panel * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
@@ -185,7 +183,7 @@ void GameState::Render()
         int type = (int)panel.value - 1;
         int x = j * panel_size + 2 + startx + panel_size / 2;
         int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
-        int status = (state.is_gameover() ? 7 : 4);
+        int status = (panel_table->is_gameover() ? 7 : 4);
         panels->draw(x, y, type * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
     }
 
@@ -200,10 +198,9 @@ void GameState::Render()
         for (int j = 0; j < panel_table->width(); j++)
         {
             const Panel& panel = panel_table->get(i, j);
-            const Panel::State& state = panel.get_state();
             int x = j * panel_size + 2 + startx + panel_size / 2;
             int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
-            debug->draw(x, y, state.state_no() * 5, 0, 5, 10);
+            debug->draw(x, y, panel.state * 5, 0, 5, 10);
         }
     }
     border->draw(startx, starty);

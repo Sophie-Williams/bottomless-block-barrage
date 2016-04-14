@@ -102,9 +102,19 @@
 		<Unit filename="graphics/selector_gfx.png" />
 		<Unit filename="icon.png" />
 		<Unit filename="resources/AppInfo" />
+		<Unit filename="source/game_state.cpp" />
+		<Unit filename="source/game_state.hpp" />
 		<Unit filename="source/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="source/main.cpp" />
+		<Unit filename="source/panel.cpp" />
+		<Unit filename="source/panel.hpp" />
+		<Unit filename="source/panel_table.cpp" />
+		<Unit filename="source/panel_table.hpp" />
+		<Unit filename="source/random.hpp" />
+		<Unit filename="source/util/texture.cpp" />
+		<Unit filename="source/util/texture.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
