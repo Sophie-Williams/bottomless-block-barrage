@@ -171,7 +171,7 @@ void GameState::Render()
             if (panel.is_left_swap()) x += panel_size / 2;
             int type = (int)panel.value - 1;
             if (type == -1) continue;
-            panels->draw(x, y, type * PANEL_SIZE, frames.panel * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
+            panels->draw(x, y, type * PANEL_SIZE, (panel.is_removed() ? 5 : frames.panel) * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
         }
     }
 
@@ -204,6 +204,9 @@ void GameState::Render()
         }
     }
     border->draw(startx, starty);
+    //debug->draw(0, 0, panel_table->combo * 5, 0, 5, 10);
+    debug->draw(0, 10, panel_table->chain * 5, 0, 5, 10);
+    debug->draw(0, 20, panel_table->cascade * 5, 0, 5, 10);
     sf2d_end_frame();
 }
 

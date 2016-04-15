@@ -3,11 +3,11 @@
 
 #include "random.hpp"
 
-#define SWAP_FRAMES /*4*/30
-#define PENDING_FALL_FRAMES /*4*/30
-#define FALLING_FRAMES /*2*/30
-#define PENDING_MATCH_FRAMES 4
-#define MATCH_FRAMES 4
+#define SWAP_FRAMES /*4*/60
+#define PENDING_FALL_FRAMES /*4*/60
+#define FALLING_FRAMES /*2*/60
+#define PENDING_MATCH_FRAMES 60
+#define MATCH_FRAMES 60
 
 class Panel
 {
@@ -38,6 +38,7 @@ public:
         PENDING_MATCH = 8, // index_removal, total_removed
         MATCHED = 9,
         REMOVED = 10,
+        END_MATCH = 11,
     };
 
     bool empty() const {return value == EMPTY;}
@@ -46,7 +47,7 @@ public:
 
     bool fallable() const {return state == END_FALL || state == IDLE;}
     bool swappable() const {return state == FALLING || state == END_FALL || state == IDLE;}
-    bool matchable() const {return state == IDLE;}
+    bool matchable() const {return state == IDLE || state == SWAPPED || state == END_FALL;}
 
     bool is_idle() const {return state == IDLE;}
     bool is_swapping() const {return is_left_swap() || is_right_swap();}
@@ -60,6 +61,8 @@ public:
     bool is_pending_match() const {return state == PENDING_MATCH;}
     bool is_matched() const {return state == MATCHED;}
     bool is_removed() const {return state == REMOVED;}
+    bool is_match_end() const {return state == END_MATCH;}
+    bool is_match_process() const {return is_pending_match() || is_matched() || is_removed() || is_match_end();}
 
     void update();
     void swap(Type swap_to, bool is_left);

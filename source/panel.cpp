@@ -55,7 +55,6 @@ void Panel::update()
         if (countdown <= 0)
         {
             state = State::REMOVED;
-            value = Type::EMPTY;
             countdown = remove_time - match_time;
         }
     }
@@ -63,7 +62,14 @@ void Panel::update()
     {
         countdown -= 1;
         if (countdown <= 0)
-            state = State::END_FALL;
+        {
+            value = Type::EMPTY;
+            state = State::END_MATCH;
+        }
+    }
+    else if (is_match_end())
+    {
+        state = State::IDLE;
     }
 }
 
@@ -83,7 +89,7 @@ void Panel::fall(bool already_falling)
 void Panel::match(int index, int total)
 {
     state = State::PENDING_MATCH;
-    match_time = index;
-    remove_time = total;
+    match_time = index * MATCH_FRAMES;
+    remove_time = total * MATCH_FRAMES;
     countdown = PENDING_MATCH_FRAMES;
 }

@@ -15,14 +15,16 @@ struct Point
     int y;
 };
 
-class MatchInfo
+struct MatchInfo
 {
-public:
-    void chain(int combo) {combos_list.push_back(combo);}
-    int chains() const {return combos_list.size();}
-    const std::list<int>& combos() const {return combos_list;}
-private:
-    std::list<int> combos_list;
+    MatchInfo() : chain(0), cascade(0), combo(0), swap_match(false), fall_match(false) {}
+    int chain;
+    int cascade;
+    int combo;
+    /** If any panels was in state IDLE then this will be true (part of a chain) */
+    bool swap_match;
+    /** If any panels was in state END_FALL this will be true (part of a cascade) */
+    bool fall_match;
 };
 
 class PanelTable
@@ -75,7 +77,7 @@ public:
     void generate();
     void generate_next();
     void swap(int i, int j);
-    void update(long speed, int max_wait, bool fast_rise);
+    MatchInfo update(long speed, int max_wait, bool fast_rise);
 
     MatchInfo update_matches(void);
 
@@ -87,14 +89,20 @@ public:
     int rows;
     int columns;
     int colors;
+
     int state;
+    /** Game board type */
     int type;
+    /** Rise amount */
     int rise;
+    /** Hold long we are stopped */
     int cooloff;
+    /** Chain link */
+    int chain;
+    /** Cascade link */
+    int cascade;
 
 private:
-    std::set<Point> check_for_matches(void);
-
     bool next_horizontal_error(int j);
     bool next_vertical_error(int j);
 
@@ -103,7 +111,6 @@ private:
 
     std::set<Point> check_horizontal_combo(int i, int j);
     std::set<Point> check_vertical_combo(int i, int j);
-
 };
 
 #endif

@@ -5,12 +5,12 @@
 #include <ctime>
 #include <cstdio>
 
-PanelTable::PanelTable(int height, int width, int num_colors) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), type(RISES)
+PanelTable::PanelTable(int height, int width, int num_colors) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), type(RISES), chain(0), cascade(0)
 {
     generate();
 }
 
-PanelTable::PanelTable(int height, int width, int num_colors, const Panel::Type* data) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors)
+PanelTable::PanelTable(int height, int width, int num_colors, const Panel::Type* data) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), type(RISES), chain(0), cascade(0)
 {
     for (int i = 0; i <= rows; i++)
     {
@@ -163,19 +163,38 @@ void PanelTable::swap(int i, int j)
 MatchInfo PanelTable::update_matches(void)
 {
     MatchInfo match_info;
-    int length;
+    std::set<Point> remove;
 
-    do
+    for (int i = 0; i < rows; i++)
     {
-        std::set<Point> remove = check_for_matches();
-        length = remove.size();
-        match_info.chain(length);
-        for (const auto& pt : remove)
-            set(pt.y, pt.x, Panel::Type::EMPTY);
-        //for (const auto& pt : remove)
-        //    stack_down(pt.y - 1, pt.x);
+        for (int j = 0; j < columns; j++)
+        {
+            std::set<Point> vert;
+            std::set<Point> horiz;
+            if (horizontal(i, j))
+                horiz = check_horizontal_combo(i, j);
+            if (vertical(i, j))
+                vert = check_vertical_combo(i, j);
+            remove.insert(horiz.begin(), horiz.end());
+            remove.insert(vert.begin(), vert.end());
+        }
     }
-    while (length != 0);
+
+    match_info.combo = remove.size();
+    match_info.chain = chain;
+    match_info.cascade = cascade;
+    match_info.swap_match = true;
+    match_info.fall_match = false;
+
+    int index = remove.size() - 1;
+    for (const auto& pt : remove)
+    {
+        auto& panel = get(pt.y, pt.x);
+        match_info.fall_match |= panel.is_fall_end();
+        match_info.swap_match &= panel.is_idle();
+        panel.match(index, remove.size());
+        index--;
+    }
 
     return match_info;
 }
@@ -198,28 +217,6 @@ bool PanelTable::is_warning() const
             return true;
     }
     return false;
-}
-
-std::set<Point> PanelTable::check_for_matches(void)
-{
-    std::set<Point> remove;
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            std::set<Point> vert;
-            std::set<Point> horiz;
-            if (horizontal(i, j))
-                horiz = check_horizontal_combo(i, j);
-            if (vertical(i, j))
-                vert = check_vertical_combo(i, j);
-            remove.insert(horiz.begin(), horiz.end());
-            remove.insert(vert.begin(), vert.end());
-        }
-    }
-
-    return remove;
 }
 
 std::set<Point> PanelTable::check_horizontal_combo(int i, int j)
@@ -297,10 +294,12 @@ std::set<Point> PanelTable::check_vertical_combo(int i, int j)
     return remove;
 }
 
-void PanelTable::update(long time, int max_wait, bool fast_rise)
+MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
 {
     bool need_update_matches = false;
     bool need_generate_next = false;
+    bool in_chain = false;
+
     if (is_rised() && (type & RISES))
     {
         for (int i = 1; i < rows + 1; i++)
@@ -328,27 +327,45 @@ void PanelTable::update(long time, int max_wait, bool fast_rise)
             if (panel.is_fall_end())
             {
                 Panel& below = get(y + 1, x);
-                if (below.empty() && !panel.empty())
+                if (y + 1 < rows && below.empty() && below.is_idle() && !panel.empty())
                 {
                     below.value = panel.value;
                     panel.value = Panel::Type::EMPTY;
                     below.fall(true);
                     panel.state = Panel::State::IDLE;
                 }
+                else
+                    need_update_matches = true;
             }
-            else if (panel.is_idle() && y < rows - 1)
+            else if (panel.is_idle() && !panel.empty() && y < rows - 1)
             {
                 if (below.is_falling_process() || below.empty())
                     panel.fall(false);
             }
 
+            if (panel.is_swapped())
+                need_update_matches = true;
+
+            in_chain |= panel.is_match_process();
         }
     }
 
+    if (!in_chain)
+    {
+        chain = 0;
+        cascade = 0;
+    }
+
+    MatchInfo info;
     if (need_update_matches)
-        update_matches();
+        info = update_matches();
     if (need_generate_next)
         generate_next();
+
+    if (info.swap_match)
+        cascade++;
+    if (info.fall_match)
+        chain++;
 
     if (is_rising())
     {
@@ -382,4 +399,6 @@ void PanelTable::update(long time, int max_wait, bool fast_rise)
                 state = GAMEOVER;
         }
     }
+
+    return info;
 }
