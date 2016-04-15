@@ -39,6 +39,7 @@ void Panel::update()
     else if (is_fall_end())
     {
         state = State::IDLE;
+        cascade = false;
     }
     else if (is_pending_match())
     {
@@ -80,10 +81,11 @@ void Panel::swap(Panel::Type swap_panel, bool is_left)
     countdown = SWAP_FRAMES;
 }
 
-void Panel::fall(bool already_falling)
+void Panel::fall(bool already_falling, bool is_cascade)
 {
     state = already_falling ? State::FALLING : State::PENDING_FALL;
     countdown = already_falling ? FALLING_FRAMES : PENDING_FALL_FRAMES;
+    cascade = is_cascade;
 }
 
 void Panel::match(int index, int total)

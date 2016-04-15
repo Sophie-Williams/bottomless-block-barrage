@@ -66,7 +66,7 @@ public:
 
     void update();
     void swap(Type swap_to, bool is_left);
-    void fall(bool already_falling);
+    void fall(bool already_falling, bool is_cascade = false);
     void match(int index, int total);
 
     static Type random(int colors);
@@ -79,6 +79,7 @@ public:
     int countdown = 0;
     int match_time = 0;
     int remove_time = 0;
+    bool cascade = false;
 };
 
 #endif

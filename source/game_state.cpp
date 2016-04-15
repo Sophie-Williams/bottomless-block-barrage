@@ -198,9 +198,11 @@ void GameState::Render()
         for (int j = 0; j < panel_table->width(); j++)
         {
             const Panel& panel = panel_table->get(i, j);
+            if (panel.empty()) continue;
             int x = j * panel_size + 2 + startx + panel_size / 2;
             int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
             debug->draw(x, y, panel.state * 5, 0, 5, 10);
+            debug->draw(x + 11, y + 6, panel.cascade * 5, 0, 5, 10);
         }
     }
     border->draw(startx, starty);
