@@ -3,11 +3,11 @@
 
 #include "random.hpp"
 
-#define SWAP_FRAMES /*4*/60
-#define PENDING_FALL_FRAMES /*4*/60
-#define FALLING_FRAMES /*2*/60
-#define PENDING_MATCH_FRAMES 60
-#define MATCH_FRAMES 60
+#define SWAP_FRAMES 4
+#define PENDING_FALL_FRAMES 4
+#define FALLING_FRAMES 2
+#define PENDING_MATCH_FRAMES 24
+#define MATCH_FRAMES 16
 
 class Panel
 {

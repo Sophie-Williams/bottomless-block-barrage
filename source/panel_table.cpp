@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cstdio>
 
-PanelTable::PanelTable(int height, int width, int num_colors) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), type(RISES), chain(0), cascade(0)
+PanelTable::PanelTable(int height, int width, int num_colors) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), state(RISING), type(RISES), chain(0), cascade(0)
 {
     generate();
 }
@@ -68,6 +68,8 @@ void PanelTable::generate()
                 set(i, j + 1, Panel::random(colors));
         }
     }
+
+    generate_next();
 }
 
 void PanelTable::generate_next()
@@ -191,7 +193,7 @@ MatchInfo PanelTable::update_matches(void)
     {
         auto& panel = get(pt.y, pt.x);
         match_info.fall_match |= panel.is_fall_end();
-        match_info.swap_match &= panel.is_idle();
+        match_info.swap_match &= !panel.is_fall_end();
         panel.match(index, remove.size());
         index--;
     }
@@ -371,6 +373,10 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         cascade++;
     if (info.swap_match)
         chain++;
+
+    // Board is stopped while matches are being removed.
+    if (in_chain)
+        return info;
 
     if (is_rising())
     {

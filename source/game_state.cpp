@@ -5,6 +5,7 @@
 #include "debug_text.h"
 
 #include <map>
+#include <cstdio>
 
 #define PANEL_SIZE 16
 #define BOTTOM_SCREEN_WIDTH 320
@@ -89,7 +90,7 @@ void AnimationParams::Update(const PanelTable& table, bool danger)
     }
 
     selector_counter++;
-    selector = ((selector_counter >> 4) & 1);
+    selector = (selector_counter >> 4) & 1;
 }
 
 void GameState::Init(const Options& opts)
@@ -136,6 +137,7 @@ void GameState::Update()
     {
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
         last_rise = osGetTime();
+
     }
 
     if (last_rise == 0)
