@@ -24,3 +24,6 @@ New Gameplay features
 1) Once all of the above is in order simply type make and you will get .elf for citra, .3dsx for homebrew launcher, .cia for emunand, and .3ds for gateway/sky3ds.
 
 2) If you care not to build everything then just type make [elf, cia, 3ds, 3dsx] to build the corresponding format, or make citra to run it in citra (requires citra to be installed and in your $PATH)
+
+## Credits
+Panel Graphics are based off http://thewolfbunny.deviantart.com/art/Pokemon-Puzzle-Challenge-Panels-TA-Style-510289235 by TheWolfBunny
