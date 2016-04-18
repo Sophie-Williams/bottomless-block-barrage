@@ -26,7 +26,7 @@ public:
         int columns;
         int colors;
     };
-    GameState(const Options& opts) : options(opts), score(0) {Init();}
+    GameState(const Options& opts);
     void Init() {Init(options);}
     void Init(const Options& opts);
     void Update();

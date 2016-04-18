@@ -18,8 +18,11 @@ struct Point
 struct MatchInfo
 {
     MatchInfo() : chain(0), cascade(0), combo(0), swap_match(false), fall_match(false) {}
+    /** Chains are rapidlying matching 3 or more blocks before they disappear */
     int chain;
+    /** Cascades are sequential matches after blocks are removed */
     int cascade;
+    /** Combos are matches of more than 3 blocks */
     int combo;
     /** If any panels was in state IDLE then this will be true (part of a chain) */
     bool swap_match;

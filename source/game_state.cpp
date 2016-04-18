@@ -93,16 +93,22 @@ void AnimationParams::Update(const PanelTable& table, bool danger)
     selector = (selector_counter >> 4) & 1;
 }
 
+GameState::GameState(const Options& opts) : options(opts), score(0)
+{
+    panels.reset(new Texture(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+    selector.reset(new Texture(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+    border.reset(new Texture(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+    debug.reset(new Texture(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+    Init();
+}
+
 void GameState::Init(const Options& opts)
 {
     score = 0;
     level = 1;
     selector_x = 2;
     selector_y = 6;
-    panels.reset(new Texture(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
-    selector.reset(new Texture(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
-    border.reset(new Texture(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
-    debug.reset(new Texture(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+
     panel_table.reset(new PanelTable(opts.rows, opts.columns, opts.colors));
     frames.Reset();
     last_rise = last_frame = 0;
@@ -112,6 +118,9 @@ void GameState::Update()
 {
     u32 trigger = getKeyState();
     u32 held = hidKeysHeld();
+
+    if (trigger & KEY_SELECT)
+        Init();
 
     if (last_frame == 0)
         last_frame = osGetTime();
@@ -124,8 +133,6 @@ void GameState::Update()
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
     if (trigger & KEY_DOWN)
         selector_y = std::max(std::min(selector_y + 1, 10), 0);
-    if (trigger & KEY_SELECT)
-        Init();
     if (trigger & KEY_A)
         panel_table->swap(selector_y, selector_x);
     if (trigger & KEY_X)

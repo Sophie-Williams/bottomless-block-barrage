@@ -6,8 +6,8 @@
 #define SWAP_FRAMES 4
 #define PENDING_FALL_FRAMES 4
 #define FALLING_FRAMES 2
-#define PENDING_MATCH_FRAMES 24
-#define MATCH_FRAMES 16
+#define PENDING_MATCH_FRAMES 48
+#define MATCH_FRAMES 32
 
 class Panel
 {

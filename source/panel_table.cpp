@@ -23,6 +23,12 @@ PanelTable::PanelTable(int height, int width, int num_colors, const Panel::Type*
 
 void PanelTable::generate()
 {
+    state = RISING;
+    rise = 0;
+    cooloff = 0;
+    chain = 0;
+    cascade = 0;
+
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < columns; j++)
