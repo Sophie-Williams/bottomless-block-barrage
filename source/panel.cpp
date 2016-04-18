@@ -38,8 +38,16 @@ void Panel::update()
     }
     else if (is_fall_end())
     {
-        state = State::IDLE;
+        // Panel table handles transitioning to FALLING again.
+        state = State::IDLE_FELL;
+        countdown = FALL_ANIMATION_FRAMES;
         cascade = false;
+    }
+    else if (is_fell_idle())
+    {
+        countdown -= 1;
+        if (countdown <= 0)
+            state = State::IDLE;
     }
     else if (is_pending_match())
     {

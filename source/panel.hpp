@@ -9,6 +9,9 @@
 #define PENDING_MATCH_FRAMES 48
 #define MATCH_FRAMES 32
 
+#define FALL_ANIMATION_FRAMES 9
+#define FALL_ANIMATION_DELAY 4
+
 class Panel
 {
 public:
@@ -35,21 +38,23 @@ public:
         PENDING_FALL = 5, // nothing
         FALLING = 6,
         END_FALL = 7,
-        PENDING_MATCH = 8, // index_removal, total_removed
-        MATCHED = 9,
-        REMOVED = 10,
-        END_MATCH = 11,
+        IDLE_FELL = 8, // for animation
+        PENDING_MATCH = 9, // index_removal, total_removed
+        MATCHED = 10,
+        REMOVED = 11,
+        END_MATCH = 12,
     };
 
     bool empty() const {return value == EMPTY;}
     bool normal() const {return !empty() && !special();}
     bool special() const {return value == SPECIAL;}
 
-    bool fallable() const {return state == END_FALL || state == IDLE;}
-    bool swappable() const {return state == FALLING || state == END_FALL || state == IDLE;}
-    bool matchable() const {return state == IDLE || state == SWAPPED || state == END_FALL;}
+    bool fallable() const {return is_idle() || is_fall_end();}
+    bool swappable() const {return is_idle() || is_falling() || is_fall_end();}
+    bool matchable() const {return is_idle() || is_swapped() || is_fall_end();}
 
-    bool is_idle() const {return state == IDLE;}
+    bool is_idle() const {return state == IDLE || state == IDLE_FELL;}
+    bool is_fell_idle() const {return state == IDLE_FELL;}
     bool is_swapping() const {return is_left_swap() || is_right_swap();}
     bool is_left_swap() const {return state == LEFT_SWAP;}
     bool is_right_swap() const {return state == RIGHT_SWAP;}

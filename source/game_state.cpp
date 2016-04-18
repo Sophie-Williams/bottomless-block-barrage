@@ -160,6 +160,7 @@ void GameState::Update()
 
 void GameState::Render()
 {
+    static const std::vector<int> panel_fell_frames = {3, 2, 1};
     const int panel_size = PANEL_SIZE + 2;
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table->rise / step;
@@ -169,6 +170,8 @@ void GameState::Render()
     int starty = (BOTTOM_SCREEN_HEIGHT - border->height());
 
     sf2d_start_frame(GFX_BOTTOM, GFX_LEFT);
+
+    // Draw panels
     for (int i = 0; i < panel_table->height(); i++)
     {
         for (int j = 0; j < panel_table->width(); j++)
@@ -180,10 +183,20 @@ void GameState::Render()
             if (panel.is_left_swap()) x += panel_size / 2;
             int type = (int)panel.value - 1;
             if (type == -1) continue;
-            panels->draw(x, y, type * PANEL_SIZE, (panel.is_removed() ? 5 : frames.panel) * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
+
+            int frame = frames.panel;
+            if (panel.is_removed())
+                frame = 5;
+            else if (panel.is_falling() || panel.is_fall_end())
+                frame = 0;
+            else if (panel.is_fell_idle())
+                frame = panel_fell_frames[(FALL_ANIMATION_FRAMES - panel.countdown) / FALL_ANIMATION_DELAY];
+
+            panels->draw(x, y, type * PANEL_SIZE, frame * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
         }
     }
 
+    // Draw Next
     for (int j = 0; j < panel_table->width(); j++)
     {
         int i = panel_table->height();
@@ -196,12 +209,14 @@ void GameState::Render()
         panels->draw(x, y, type * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
     }
 
+    // Draw Selector
     {
         int x = selector_x * panel_size - 2 + startx + panel_size / 2;
         int y = (selector_y + 1) * panel_size - 2 - offset + starty + panel_size / 2;
         selector->draw(x, y, 0, frames.selector * SELECTOR_GFX_HEIGHT / 2, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT / 2);
     }
 
+    // Debug
     for (int i = 0; i < panel_table->height() + 1; i++)
     {
         for (int j = 0; j < panel_table->width(); j++)
