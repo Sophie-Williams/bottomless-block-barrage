@@ -15,6 +15,16 @@ New Gameplay features
 * New concept of "Chaining" (chaining as defined by previous entries is renamed to cascading here) in which you match groups of 3 rapidly before blocks are removed from the board.
 
 
+## The demo
+### Controls
+* UP/DOWN/LEFT/RIGHT moves the cursor
+* A swaps the two panels over the selector
+* X increases the level
+* Y decreases the level
+* R quick rises the panels
+* SELECT generates a new board
+
+
 ## Compiling
 ### Prerequisites
 * Compiling cia and 3ds targets requires having [makerom](https://github.com/profi200/Project_CTR) and [bannertool](https://github.com/Steveice10/bannertool) in your $PATH
