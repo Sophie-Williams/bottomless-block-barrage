@@ -346,7 +346,11 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
                 else
                     need_update_matches = true;
             }
-            else if (panel.is_idle() && !panel.empty() && y < rows - 1)
+            // Need to do this if it is swapped to prevent this scenario
+            // PP P
+            // BB B
+            // Swap the P over the empty space and it is matched.
+            else if ((panel.is_idle() || panel.is_swapped()) && !panel.empty() && y < rows - 1)
             {
                 if (below.is_falling_process() || below.empty())
                     panel.fall(false, below.is_match_end() || below.cascade);

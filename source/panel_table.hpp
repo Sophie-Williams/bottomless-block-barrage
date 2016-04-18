@@ -35,6 +35,7 @@ class PanelTable
 public:
     enum Type
     {
+        PUZZLE = 0,
         RISES = 1,
         NLINES = 2,
     };
