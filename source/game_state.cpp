@@ -6,6 +6,7 @@
 
 #include <map>
 #include <cstdio>
+#include <ctime>
 
 #define PANEL_SIZE 16
 #define BOTTOM_SCREEN_WIDTH 320
@@ -108,6 +109,10 @@ void GameState::Init(const Options& opts)
     level = 1;
     selector_x = 2;
     selector_y = 6;
+    recorder.clear();
+    recorder.seed = (unsigned int) time(NULL);
+    srand(recorder.seed);
+    frame = 0;
 
     panel_table.reset(new PanelTable(opts.rows, opts.columns, opts.colors));
     frames.Reset();
@@ -118,6 +123,9 @@ void GameState::Update()
 {
     u32 trigger = getKeyState();
     u32 held = hidKeysHeld();
+
+    if (trigger || (held & KEY_R))
+        recorder.add(frame, trigger, held);
 
     if (trigger & KEY_SELECT)
         Init();
@@ -140,11 +148,11 @@ void GameState::Update()
     if (trigger & KEY_Y)
         level--;
 
+
     if (panel_table->is_rised())
     {
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
         last_rise = osGetTime();
-
     }
 
     if (last_rise == 0)
@@ -156,6 +164,7 @@ void GameState::Update()
 
     frames.Update(*panel_table, panel_table->is_warning());
     last_frame = osGetTime();
+    frame++;
 }
 
 void GameState::Render()

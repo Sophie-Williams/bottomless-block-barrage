@@ -2,7 +2,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <ctime>
 #include <sf2d.h>
 #include "game_state.hpp"
 
@@ -10,8 +9,6 @@ std::unique_ptr<GameState> state;
 
 int main()
 {
-    srand(time(NULL));
-
     sf2d_init();
     sf2d_set_clear_color(RGBA8(0x0, 0x0, 0xFF, 0xFF));
     sf2d_set_3D(0);

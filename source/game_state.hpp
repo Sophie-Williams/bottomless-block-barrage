@@ -5,6 +5,7 @@
 #include <memory>
 #include "panel_table.hpp"
 #include "util/texture.hpp"
+#include "moves_recorder.hpp"
 
 struct AnimationParams
 {
@@ -33,18 +34,20 @@ public:
     void Render();
 private:
     void UpdateScore(int combo_num, int chain_num);
-    Options options;
-    int score;
-    int level;
     std::unique_ptr<Texture> panels;
     std::unique_ptr<Texture> selector;
     std::unique_ptr<Texture> border;
     std::unique_ptr<Texture> debug;
     std::unique_ptr<PanelTable> panel_table;
+    Options options;
+    MovesRecorder recorder;
+    int score;
+    int level;
     int selector_x, selector_y;
     u64 last_frame;
     u64 last_rise;
     AnimationParams frames;
+    int frame;
 };
 
 #endif
