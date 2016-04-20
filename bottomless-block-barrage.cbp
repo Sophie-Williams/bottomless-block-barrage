@@ -104,10 +104,9 @@
 		<Unit filename="resources/AppInfo" />
 		<Unit filename="source/game_state.cpp" />
 		<Unit filename="source/game_state.hpp" />
-		<Unit filename="source/main.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="source/main.cpp" />
+		<Unit filename="source/moves_recorder.cpp" />
+		<Unit filename="source/moves_recorder.hpp" />
 		<Unit filename="source/panel.cpp" />
 		<Unit filename="source/panel.hpp" />
 		<Unit filename="source/panel_table.cpp" />

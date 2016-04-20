@@ -198,8 +198,8 @@ MatchInfo PanelTable::update_matches(void)
     for (const auto& pt : remove)
     {
         auto& panel = get(pt.y, pt.x);
-        match_info.fall_match |= panel.is_fall_end();
-        match_info.swap_match &= !panel.is_fall_end();
+        match_info.fall_match |= (panel.is_fall_end() && panel.cascade);
+        match_info.swap_match &= !(panel.is_fall_end() && panel.cascade);
         panel.match(index, remove.size());
         index--;
     }
