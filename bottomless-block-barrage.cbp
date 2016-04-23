@@ -111,6 +111,8 @@
 		<Unit filename="source/panel.hpp" />
 		<Unit filename="source/panel_table.cpp" />
 		<Unit filename="source/panel_table.hpp" />
+		<Unit filename="source/puzzles/basic_puzzle.hpp" />
+		<Unit filename="source/puzzles/tetris_attack.cpp" />
 		<Unit filename="source/random.hpp" />
 		<Unit filename="source/util/texture.cpp" />
 		<Unit filename="source/util/texture.hpp" />
