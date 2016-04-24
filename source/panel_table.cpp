@@ -5,20 +5,45 @@
 #include <ctime>
 #include <cstdio>
 
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 0
+
+#define MAX_PUZZLE_ROWS 11
+#define MAX_PUZZLE_COLUMNS 6
+#define MAX_PUZZLE_MOVES 1000000
+
+
 PanelTable::PanelTable(int height, int width, int num_colors) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), state(RISING), type(RISES), chain(0), cascade(0)
 {
     generate();
 }
 
-PanelTable::PanelTable(int height, int width, int num_colors, const Panel::Type* data) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), type(RISES), chain(0), cascade(0)
+PanelTable::PanelTable(const BasicPuzzle& puzzle)
 {
-    for (int i = 0; i <= rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            panels[i * columns + j].value = *data++;
-        }
-    }
+    const char* magic = puzzle.magic;
+    if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
+        return;
+
+    const char* version = puzzle.version;
+    if (version[0] > VERSION_MAJOR || (version[0] == VERSION_MAJOR && version[1] > VERSION_MINOR))
+        return;
+
+    if (puzzle.type != PUZZLE)
+        return;
+
+    if (puzzle.rows != MAX_PUZZLE_ROWS || puzzle.columns != MAX_PUZZLE_COLUMNS || puzzle.starting != MAX_PUZZLE_ROWS ||
+        puzzle.moves > MAX_PUZZLE_MOVES)
+        return;
+
+    state = RISING;
+    type = puzzle.type;
+    rows = puzzle.rows;
+    columns = puzzle.columns;
+    moves = puzzle.moves;
+
+    panels.resize(columns * rows);
+    for (unsigned int i = 0; i < panels.size(); i++)
+        panels[i].value = (Panel::Type) puzzle.panels[i];
 }
 
 void PanelTable::generate()
@@ -161,11 +186,14 @@ void PanelTable::swap(int i, int j)
     Panel& left = get(i, j);
     Panel& right = get(i, j + 1);
 
-    if (left.value == right.value || !left.swappable() || !right.swappable())
+    if (left.value == right.value || !left.swappable() || !right.swappable() || (is_puzzle() && moves <= 0))
         return;
 
     left.swap(right.value, true);
     right.swap(left.value, false);
+
+    if (is_puzzle())
+        moves -= 1;
 }
 
 MatchInfo PanelTable::update_matches(void)
@@ -388,7 +416,19 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
     if (in_chain)
         return info;
 
-    if (is_rising())
+    if (is_puzzle() && !(is_gameover() || is_win_puzzle()))
+    {
+        bool win = true;
+        bool idle = true;
+        for (unsigned int i = 0; i < panels.size(); i++)
+        {
+            win = win && panels[i].value == Panel::Type::EMPTY;
+            idle = idle && panels[i].state == Panel::State::IDLE;
+        }
+        if (moves == 0 && idle)
+            state = win ? WIN_PUZZLE : GAMEOVER;
+    }
+    else if (is_rising())
     {
         if (fast_rise) state = FAST_RISING;
 

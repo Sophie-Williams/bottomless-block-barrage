@@ -42,6 +42,7 @@ private:
     Options options;
     MovesRecorder recorder;
     int score;
+    int stage;
     int level;
     int selector_x, selector_y;
     u64 last_frame;

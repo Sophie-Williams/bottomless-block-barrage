@@ -178,7 +178,7 @@ static const char stage2_10[96] = {
 	0x03, 0x00, 0x00, 0x00, 0x00, 0x03, 0x05, 0x03, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-char* ta_stages[20] = {
+const char* ta_stages[20] = {
 stage1_01,
 stage1_02,
 stage1_03,
@@ -199,4 +199,4 @@ stage2_07,
 stage2_08,
 stage2_09,
 stage2_10,
-}
+};

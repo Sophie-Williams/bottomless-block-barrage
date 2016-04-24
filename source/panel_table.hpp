@@ -2,6 +2,7 @@
 #define PANEL_TABLE_HPP
 
 #include "panel.hpp"
+#include "basic_puzzle.hpp"
 #include <list>
 #include <set>
 #include <vector>
@@ -49,10 +50,13 @@ public:
         STOPPED = 5,
         CLOGGED = 6,
         GAMEOVER = 7,
+        WIN_PUZZLE = 8,
     };
 
     PanelTable(int rows, int columns, int num_colors);
-    PanelTable(int rows, int columns, int num_colors, const Panel::Type* data);
+    PanelTable(const BasicPuzzle& puzzle);
+
+    bool is_puzzle() const {return type == PUZZLE;}
 
     bool is_rising() const {return state == RISING || state == FAST_RISING;}
     bool is_rised() const {return state == RISED;}
@@ -60,6 +64,7 @@ public:
     bool is_stopped() const {return state == STOPPED;}
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
+    bool is_win_puzzle() const {return state == WIN_PUZZLE;}
 
     bool is_warning() const;
     bool is_danger() const;
@@ -93,6 +98,7 @@ public:
     int rows;
     int columns;
     int colors;
+    int moves;
 
     int state;
     /** Game board type */

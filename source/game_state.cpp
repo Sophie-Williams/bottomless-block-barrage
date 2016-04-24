@@ -1,4 +1,5 @@
 #include "game_state.hpp"
+#include "basic_puzzle.hpp"
 #include "panels_gfx.h"
 #include "selector_gfx.h"
 #include "border_gfx.h"
@@ -101,6 +102,7 @@ GameState::GameState(const Options& opts) : options(opts), score(0)
     border.reset(new Texture(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
     debug.reset(new Texture(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
     Init();
+    stage = 10;
 }
 
 void GameState::Init(const Options& opts)
@@ -114,7 +116,7 @@ void GameState::Init(const Options& opts)
     srand(recorder.seed);
     frame = 0;
 
-    panel_table.reset(new PanelTable(opts.rows, opts.columns, opts.colors));
+    panel_table.reset(new PanelTable(*reinterpret_cast<const BasicPuzzle*>(ta_stages[stage])));
     frames.Reset();
     last_rise = last_frame = 0;
 }
@@ -128,7 +130,11 @@ void GameState::Update()
         recorder.add(frame, trigger, held);
 
     if (trigger & KEY_SELECT)
+    {
+        if (panel_table->is_win_puzzle())
+            stage++;
         Init();
+    }
 
     if (last_frame == 0)
         last_frame = osGetTime();
@@ -173,7 +179,8 @@ void GameState::Render()
     const int panel_size = PANEL_SIZE + 2;
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table->rise / step;
-    if (panel_table->is_clogged() || panel_table->is_gameover() || panel_table->is_rised())
+
+    if (!panel_table->is_puzzle() && (panel_table->is_clogged() || panel_table->is_gameover() || panel_table->is_rised()))
         offset = panel_size;
     int startx = (BOTTOM_SCREEN_WIDTH - border->width()) / 2;
     int starty = (BOTTOM_SCREEN_HEIGHT - border->height());
@@ -242,6 +249,8 @@ void GameState::Render()
     //debug->draw(0, 0, panel_table->combo * 5, 0, 5, 10);
     debug->draw(0, 10, panel_table->chain * 5, 0, 5, 10);
     debug->draw(0, 20, panel_table->cascade * 5, 0, 5, 10);
+    debug->draw(0, 30, panel_table->moves * 5, 0, 5, 10);
+    //debug->draw(0, 40, stage * 5, 0, 5, 10);
     sf2d_end_frame();
 }
 

@@ -15,7 +15,6 @@ struct BasicPuzzle
     char pad2[6];
 };
 
-
 extern char* ta_stages[20];
 
 #endif
