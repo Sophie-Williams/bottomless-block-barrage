@@ -6,6 +6,7 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="source/;" />
 		<Build>
 			<Target title="release">
 				<Option type="4" />
@@ -96,12 +97,14 @@
 			<Option target="citra" />
 		</Unit>
 		<Unit filename="README.md" />
+		<Unit filename="game_save.hpp" />
 		<Unit filename="graphics/border_gfx.png" />
 		<Unit filename="graphics/debug_text.png" />
 		<Unit filename="graphics/panels_gfx.png" />
 		<Unit filename="graphics/selector_gfx.png" />
 		<Unit filename="icon.png" />
 		<Unit filename="resources/AppInfo" />
+		<Unit filename="source/basic_puzzle.hpp" />
 		<Unit filename="source/game_state.cpp" />
 		<Unit filename="source/game_state.hpp" />
 		<Unit filename="source/main.cpp" />
@@ -111,11 +114,28 @@
 		<Unit filename="source/panel.hpp" />
 		<Unit filename="source/panel_table.cpp" />
 		<Unit filename="source/panel_table.hpp" />
-		<Unit filename="source/puzzles/basic_puzzle.hpp" />
 		<Unit filename="source/puzzles/tetris_attack.cpp" />
 		<Unit filename="source/random.hpp" />
+		<Unit filename="source/scenes/EndlessConfigScene.cpp" />
+		<Unit filename="source/scenes/EndlessConfigScene.hpp" />
+		<Unit filename="source/scenes/puzzle_select_scene.cpp" />
+		<Unit filename="source/scenes/puzzle_select_scene.hpp" />
+		<Unit filename="source/scenes/scene.cpp" />
+		<Unit filename="source/scenes/scene.hpp" />
+		<Unit filename="source/scenes/title_scene.cpp" />
+		<Unit filename="source/scenes/title_scene.hpp" />
+		<Unit filename="source/util/command_window.cpp" />
+		<Unit filename="source/util/command_window.hpp" />
+		<Unit filename="source/util/cursor.cpp" />
+		<Unit filename="source/util/cursor.hpp" />
+		<Unit filename="source/util/font.cpp" />
+		<Unit filename="source/util/font.hpp" />
+		<Unit filename="source/util/slider.cpp" />
+		<Unit filename="source/util/slider.hpp" />
 		<Unit filename="source/util/texture.cpp" />
 		<Unit filename="source/util/texture.hpp" />
+		<Unit filename="source/util/window.cpp" />
+		<Unit filename="source/util/window.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

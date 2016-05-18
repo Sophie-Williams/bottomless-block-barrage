@@ -2,33 +2,40 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <memory>
 #include <sf2d.h>
-#include "game_state.hpp"
 
-std::unique_ptr<GameState> state;
+#include "scenes/scene.hpp"
+#include "scenes/title_scene.hpp"
+
+#include "font_gfx.h"
+
+Scene* current_scene = NULL;
+std::unique_ptr<Font> font;
 
 int main()
 {
     sf2d_init();
-    sf2d_set_clear_color(RGBA8(0x0, 0x0, 0xFF, 0xFF));
+    sf2d_set_clear_color(RGBA8(0x0, 0x0, 0x0, 0xFF));
     sf2d_set_3D(0);
 
-    GameState::Options options;
-    options.rows = 11;
-    options.columns = 6;
-    options.colors = 6;
-    state.reset(new GameState(options));
+    font.reset(new Font(font_gfx, FONT_GFX_WIDTH, FONT_GFX_HEIGHT, 16, 16, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+    std::unique_ptr<Scene> scene;
+    current_scene = new TitleScene();
 
     while (aptMainLoop())
     {
         hidScanInput();
-        u32 held = hidKeysHeld();
 
-        if (held & KEY_START)
-            break;
+        if (current_scene != scene.get())
+        {
+            scene.reset(current_scene);
+            if (!scene) break;
+            scene->initialize();
+        }
 
-        state->Update();
-        state->Render();
+        scene->update();
+        scene->draw();
 
         sf2d_swapbuffers();
     }

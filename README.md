@@ -37,3 +37,4 @@ New Gameplay features
 
 ## Credits
 Panel Graphics are based off http://thewolfbunny.deviantart.com/art/Pokemon-Puzzle-Challenge-Panels-TA-Style-510289235 by TheWolfBunny
+Text is generated from http://mifki.com/df/fontgen.html

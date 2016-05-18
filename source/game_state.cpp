@@ -10,18 +10,10 @@
 #include <ctime>
 
 #define PANEL_SIZE 16
+#define TOP_SCREEN_WIDTH 400
+#define TOP_SCREEN_HEIGHT 240
 #define BOTTOM_SCREEN_WIDTH 320
 #define BOTTOM_SCREEN_HEIGHT 240
-
-u32 getKeyState()
-{
-    static u32 last_held = 0;
-    u32 held = hidKeysHeld();
-
-    u32 ret = (~last_held) & held;
-    last_held = held;
-    return ret;
-}
 
 const std::map<int, int> speed_table
 {
@@ -123,7 +115,7 @@ void GameState::Init(const Options& opts)
 
 void GameState::Update()
 {
-    u32 trigger = getKeyState();
+    u32 trigger = hidKeysDown();
     u32 held = hidKeysHeld();
 
     if (trigger || (held & KEY_R))
