@@ -8,7 +8,7 @@
 void TitleScene::initialize()
 {
     background.reset(new Texture(generic_title_screen, GENERIC_TITLE_SCREEN_WIDTH, GENERIC_TITLE_SCREEN_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
-    command_window.reset(new CommandWindow(0, 0,  7 * 16, {"Endless", "Score", "Puzzle", "Mission", "Versus"}));
+    command_window.reset(new CommandWindow(0, 0,  7 * 16, 16, 1, {"Endless", "Score", "Puzzle", "Mission", "Versus"}));
     command_window->center(BOTTOM_SCREEN_WIDTH, BOTTOM_SCREEN_WIDTH);
     command_window->set_active(true);
 }

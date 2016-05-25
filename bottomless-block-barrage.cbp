@@ -104,9 +104,10 @@
 		<Unit filename="graphics/selector_gfx.png" />
 		<Unit filename="icon.png" />
 		<Unit filename="resources/AppInfo" />
+		<Unit filename="source/animation_params.cpp" />
+		<Unit filename="source/animation_params.hpp" />
 		<Unit filename="source/basic_puzzle.hpp" />
 		<Unit filename="source/game_state.cpp" />
-		<Unit filename="source/game_state.hpp" />
 		<Unit filename="source/main.cpp" />
 		<Unit filename="source/moves_recorder.cpp" />
 		<Unit filename="source/moves_recorder.hpp" />
@@ -116,8 +117,10 @@
 		<Unit filename="source/panel_table.hpp" />
 		<Unit filename="source/puzzles/tetris_attack.cpp" />
 		<Unit filename="source/random.hpp" />
-		<Unit filename="source/scenes/EndlessConfigScene.cpp" />
-		<Unit filename="source/scenes/EndlessConfigScene.hpp" />
+		<Unit filename="source/scenes/endless_config_scene.cpp" />
+		<Unit filename="source/scenes/endless_config_scene.hpp" />
+		<Unit filename="source/scenes/endless_scene.cpp" />
+		<Unit filename="source/scenes/endless_scene.hpp" />
 		<Unit filename="source/scenes/puzzle_select_scene.cpp" />
 		<Unit filename="source/scenes/puzzle_select_scene.hpp" />
 		<Unit filename="source/scenes/scene.cpp" />
@@ -130,6 +133,8 @@
 		<Unit filename="source/util/cursor.hpp" />
 		<Unit filename="source/util/font.cpp" />
 		<Unit filename="source/util/font.hpp" />
+		<Unit filename="source/util/resource_manager.cpp" />
+		<Unit filename="source/util/resource_manager.hpp" />
 		<Unit filename="source/util/slider.cpp" />
 		<Unit filename="source/util/slider.hpp" />
 		<Unit filename="source/util/texture.cpp" />

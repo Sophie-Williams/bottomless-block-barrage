@@ -36,13 +36,13 @@ void PuzzleSelectScene::initialize()
     ///TODO Implement a resource manager so this isn't done multiple times.
     background.reset(new Texture(generic_title_screen, GENERIC_TITLE_SCREEN_WIDTH, GENERIC_TITLE_SCREEN_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
 
-    set_choices.reset(new CommandWindow(0, 0, 5 * 16, {"TA", "TA-EX"}));
+    set_choices.reset(new CommandWindow(0, 0, 5 * 16, 16, 1, {"TA", "TA-EX"}));
     set_choices->set_active(true);
 
-    stage_choices.reset(new CommandWindow(80, 0, 8 * 16, {}));
+    stage_choices.reset(new CommandWindow(80, 0, 8 * 16, 16, 1, {}));
     stage_choices->set_hidden(true);
 
-    level_choices.reset(new CommandWindow(80 + 128, 0, 8 * 16, {}));
+    level_choices.reset(new CommandWindow(80 + 128, 0, 8 * 16, 16, 1, {}));
     level_choices->set_hidden(true);
 }
 

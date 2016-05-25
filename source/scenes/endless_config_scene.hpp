@@ -17,6 +17,8 @@ protected:
     void draw_top_right();
     void draw_bottom();
 private:
+    void update_difficulty_select();
+    void update_level_select();
     std::unique_ptr<CommandWindow> difficulty_choices;
     std::unique_ptr<Slider> level_slider;
 };

@@ -3,7 +3,6 @@
 #include <3ds.h>
 #include <sf2d.h>
 
-
 Slider::Slider(int mi, int ma, int val, int wx, int wy, int ww, int wh) :
     min(mi), max(ma), value(val), x(wx), y(wy), width(ww), height(wh), hidden(false), active(false)
 {
@@ -30,7 +29,7 @@ void Slider::draw()
 
     sf2d_draw_rectangle(x, y, width, height, RGBA8(0x40, 0x40, 0x40, 255));
     int percent = value * width / (max - min);
-    sf2d_draw_rectangle(x + percent - 2, y - 5, 5, 11, RGBA8(0x80, 0x80, 0x80, 255));
+    sf2d_draw_rectangle(x + percent - 2, y - 6 + height / 2, 5, 12, RGBA8(0x80, 0x80, 0x80, 255));
 }
 
 void Slider::center(int sw, int sh)
