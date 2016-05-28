@@ -8,6 +8,7 @@ Window::Window(int wx, int wy, int ww, int wh) : x(wx), y(wy), width(ww), height
 
 void Window::draw()
 {
+    if (is_hidden()) return;
     sf2d_draw_rectangle(x, y, width, height, RGBA8(0, 0, 255, 255));
 }
 

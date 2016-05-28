@@ -16,7 +16,7 @@ void EndlessConfigScene::update()
 
     if (difficulty_choices->is_active())
         update_difficulty_select();
-    if (level_slider->is_active())
+    else if (level_slider->is_active())
         update_level_select();
 }
 
@@ -32,7 +32,7 @@ void EndlessConfigScene::update_difficulty_select()
     else if (trigger & KEY_START)
     {
         EndlessScene::Config config;
-        config.difficulty = (EndlessScene::Difficulty) difficulty_choices->selection();
+        config.difficulty = (Difficulty) difficulty_choices->selection();
         config.level = level_slider->get_value();
         current_scene = new EndlessScene(config);
     }
@@ -47,7 +47,7 @@ void EndlessConfigScene::update_level_select()
     if (trigger & KEY_A || trigger & KEY_START)
     {
         EndlessScene::Config config;
-        config.difficulty = (EndlessScene::Difficulty) difficulty_choices->selection();
+        config.difficulty = (Difficulty) difficulty_choices->selection();
         config.level = level_slider->get_value();
         current_scene = new EndlessScene(config);
     }

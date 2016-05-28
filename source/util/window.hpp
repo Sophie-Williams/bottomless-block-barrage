@@ -2,6 +2,7 @@
 #define WINDOW_HPP
 
 #include <memory>
+#include <string>
 #include "font.hpp"
 
 extern std::unique_ptr<Font> font;
@@ -20,6 +21,7 @@ public:
     void center(int sw, int sh);
     void set_width(int w) {width = w;}
     void set_height(int h) {height = h;}
+    void draw_text(int x, int y, const std::string& str) {font->draw(str, x, y);}
 protected:
     int x;
     int y;

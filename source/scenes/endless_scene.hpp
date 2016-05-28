@@ -2,6 +2,7 @@
 #define ENDLESS_SCENE_HPP
 
 #include "scene.hpp"
+#include <windows/info_window.hpp>
 #include <util/texture.hpp>
 #include "panel_table.hpp"
 #include "animation_params.hpp"
@@ -9,12 +10,6 @@
 class EndlessScene : public Scene
 {
 public:
-    enum Difficulty
-    {
-        EASY = 0,
-        NORMAL = 1,
-        HARD = 2,
-    };
     struct Config
     {
         Difficulty difficulty;
@@ -32,6 +27,7 @@ protected:
 
 private:
     Config config;
+    std::unique_ptr<InfoWindow> info;
     std::unique_ptr<Texture> panels;
     std::unique_ptr<Texture> selector;
     std::unique_ptr<Texture> border;

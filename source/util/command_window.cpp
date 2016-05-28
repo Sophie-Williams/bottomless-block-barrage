@@ -4,7 +4,7 @@
 
 CommandWindow::CommandWindow(int wx, int wy, int cwidth, int cheight, int ipr, const std::vector<std::string>& commands) :
     Window(wx, wy, cwidth * ipr, std::max(commands.size() / ipr, 1U) * cheight), choices(commands), command_width(cwidth),
-    command_height(cheight), items_per_row(ipr), cursor(cwidth, cheight, 0x609F9060, 0xA0FFB080, 32, 0xFFFFD0C0), index(0)
+    command_height(cheight), items_per_row(ipr), cursor(cwidth, cheight), index(0)
 {
 }
 
@@ -28,6 +28,8 @@ void CommandWindow::update()
 
 void CommandWindow::draw()
 {
+    if (is_hidden()) return;
+
     Window::draw();
     for (unsigned int i = 0; i < choices.size(); i++)
     {
@@ -35,10 +37,7 @@ void CommandWindow::draw()
         int my = i / items_per_row;
         font->draw(choices[i], x + mx * command_width, y + my * command_height, RGBA8(0xFF, 0xFF, 0xFF, 0xFF));
     }
-    if (is_active() && !is_hidden())
-    {
-        int mx = index % items_per_row;
-        int my = index / items_per_row;
-        cursor.draw(x + mx * command_width, y + my * command_height);
-    }
+    int mx = index % items_per_row;
+    int my = index / items_per_row;
+    cursor.draw(x + mx * command_width, y + my * command_height, !is_active());
 }

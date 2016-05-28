@@ -1,6 +1,8 @@
 #ifndef SLIDER_HPP
 #define SLIDER_HPP
 
+#include "color_modulation.hpp"
+
 class Slider
 {
 public:
@@ -26,6 +28,7 @@ private:
     int height;
     bool hidden;
     bool active;
+    ColorModulation color;
 };
 
 #endif

@@ -13,6 +13,9 @@ endif
 
 include $(DEVKITARM)/3ds_rules
 
+# ip address of 3ds for spunch target.
+IP3DS := 192.168.1.123
+
 #---------------------------------------------------------------------------------
 # Directory Setup
 #---------------------------------------------------------------------------------
@@ -108,6 +111,9 @@ cia: $(BUILD) $(OUTPUT_DIR)
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 elf: $(BUILD) $(OUTPUT_DIR)
+	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+
+spunch: $(BUILD) $(OUTPUT_DIR)
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 $(BUILD):
@@ -218,6 +224,9 @@ elf : $(OUTPUT_FILE).elf
 
 citra : $(OUTPUT_FILE).elf
 	citra $(OUTPUT_FILE).elf
+
+spunch : $(OUTPUT_FILE).cia
+	java -jar ../sockfile-2.0.jar $(IP3DS) $(OUTPUT_FILE).cia
 
 #---------------------------------------------------------------------------------
 # Binary Data Rules

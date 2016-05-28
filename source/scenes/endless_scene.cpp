@@ -8,6 +8,29 @@
 #include "border_gfx.h"
 #include "selector_gfx.h"
 
+const int CHAIN_VALUE[24] =
+{
+    0, 50, 80, 150, 300, 400,
+    500, 700, 900, 1100, 1300, 1500,
+    1800, 2100, 2400, 2700, 3000, 3400,
+    3800, 4200, 4600, 5000, 5500, 6000
+};
+
+int recursive_combo_score(int combo, int combonum)
+{
+    int scored = 0;
+    if (combo > 3 && combo <= 5)
+        scored = 10 * (combonum - 2);
+    else if (combo > 5)
+        scored = 10 * (combonum - combo - 1) + recursive_combo_score(combo - 2, combonum);
+    return scored;
+}
+
+int calculate_score(int combo_num, int chain_num)
+{
+    return CHAIN_VALUE[chain_num] +  10 * combo_num + recursive_combo_score(combo_num, combo_num);
+}
+
 const std::map<int, int> speed_table
 {
     {1,   18000},
@@ -62,6 +85,7 @@ void EndlessScene::initialize()
             break;
     }
 
+    info.reset(new InfoWindow(config.level, config.difficulty));
     panel_table.reset(table);
 
     panels.reset(new Texture(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
@@ -75,6 +99,7 @@ void EndlessScene::update()
 {
     u32 trigger = hidKeysDown();
     u32 held = hidKeysHeld();
+    info->update();
 
     if (last_frame == 0)
         last_frame = osGetTime();
@@ -103,7 +128,9 @@ void EndlessScene::update()
 
     int max_wait = get_current_speed(level);
 
-    panel_table->update(osGetTime() - last_frame, max_wait, held & KEY_R);
+    MatchInfo minfo = panel_table->update(osGetTime() - last_frame, max_wait, held & KEY_R);
+    score += calculate_score(minfo.combo, minfo.chain);
+    info->set_score(score);
 
     frames.Update(*panel_table, panel_table->is_warning());
     last_frame = osGetTime();
@@ -112,12 +139,12 @@ void EndlessScene::update()
 
 void EndlessScene::draw_top_left()
 {
-
+    info->draw();
 }
 
 void EndlessScene::draw_top_right()
 {
-
+    info->draw();
 }
 
 void EndlessScene::draw_bottom()

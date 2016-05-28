@@ -127,6 +127,8 @@
 		<Unit filename="source/scenes/scene.hpp" />
 		<Unit filename="source/scenes/title_scene.cpp" />
 		<Unit filename="source/scenes/title_scene.hpp" />
+		<Unit filename="source/util/color_modulation.cpp" />
+		<Unit filename="source/util/color_modulation.hpp" />
 		<Unit filename="source/util/command_window.cpp" />
 		<Unit filename="source/util/command_window.hpp" />
 		<Unit filename="source/util/cursor.cpp" />
