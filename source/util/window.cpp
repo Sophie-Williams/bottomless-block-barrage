@@ -1,8 +1,9 @@
 #include "window.hpp"
+#include "font.hpp"
 
-#include <sf2d.h>
+extern std::unique_ptr<Font> font;
 
-Window::Window(int wx, int wy, int ww, int wh) : x(wx), y(wy), width(ww), height(wh), active(false), hidden(false)
+Window::Window(int wx, int wy, int ww, int wh) : Widget(wx, wy, ww, wh)
 {
 }
 
@@ -12,8 +13,7 @@ void Window::draw()
     sf2d_draw_rectangle(x, y, width, height, RGBA8(0, 0, 255, 255));
 }
 
-void Window::center(int sw, int sh)
+void Window::draw_text(int wx, int wy, const std::string& str)
 {
-    x = (sw - width) / 2;
-    y = (sh - height) / 2;
+    font->draw(str, x + wx, y + wy);
 }

@@ -10,7 +10,7 @@
 struct Point
 {
     Point(int j, int i) : x(j), y(i) {}
-    bool operator<(const Point& p) const {return (y != p.y) ? y > p.y : x < p.x;}
+    bool operator<(const Point& p) const {return (y != p.y) ? y > p.y : x > p.x;}
     bool operator==(const Point& p) const {return x == p.x && y == p.y;}
     int x;
     int y;
@@ -19,7 +19,9 @@ struct Point
 struct MatchInfo
 {
     MatchInfo() : chain(0), cascade(0), combo(0), swap_match(false), fall_match(false) {}
-    /** Chains are rapidlying matching 3 or more blocks before they disappear */
+    bool empty() const {return chain == 0 && cascade == 0 && combo == 0;}
+    bool matched() const {return swap_match || fall_match;}
+    /** Chains are rapidly matching 3 or more blocks before they disappear */
     int chain;
     /** Cascades are sequential matches after blocks are removed */
     int cascade;
@@ -53,8 +55,8 @@ public:
         WIN_PUZZLE = 8,
     };
 
-    PanelTable(int rows, int columns, int num_colors);
-    PanelTable(const BasicPuzzle& puzzle);
+    PanelTable(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
+    PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings);
 
     bool is_puzzle() const {return type == PUZZLE;}
 
@@ -95,6 +97,7 @@ public:
     friend class TestUpdateMatches;
 
     std::vector<Panel> panels;
+    const PanelSpeedSettings settings;
     int rows;
     int columns;
     int colors;

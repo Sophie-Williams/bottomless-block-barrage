@@ -13,12 +13,14 @@
 #define MAX_PUZZLE_MOVES 1000000
 
 
-PanelTable::PanelTable(int height, int width, int num_colors) : panels(width * (height + 1)), rows(height), columns(width), colors(num_colors), state(RISING), type(RISES), chain(0), cascade(0)
+PanelTable::PanelTable(int height, int width, int num_colors, const PanelSpeedSettings& ssettings) :
+     panels(width * (height + 1)), settings(ssettings), rows(height), columns(width), colors(num_colors), state(RISING),
+     type(RISES), chain(0), cascade(0)
 {
     generate();
 }
 
-PanelTable::PanelTable(const BasicPuzzle& puzzle)
+PanelTable::PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings) : settings(ssettings)
 {
     const char* magic = puzzle.magic;
     if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
@@ -43,7 +45,10 @@ PanelTable::PanelTable(const BasicPuzzle& puzzle)
 
     panels.resize(columns * rows);
     for (unsigned int i = 0; i < panels.size(); i++)
+    {
         panels[i].value = (Panel::Type) puzzle.panels[i];
+        panels[i].settings = &settings;
+    }
 }
 
 void PanelTable::generate()
@@ -98,6 +103,11 @@ void PanelTable::generate()
             while (horizontal(i, j) || (i >= 2 && vertical(i - 2, j + 1)) || (i >= 1 && vertical(i - 1, j + 1)))
                 set(i, j + 1, Panel::random(colors));
         }
+    }
+
+    for (unsigned int i = 0; i < panels.size(); i++)
+    {
+        panels[i].settings = &settings;
     }
 
     generate_next();
@@ -217,8 +227,6 @@ MatchInfo PanelTable::update_matches(void)
     }
 
     match_info.combo = remove.size();
-    match_info.chain = chain;
-    match_info.cascade = cascade;
     match_info.swap_match = !remove.empty();
     match_info.fall_match = false;
 
@@ -356,7 +364,8 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         for (int x = 0; x < columns; x++)
         {
             auto& panel = get(y, x);
-            if (panel.empty() && panel.is_idle()) continue;
+            bool panel_in_cascade = panel.cascade;
+            //if (panel.empty() && panel.is_idle()) continue;
 
             auto& below = get(y + 1, x);
             panel.update();
@@ -370,6 +379,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
                     panel.value = Panel::Type::EMPTY;
                     below.fall(true, panel.cascade);
                     panel.state = Panel::State::IDLE;
+                    panel.cascade = false;
                 }
                 else
                     need_update_matches = true;
@@ -388,7 +398,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
                 need_update_matches = true;
 
             in_chain |= panel.is_match_process();
-            in_cascade |= panel.cascade;
+            in_cascade |= panel_in_cascade;
         }
     }
 
@@ -400,6 +410,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
     {
         cascade = 0;
     }
+    printf("%d %d\n", in_chain, in_cascade);
 
     MatchInfo info;
     if (need_update_matches)
@@ -411,6 +422,9 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         cascade++;
     if (info.swap_match)
         chain++;
+
+    info.chain = chain;
+    info.cascade = cascade;
 
     // Board is stopped while matches are being removed.
     if (in_chain)

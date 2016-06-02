@@ -3,7 +3,8 @@
 #include <cstdio>
 #include <scenes/scene.hpp> // for TOP_SCREEN_HEIGHT
 
-InfoWindow::InfoWindow(int l, Difficulty d) : Window(0, 0, 8 * 16, TOP_SCREEN_HEIGHT), level(l), difficulty(d)
+InfoWindow::InfoWindow(int l, Difficulty d) : Window(0, 0, 8 * 16, TOP_SCREEN_HEIGHT), speed_exp(0, 100, 24, 96, 6 * 16, 6, 0xFF809018, 0xFF101010),
+score(0), level(l), difficulty(d)
 {
     start_time = osGetTime();
 }
@@ -32,17 +33,19 @@ void InfoWindow::draw()
     draw_text(0, 64, "Speed:");
     draw_text(0, 80, buf);
 
-    draw_text(0, 96, "Level:");
+    speed_exp.draw();
+
+    draw_text(0, 112, "Level:");
     switch(difficulty)
     {
     case Difficulty::EASY:
-        draw_text(64, 112, "EASY");
+        draw_text(64, 128, "EASY");
         break;
     case Difficulty::NORMAL:
-        draw_text(32, 112, "NORMAL");
+        draw_text(32, 128, "NORMAL");
         break;
     case Difficulty::HARD:
-        draw_text(64, 112, "HARD");
+        draw_text(64, 128, "HARD");
         break;
     }
 }

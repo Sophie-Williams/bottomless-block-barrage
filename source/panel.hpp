@@ -3,14 +3,18 @@
 
 #include "random.hpp"
 
-#define SWAP_FRAMES 4
-#define PENDING_FALL_FRAMES 6
-#define FALLING_FRAMES 4
-#define PENDING_MATCH_FRAMES 36
-#define MATCH_FRAMES 24
-
 #define FALL_ANIMATION_FRAMES 12
 #define FALL_ANIMATION_DELAY 4
+
+struct PanelSpeedSettings
+{
+    int swap;
+    int pending_fall;
+    int falling;
+    int pending_match;
+    int match;
+    int idle_fell;
+};
 
 class Panel
 {
@@ -76,6 +80,8 @@ public:
 
     static Type random(int colors);
 
+    // Owned by panel_table
+    const PanelSpeedSettings* settings;
     Type value = EMPTY;
     unsigned int modifiers = 0;
     // State information

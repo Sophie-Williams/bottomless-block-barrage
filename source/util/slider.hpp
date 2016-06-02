@@ -2,32 +2,21 @@
 #define SLIDER_HPP
 
 #include "color_modulation.hpp"
+#include "widget.hpp"
 
-class Slider
+class Slider : public Widget
 {
 public:
     Slider(int mi, int max, int val, int x, int y, int w, int h);
+    ~Slider() {}
     void update();
     void draw();
-    void set_active(bool a) {active = a;}
-    bool is_active() const  {return active;}
-    void set_hidden(bool h) {hidden = h;}
-    bool is_hidden() const {return hidden;}
     int get_value() const {return value;}
     void set_value(int v) {value = v;}
-    void center(int sw, int sh);
-    void set_width(int w) {width = w;}
-    void set_height(int h) {height = h;}
 private:
     int min;
     int max;
     int value;
-    int x;
-    int y;
-    int width;
-    int height;
-    bool hidden;
-    bool active;
     ColorModulation color;
 };
 

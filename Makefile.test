@@ -1,0 +1,12 @@
+LIBS = -lboost_unit_test_framework
+CPPFLAGS := -Wall -Isource -std=c++11 -fpermissive
+
+panel_table_test : testing/panel_table_test.o source/panel_table.o source/panel.o
+	g++ $^ $(CPPFLAGS) -o $@ $(LIBS)
+
+testing/panel_table_test.o : testing/panel_table_test.cpp source/panel_table.hpp source/panel.hpp source/random.hpp
+source/panel_table.o : source/panel_table.cpp source/panel_table.hpp source/panel.hpp source/random.hpp
+source/panel.o : source/panel.cpp source/panel.hpp source/random.hpp
+
+clean :
+	rm -rf testing/panel_table_test.o source/panel_table.o source/panel.o

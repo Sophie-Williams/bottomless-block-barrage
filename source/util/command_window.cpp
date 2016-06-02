@@ -35,7 +35,7 @@ void CommandWindow::draw()
     {
         int mx = i % items_per_row;
         int my = i / items_per_row;
-        font->draw(choices[i], x + mx * command_width, y + my * command_height, RGBA8(0xFF, 0xFF, 0xFF, 0xFF));
+        draw_text(mx * command_width, my * command_height, choices[i]);
     }
     int mx = index % items_per_row;
     int my = index / items_per_row;

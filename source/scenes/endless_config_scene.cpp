@@ -6,7 +6,7 @@ void EndlessConfigScene::initialize()
 {
     difficulty_choices.reset(new CommandWindow(0, 0, 8 * 16, 16, 3, {"Easy", "Normal", "Hard"}));
     difficulty_choices->set_active(true);
-    level_slider.reset(new Slider(1, 50, 25, 80 + 8, 24, 100, 4));
+    level_slider.reset(new Slider(1, 100, 1, 80 + 8, 24, 100, 4));
 }
 
 void EndlessConfigScene::update()

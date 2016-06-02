@@ -7,6 +7,12 @@
 #include "panels_gfx.h"
 #include "border_gfx.h"
 #include "selector_gfx.h"
+#include "debug_text.h"
+
+//PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 36, 24, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings easy_speed_settings   = {8, 12, 8, 72, 48, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings normal_speed_settings = {3, 5, 3, 27, 18, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings hard_speed_settings   = {2, 4, 2, 18, 12, FALL_ANIMATION_FRAMES};
 
 const int CHAIN_VALUE[24] =
 {
@@ -46,13 +52,28 @@ const std::map<int, int> speed_table
     {100, 1000},
 };
 
+const std::map<int, int> level_table
+{
+    {0, 4},
+    {10, 6},
+    {20, 8},
+    {30, 10},
+    {40, 11},
+    {50, 12},
+    {60, 13},
+    {70, 14},
+    {80, 15},
+    {90, 16},
+    {100, -1}
+};
+
 int get_current_speed(int level)
 {
     const auto& it = speed_table.find(level);
     if (it != speed_table.end())
         return it->second;
 
-    int min = level / 10 * 10;
+    int min = level - level % 10;
     int max = min + 10;
     if (min == 0) min = 1;
 
@@ -61,6 +82,11 @@ int get_current_speed(int level)
 
     int diff = (maxv - minv) / 10;
     return minv + (level % 10) * diff;
+}
+
+int get_exp_to_level(int level)
+{
+    return level_table.at(level - level % 10);
 }
 
 EndlessScene::EndlessScene(const Config& c) : config(c), level(c.level)
@@ -75,22 +101,24 @@ void EndlessScene::initialize()
     switch (config.difficulty)
     {
         case EASY:
-            table = new PanelTable(11, 6, 6);
+            table = new PanelTable(11, 6, 5, easy_speed_settings);
             break;
         case NORMAL:
-            table = new PanelTable(11, 6, 6);
+            table = new PanelTable(11, 6, 6, normal_speed_settings);
             break;
         case HARD:
-            table = new PanelTable(11, 6, 6);
+            table = new PanelTable(11, 6, 6, hard_speed_settings);
             break;
     }
 
     info.reset(new InfoWindow(config.level, config.difficulty));
+    ccc_stats.reset(new CCCWindow());
     panel_table.reset(table);
 
     panels.reset(new Texture(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
     selector.reset(new Texture(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
     border.reset(new Texture(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+    debug.reset(new Texture(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
 
     frames.Reset();
 }
@@ -129,8 +157,23 @@ void EndlessScene::update()
     int max_wait = get_current_speed(level);
 
     MatchInfo minfo = panel_table->update(osGetTime() - last_frame, max_wait, held & KEY_R);
-    score += calculate_score(minfo.combo, minfo.chain);
-    info->set_score(score);
+    ccc_stats->set_matchinfo(minfo);
+    if (minfo.matched())
+    {
+        score += calculate_score(minfo.combo, minfo.cascade);
+        info->set_score(score);
+
+        experience += 1;
+        int needed = get_exp_to_level(level);
+        while (needed != -1 && experience >= needed)
+        {
+            level += 1;
+            experience -= needed;
+            needed = get_exp_to_level(level);
+        }
+        info->set_level(level);
+        info->set_experience(experience, needed);
+    }
 
     frames.Update(*panel_table, panel_table->is_warning());
     last_frame = osGetTime();
@@ -140,11 +183,13 @@ void EndlessScene::update()
 void EndlessScene::draw_top_left()
 {
     info->draw();
+    ccc_stats->draw();
 }
 
 void EndlessScene::draw_top_right()
 {
     info->draw();
+    ccc_stats->draw();
 }
 
 void EndlessScene::draw_bottom()
@@ -196,6 +241,18 @@ void EndlessScene::draw_bottom()
         int status = (panel_table->is_gameover() ? 7 : 4);
         panels->draw(x, y, type * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
     }
+
+    /*for (int i = 0; i < panel_table->height() + 1; i++)
+    {
+        for (int j = 0; j < panel_table->width(); j++)
+        {
+            const Panel& panel = panel_table->get(i, j);
+            int x = j * panel_size + 2 + startx + panel_size / 2;
+            int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
+            debug->draw(x, y, panel.state * 5, 0, 5, 10);
+            debug->draw(x + 11, y + 6, panel.cascade * 5, 0, 5, 10);
+        }
+    }*/
 
     // Draw Selector
     {

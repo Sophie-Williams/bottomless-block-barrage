@@ -27,7 +27,7 @@ void Panel::update()
         if (countdown <= 0)
         {
             state = State::FALLING;
-            countdown = FALLING_FRAMES;
+            countdown = settings->falling;
         }
     }
     else if (is_falling())
@@ -40,7 +40,7 @@ void Panel::update()
     {
         // Panel table handles transitioning to FALLING again.
         state = State::IDLE_FELL;
-        countdown = FALL_ANIMATION_FRAMES;
+        countdown = settings->idle_fell;
         cascade = false;
     }
     else if (is_fell_idle())
@@ -79,6 +79,7 @@ void Panel::update()
     else if (is_match_end())
     {
         state = State::IDLE;
+        cascade = false;
     }
 }
 
@@ -86,20 +87,20 @@ void Panel::swap(Panel::Type swap_panel, bool is_left)
 {
     swap_to = swap_panel;
     state = is_left ? State::LEFT_SWAP : State::RIGHT_SWAP;
-    countdown = SWAP_FRAMES;
+    countdown = settings->swap;
 }
 
 void Panel::fall(bool already_falling, bool is_cascade)
 {
     state = already_falling ? State::FALLING : State::PENDING_FALL;
-    countdown = already_falling ? FALLING_FRAMES : PENDING_FALL_FRAMES;
+    countdown = already_falling ? settings->falling : settings->pending_fall;
     cascade = is_cascade;
 }
 
 void Panel::match(int index, int total)
 {
     state = State::PENDING_MATCH;
-    match_time = index * MATCH_FRAMES;
-    remove_time = total * MATCH_FRAMES;
-    countdown = PENDING_MATCH_FRAMES;
+    match_time = (index + 1) * settings->match;
+    remove_time = (total + 1) * settings->match;
+    countdown = settings->pending_match;
 }
