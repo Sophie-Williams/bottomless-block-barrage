@@ -37,6 +37,28 @@ int calculate_score(int combo_num, int chain_num)
     return CHAIN_VALUE[chain_num] +  10 * combo_num + recursive_combo_score(combo_num, combo_num);
 }
 
+int calculate_timeout(int combo, int chain, int difficulty, bool in_danger)
+{
+    int combo_time;
+    int chain_time;
+    if (!in_danger)
+    {
+        combo_time = combo / 2 + difficulty - 2;
+        chain_time = difficulty + chain + 1;
+    }
+    else
+    {
+        combo_time = (combo + 10) * difficulty / 5 + 1;
+        chain_time = difficulty * (1 + chain) + 1;
+    }
+    if (combo <= 3)
+        combo_time = 0;
+    if (chain <= 1)
+        chain_time = 0;
+
+    return std::min(20, std::max(combo_time, chain_time)) * 1000;
+}
+
 const std::map<int, int> speed_table
 {
     {1,   18000},
@@ -157,6 +179,15 @@ void EndlessScene::update()
     int max_wait = get_current_speed(level);
 
     MatchInfo minfo = panel_table->update(osGetTime() - last_frame, max_wait, held & KEY_R);
+    if (minfo.empty() && !last_match.empty())
+    {
+        int timeout = calculate_timeout(last_match.combo, last_match.cascade + 1,
+                                        3 - (int)config.difficulty, panel_table->is_danger());
+        panel_table->set_timeout(timeout);
+        info->set_timeout(timeout);
+        last_match = minfo;
+    }
+
     ccc_stats->set_matchinfo(minfo);
     if (minfo.matched())
     {
@@ -173,6 +204,7 @@ void EndlessScene::update()
         }
         info->set_level(level);
         info->set_experience(experience, needed);
+        last_match = minfo;
     }
 
     frames.Update(*panel_table, panel_table->is_warning());

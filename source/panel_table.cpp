@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstdio>
+#include <sstream>
 
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 0
@@ -410,7 +411,6 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
     {
         cascade = 0;
     }
-    printf("%d %d\n", in_chain, in_cascade);
 
     MatchInfo info;
     if (need_update_matches)
@@ -474,6 +474,49 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
                 state = GAMEOVER;
         }
     }
+    else if (is_stopped())
+    {
+        if (fast_rise)
+        {
+            state = FAST_RISING;
+            cooloff = 0;
+        }
+
+        cooloff -= time;
+        if (cooloff <= 0)
+        {
+            state = RISING;
+            cooloff = 0;
+        }
+    }
 
     return info;
+}
+
+void PanelTable::set_timeout(int timeout)
+{
+    cooloff = timeout;
+    state = STOPPED;
+}
+
+std::string PanelTable::str() const
+{
+    std::stringstream oss;
+    for (unsigned int i = 0; i < panels.size(); i++)
+    {
+        oss << (int)panels[i].value << "(" << panels[i].state << "|" << panels[i].cascade << ") ";
+        if (i % columns == (unsigned int)columns - 1) oss << "\n";
+    }
+    oss << "\n";
+    return oss.str();
+}
+
+std::string MatchInfo::str() const
+{
+    std::stringstream oss;
+    oss << "Combo: " << combo << "\n"
+        << "Chain: " << chain << "\n"
+        << "Cascade: " << cascade << "\n"
+        << "Swapped? " << swap_match << " Fall? " << fall_match << "\n";
+    return oss.str();
 }

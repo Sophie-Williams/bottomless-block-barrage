@@ -36,6 +36,7 @@ private:
     std::unique_ptr<Texture> debug;
     std::unique_ptr<PanelTable> panel_table;
     AnimationParams frames;
+    MatchInfo last_match;
 
     int selector_x = 2;
     int selector_y = 6;

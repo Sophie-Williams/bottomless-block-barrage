@@ -9,16 +9,6 @@
 #include <memory>
 #include <panel_table.hpp>
 
-void PrintPanelTable(const PanelTable& table)
-{
-    for (unsigned int i = 0; i < table.panels.size(); i++)
-    {
-        printf("%d(%d|%d) ", (int)table.panels[i].value, table.panels[i].state, table.panels[i].cascade);
-        if (i % table.columns == (unsigned int)table.columns - 1) printf("\n");
-    }
-    printf("\n\n");
-}
-
 void set_data(PanelTable& table, const int* data)
 {
     for (unsigned int i = 0; i < table.panels.size(); i++)
@@ -28,6 +18,7 @@ void set_data(PanelTable& table, const int* data)
 MatchInfo Update(PanelTable& table)
 {
     MatchInfo ret = table.update(1, 4, false);
+    printf("%s\n", ret.str().c_str());
     //PrintPanelTable(table);
     return ret;
 }

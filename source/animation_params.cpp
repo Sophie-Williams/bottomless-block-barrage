@@ -6,7 +6,7 @@ void AnimationParams::Update(const PanelTable& table, bool danger)
     if (!danger)
         panel_counter = 0;
 
-    if ((table.is_rising() && !danger) || table.is_rised() || table.is_stopped() || table.is_stopping())
+    if ((table.is_rising() && !danger) || table.is_rised() || table.is_stopped())
         panel = 0;
     else if (table.is_gameover())
         panel = 7;

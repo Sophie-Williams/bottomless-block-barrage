@@ -5,6 +5,7 @@
 #include "basic_puzzle.hpp"
 #include <list>
 #include <set>
+#include <string>
 #include <vector>
 
 struct Point
@@ -21,6 +22,7 @@ struct MatchInfo
     MatchInfo() : chain(0), cascade(0), combo(0), swap_match(false), fall_match(false) {}
     bool empty() const {return chain == 0 && cascade == 0 && combo == 0;}
     bool matched() const {return swap_match || fall_match;}
+    std::string str() const;
     /** Chains are rapidly matching 3 or more blocks before they disappear */
     int chain;
     /** Cascades are sequential matches after blocks are removed */
@@ -48,11 +50,10 @@ public:
         RISING = 1,
         FAST_RISING = 2,
         RISED = 3,
-        STOPPING = 4,
-        STOPPED = 5,
-        CLOGGED = 6,
-        GAMEOVER = 7,
-        WIN_PUZZLE = 8,
+        STOPPED = 4,
+        CLOGGED = 5,
+        GAMEOVER = 6,
+        WIN_PUZZLE = 7,
     };
 
     PanelTable(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
@@ -62,7 +63,6 @@ public:
 
     bool is_rising() const {return state == RISING || state == FAST_RISING;}
     bool is_rised() const {return state == RISED;}
-    bool is_stopping() const {return state == STOPPING;}
     bool is_stopped() const {return state == STOPPED;}
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
@@ -89,8 +89,10 @@ public:
     void generate_next();
     void swap(int i, int j);
     MatchInfo update(long speed, int max_wait, bool fast_rise);
+    void set_timeout(int timeout);
 
     MatchInfo update_matches(void);
+    std::string str() const;
 
     friend class TestFall;
     friend class TestStackDown;
