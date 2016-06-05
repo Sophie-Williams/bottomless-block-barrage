@@ -12,16 +12,17 @@ public:
     bool valid() const {return texture;}
     int char_width() const {return text_width;}
     int char_height() const {return text_height;}
-    void draw(const std::string& str, int x, int y);
-    void draw(const std::string& str, int x, int y, u32 blend_color);
-    void draw_char(char ch, int x, int y);
-    void draw_char(char ch, int x, int y, u32 blend_color);
+    void draw(int x, int y, const std::string& str);
+    void draw(int x, int y, char ch);
+    void set_blend_color(u32 color) {blend_color = color;}
+    u32 get_blend_color() const {return blend_color;}
 
 private:
     sf2d_texture* texture;
     int text_width;
     int text_height;
     int chars_per_row;
+    u32 blend_color;
     Font(const Font&) = delete;
     Font(Font&&) = delete;
     Font& operator=(const Font&) = delete;

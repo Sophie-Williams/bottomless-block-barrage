@@ -4,8 +4,9 @@
 #include <sf2d.h>
 #include <cstdio>
 #include <scenes/scene.hpp>
+#include <util/hid_helper.hpp>
 
-Slider::Slider(int mi, int ma, int val, int wx, int wy, int ww, int wh) : Widget(wx, wy, ww, wh),
+Slider::Slider(int mi, int ma, int val, int wx, int wy, int ww, int wh, int style) : Widget(wx, wy, ww, wh, style),
     min(mi), max(ma), value(val), color(0xFF787878, 0xFFE0E0E0, 16)
 {
 }
@@ -16,11 +17,9 @@ void Slider::update()
 
     color.update();
 
-    u32 trigger = hidKeysDown();
-
-    if (trigger & KEY_LEFT)
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 100, 20, 10))
         value -= 1;
-    if (trigger & KEY_RIGHT)
+    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 100, 20, 10))
         value += 1;
 
     value = std::max(std::min(value, max), min);
@@ -34,4 +33,6 @@ void Slider::draw()
     int percent = value * width / (max - min);
     sf2d_draw_rectangle(x + percent - 2, y - 6 + height / 2, 5, 12, RGBA8(0x60, 0x60, 0x60, 255));
     sf2d_draw_rectangle(x + percent - 2 + 1, y - 6 + height / 2 + 1, 3, 10, !is_active() ? color.start() : color.color());
+    if (style & LABELS)
+        font->draw(x + width, y, value);
 }

@@ -7,7 +7,7 @@
 class Widget
 {
 public:
-    Widget(int x, int y, int width, int height);
+    Widget(int x, int y, int width, int height, int style = 0);
     virtual ~Widget() {}
     virtual void update() = 0;
     virtual void draw() = 0;
@@ -15,6 +15,8 @@ public:
     bool is_active() const  {return active;}
     void set_hidden(bool h) {hidden = h;}
     bool is_hidden() const {return hidden;}
+    void set_style(int s) {style = s;}
+    int get_style() const {return style;}
 
     void set_x(int xpos) {x = xpos;}
     void set_y(int ypos) {y = ypos;}
@@ -27,6 +29,7 @@ protected:
     int y;
     int width;
     int height;
+    int style;
     bool active;
     bool hidden;
 

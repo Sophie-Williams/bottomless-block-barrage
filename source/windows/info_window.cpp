@@ -5,8 +5,8 @@
 
 InfoWindow::InfoWindow(int l, Difficulty d) : Window(0, 0, 8 * 16, TOP_SCREEN_HEIGHT),
 speed_exp_bar(0, 100, 24, 96, 6 * 16, 6, 0xFF809018, 0xFF101010),
-time_left_bar(0, 1, 24, 152, 6 * 16, 6, 0xFF188090, 0xFF101010),
-score(0), level(l), difficulty(d)
+time_left_bar(0, 1, 24, 152, 6 * 16, 6, 0xFF000080, 0xFF101010),
+last_update(0), timeout(1), timeout_started(false), score(0), level(l), difficulty(d)
 {
     start_time = osGetTime();
 }
@@ -16,23 +16,43 @@ void InfoWindow::set_timeout(int time)
     if (time > timeout)
     {
         timeout = time;
-        start_timeout = osGetTime();
+        time_left_bar.set(timeout, timeout);
     }
+}
+
+void InfoWindow::clear_timeout()
+{
+    timeout = 0;
+    time_left_bar.set(0, 1);
+}
+
+void InfoWindow::start_timeout_timer()
+{
+    timeout_started = true;
+}
+
+void InfoWindow::pause_timeout_timer()
+{
+    timeout_started = false;
 }
 
 void InfoWindow::update()
 {
-    u64 time_left = osGetTime() - start_timeout;
-    if (time_left >= timeout)
+    if (timeout_started)
     {
-        start_timeout = 0;
-        timeout = 0;
-        time_left_bar.set(0, 1);
+        timeout -= osGetTime() - last_update;
+        if (timeout <= 0)
+        {
+            timeout = 0;
+            time_left_bar.set(0, 1);
+            timeout_started = false;
+        }
+        else
+        {
+            time_left_bar.set_value(timeout);
+        }
     }
-    else
-    {
-        time_left_bar.set(timeout - time_left, timeout);
-    }
+    last_update = osGetTime();
 }
 
 void InfoWindow::draw()

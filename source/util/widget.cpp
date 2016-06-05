@@ -1,6 +1,7 @@
 #include "widget.hpp"
 
-Widget::Widget(int wx, int wy, int ww, int wh) : x(wx), y(wy), width(ww), height(wh), active(false), hidden(false)
+Widget::Widget(int wx, int wy, int ww, int wh, int s) : x(wx), y(wy), width(ww), height(wh), style(s),
+    active(false), hidden(false)
 {
 
 }

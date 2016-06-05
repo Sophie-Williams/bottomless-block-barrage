@@ -154,13 +154,13 @@ void EndlessScene::update()
     if (last_frame == 0)
         last_frame = osGetTime();
 
-    if (trigger & KEY_LEFT)
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 250, 1, 75))
         selector_x = std::max(std::min(selector_x - 1, 4), 0);
-    if (trigger & KEY_RIGHT)
+    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 250, 1, 75))
         selector_x = std::max(std::min(selector_x + 1, 4), 0);
-    if (trigger & KEY_UP)
+    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 250, 1, 75))
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
-    if (trigger & KEY_DOWN)
+    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 250, 1, 75))
         selector_y = std::max(std::min(selector_y + 1, 10), 0);
     if (trigger & KEY_A)
         panel_table->swap(selector_y, selector_x);
@@ -178,19 +178,29 @@ void EndlessScene::update()
 
     int max_wait = get_current_speed(level);
 
+    if (held & KEY_R)
+    {
+        info->clear_timeout();
+    }
+
     MatchInfo minfo = panel_table->update(osGetTime() - last_frame, max_wait, held & KEY_R);
     if (minfo.empty() && !last_match.empty())
     {
-        int timeout = calculate_timeout(last_match.combo, last_match.cascade + 1,
-                                        3 - (int)config.difficulty, panel_table->is_danger());
-        panel_table->set_timeout(timeout);
-        info->set_timeout(timeout);
+        if (last_match.is_timeout())
+        {
+            int timeout = calculate_timeout(last_match.combo, last_match.cascade + 1,
+                                            3 - (int)config.difficulty, panel_table->is_danger());
+            panel_table->set_timeout(timeout);
+            info->set_timeout(timeout);
+        }
+        info->start_timeout_timer();
         last_match = minfo;
     }
 
     ccc_stats->set_matchinfo(minfo);
     if (minfo.matched())
     {
+        info->pause_timeout_timer();
         score += calculate_score(minfo.combo, minfo.cascade);
         info->set_score(score);
 
@@ -204,6 +214,12 @@ void EndlessScene::update()
         }
         info->set_level(level);
         info->set_experience(experience, needed);
+        if (minfo.is_timeout())
+        {
+            int timeout = calculate_timeout(minfo.combo, minfo.cascade + 1,
+                                            3 - (int)config.difficulty, panel_table->is_danger());
+            info->set_timeout(timeout);
+        }
         last_match = minfo;
     }
 

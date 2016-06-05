@@ -27,7 +27,4 @@ void CCCWindow::draw()
     sprintf(buf, "%8d", info.chain);
     draw_text(0, 64, "Chain:");
     draw_text(0, 80, buf);
-
-    sprintf(buf, "%d %d", info.swap_match, info.fall_match);
-    draw_text(0, 96, buf);
 }

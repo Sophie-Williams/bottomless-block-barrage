@@ -15,5 +15,5 @@ void Window::draw()
 
 void Window::draw_text(int wx, int wy, const std::string& str)
 {
-    font->draw(str, x + wx, y + wy);
+    font->draw(x + wx, y + wy, str);
 }

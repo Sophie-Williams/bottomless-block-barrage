@@ -4,8 +4,24 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "cursor.hpp"
+#include "color_modulation.hpp"
+#include "hid_helper.hpp"
 #include "window.hpp"
+
+
+class Cursor
+{
+public:
+    Cursor(int w, int h, u32 min = 0x609F9060, u32 max = 0xA0FFB080, int speed = 32, u32 b = 0xFFFFD0C0) :
+        width(w), height(h), border(b), color(min, max, speed) {}
+    void update();
+    void draw(int ox = 0, int oy = 0, bool disabled = false);
+private:
+    int width;
+    int height;
+    int border;
+    ColorModulation color;
+};
 
 class CommandWindow : public Window
 {
@@ -27,6 +43,7 @@ private:
     int items_per_row;
     Cursor cursor;
     int index;
+    KeyRepeatStore repeat;
 };
 
 #endif

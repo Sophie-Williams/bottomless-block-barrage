@@ -18,7 +18,6 @@ void TitleScene::update()
     command_window->update();
 
     u32 trigger = hidKeysDown();
-    u32 held = hidKeysHeld();
 
     if (trigger & KEY_A)
     {

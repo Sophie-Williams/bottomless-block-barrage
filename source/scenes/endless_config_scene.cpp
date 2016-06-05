@@ -6,6 +6,7 @@ void EndlessConfigScene::initialize()
 {
     difficulty_choices.reset(new CommandWindow(0, 0, 8 * 16, 16, 3, {"Easy", "Normal", "Hard"}));
     difficulty_choices->set_active(true);
+    level_text.reset(new Text(0, 24, "Level"));
     level_slider.reset(new Slider(1, 100, 1, 80 + 8, 24, 100, 4));
 }
 
@@ -61,15 +62,15 @@ void EndlessConfigScene::update_level_select()
 void EndlessConfigScene::draw_top_left()
 {
     difficulty_choices->draw();
+    level_text->draw();
     level_slider->draw();
-    font->draw("Level", 0, 24);
 }
 
 void EndlessConfigScene::draw_top_right()
 {
     difficulty_choices->draw();
+    level_text->draw();
     level_slider->draw();
-    font->draw("Level", 0, 24);
 }
 
 void EndlessConfigScene::draw_bottom()

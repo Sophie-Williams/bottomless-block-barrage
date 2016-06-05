@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <util/font.hpp>
+#include <util/hid_helper.hpp>
 
 #define TOP_SCREEN_WIDTH 400
 #define TOP_SCREEN_HEIGHT 240
@@ -23,6 +24,7 @@ protected:
     virtual void draw_top_left() {}
     virtual void draw_top_right() {}
     virtual void draw_bottom() {}
+    KeyRepeatStore repeat;
 private:
 };
 

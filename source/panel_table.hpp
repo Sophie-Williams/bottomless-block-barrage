@@ -22,6 +22,7 @@ struct MatchInfo
     MatchInfo() : chain(0), cascade(0), combo(0), swap_match(false), fall_match(false) {}
     bool empty() const {return chain == 0 && cascade == 0 && combo == 0;}
     bool matched() const {return swap_match || fall_match;}
+    bool is_timeout() const {return combo > 3 || cascade > 0;}
     std::string str() const;
     /** Chains are rapidly matching 3 or more blocks before they disappear */
     int chain;
