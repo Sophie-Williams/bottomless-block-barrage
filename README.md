@@ -2,7 +2,7 @@
 Bottomless Block Barrage (BBB) aims to be a Panel de Pon clone for the 3ds with new styles / modes of gameplay.  (Work in progrees)
 
 ## Roadmap
-As of now the basic engine is almost complete sans a couple of timing issues
+As of now the basic engine is complete, work is now being done implementing the various modes.  Basic graphics are used now until better ones are found/made.
 
 Game Modes that will be supported
 * Endless Barrage - Play until you lose.
@@ -17,12 +17,10 @@ New Gameplay features
 
 ## The demo
 ### Controls
-* UP/DOWN/LEFT/RIGHT moves the cursor
+* Up/Down/Left/Right moves the cursor
 * A swaps the two panels over the selector
-* X increases the level
-* Y decreases the level
 * R quick rises the panels
-* SELECT generates a new board
+* Start instant quits and returns to Title Screen
 
 
 ## Compiling
