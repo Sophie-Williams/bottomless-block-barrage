@@ -16,6 +16,9 @@ New Gameplay features
 
 
 ## The demo
+### Screenshots
+![Main Screen](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/screenshots/endless_wip.png)
+
 ### Controls
 * Up/Down/Left/Right moves the cursor
 * A swaps the two panels over the selector
