@@ -77,6 +77,7 @@ public:
     void swap(Type swap_to, bool is_left);
     void fall(bool already_falling, bool is_cascade = false);
     void match(int index, int total);
+    int frame(int def) const;
 
     static Type random(int colors);
 

@@ -1,4 +1,5 @@
 #include "panel.hpp"
+#include <vector>
 
 Panel::Type Panel::random(int colors)
 {
@@ -104,3 +105,18 @@ void Panel::match(int index, int total)
     remove_time = (total + 1) * settings->match;
     countdown = settings->pending_match;
 }
+
+int Panel::frame(int def) const
+{
+    static const std::vector<int> panel_fell_frames = {3, 2, 1};
+    int frame = def;
+
+    if (is_removed())
+        frame = 5;
+    else if (is_falling() || is_fall_end())
+        frame = 0;
+    else if (is_fell_idle())
+        frame = panel_fell_frames[(FALL_ANIMATION_FRAMES - countdown) / FALL_ANIMATION_DELAY];
+    return frame;
+}
+

@@ -1,5 +1,6 @@
 #include "endless_scene.hpp"
 #include "title_scene.hpp"
+#include "game_common.hpp"
 #include <algorithm>
 #include <ctime>
 #include <map>
@@ -8,108 +9,6 @@
 #include "border_gfx.h"
 #include "selector_gfx.h"
 #include "debug_text.h"
-
-PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 36, 24, FALL_ANIMATION_FRAMES};
-//PanelSpeedSettings slow_speed_settings   = {8, 12, 8, 72, 48, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings normal_speed_settings = {3, 5, 3, 27, 18, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings hard_speed_settings   = {2, 4, 2, 18, 12, FALL_ANIMATION_FRAMES};
-
-const int CHAIN_VALUE[24] =
-{
-    0, 50, 80, 150, 300, 400,
-    500, 700, 900, 1100, 1300, 1500,
-    1800, 2100, 2400, 2700, 3000, 3400,
-    3800, 4200, 4600, 5000, 5500, 6000
-};
-
-int recursive_combo_score(int combo, int combonum)
-{
-    int scored = 0;
-    if (combo > 3 && combo <= 5)
-        scored = 10 * (combonum - 2);
-    else if (combo > 5)
-        scored = 10 * (combonum - combo - 1) + recursive_combo_score(combo - 2, combonum);
-    return scored;
-}
-
-int calculate_score(int combo_num, int chain_num)
-{
-    return CHAIN_VALUE[chain_num] +  10 * combo_num + recursive_combo_score(combo_num, combo_num);
-}
-
-int calculate_timeout(int combo, int chain, int difficulty, bool in_danger)
-{
-    int combo_time;
-    int chain_time;
-    if (!in_danger)
-    {
-        combo_time = combo / 2 + difficulty - 2;
-        chain_time = difficulty + chain + 1;
-    }
-    else
-    {
-        combo_time = (combo + 10) * difficulty / 5 + 1;
-        chain_time = difficulty * (1 + chain) + 1;
-    }
-    if (combo <= 3)
-        combo_time = 0;
-    if (chain <= 1)
-        chain_time = 0;
-
-    return std::min(20, std::max(combo_time, chain_time)) * 1000;
-}
-
-const std::map<int, int> speed_table
-{
-    {1,   18000},
-    {10,  9000},
-    {20,  6000},
-    {30,  4000},
-    {40,  3000},
-    {50,  2000},
-    {60,  1800},
-    {70,  1600},
-    {80,  1400},
-    {90,  1200},
-    {100, 1000},
-};
-
-const std::map<int, int> level_table
-{
-    {0, 4},
-    {10, 6},
-    {20, 8},
-    {30, 10},
-    {40, 11},
-    {50, 12},
-    {60, 13},
-    {70, 14},
-    {80, 15},
-    {90, 16},
-    {100, -1}
-};
-
-int get_current_speed(int level)
-{
-    const auto& it = speed_table.find(level);
-    if (it != speed_table.end())
-        return it->second;
-
-    int min = level - level % 10;
-    int max = min + 10;
-    if (min == 0) min = 1;
-
-    int minv = speed_table.at(min);
-    int maxv = speed_table.at(max);
-
-    int diff = (maxv - minv) / 10;
-    return minv + (level % 10) * diff;
-}
-
-int get_exp_to_level(int level)
-{
-    return level_table.at(level - level % 10);
-}
 
 EndlessScene::EndlessScene(const Config& c) : config(c), level(c.level)
 {
@@ -242,53 +141,9 @@ void EndlessScene::draw_top_right()
 
 void EndlessScene::draw_bottom()
 {
-    static const std::vector<int> panel_fell_frames = {3, 2, 1};
-    const int panel_size = PANEL_SIZE + 2;
-    const int step = get_current_speed(level) / panel_size;
-    int offset = panel_table->rise / step;
-
-    if (!panel_table->is_puzzle() && (panel_table->is_clogged() || panel_table->is_gameover() || panel_table->is_rised()))
-        offset = panel_size;
-    int startx = (BOTTOM_SCREEN_WIDTH - border->width()) / 2;
-    int starty = (BOTTOM_SCREEN_HEIGHT - border->height());
-
     // Draw panels
-    for (int i = 0; i < panel_table->height(); i++)
-    {
-        for (int j = 0; j < panel_table->width(); j++)
-        {
-            const Panel& panel = panel_table->get(i, j);
-            int x = j * panel_size + 2 + startx + panel_size / 2;
-            int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
-            if (panel.is_right_swap()) x -= panel_size / 2;
-            if (panel.is_left_swap()) x += panel_size / 2;
-            int type = (int)panel.value - 1;
-            if (type == -1) continue;
+    draw_panels();
 
-            int frame = frames.panel;
-            if (panel.is_removed())
-                frame = 5;
-            else if (panel.is_falling() || panel.is_fall_end())
-                frame = 0;
-            else if (panel.is_fell_idle())
-                frame = panel_fell_frames[(FALL_ANIMATION_FRAMES - panel.countdown) / FALL_ANIMATION_DELAY];
-
-            panels->draw(x, y, type * PANEL_SIZE, frame * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
-        }
-    }
-
-    // Draw Next
-    for (int j = 0; j < panel_table->width(); j++)
-    {
-        int i = panel_table->height();
-        const Panel& panel = panel_table->get(i, j);
-
-        int type = (int)panel.value - 1;
-        int x = j * panel_size + 2 + startx + panel_size / 2;
-        int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
-        int status = (panel_table->is_gameover() ? 7 : 4);
-        panels->draw(x, y, type * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
-    }
 
     /*for (int i = 0; i < panel_table->height() + 1; i++)
     {
@@ -303,11 +158,71 @@ void EndlessScene::draw_bottom()
     }*/
 
     // Draw Selector
+    draw_selector();
+    draw_board();
+}
+
+void EndlessScene::draw_panels()
+{
+    int startx = (BOTTOM_SCREEN_WIDTH - border->width()) / 2;
+    int starty = BOTTOM_SCREEN_HEIGHT - border->height();
+    const int panel_size = PANEL_SIZE + 2;
+    const int step = get_current_speed(level) / panel_size;
+    int offset = panel_table->rise / step;
+
+    if (!panel_table->is_puzzle() && (panel_table->is_clogged() || panel_table->is_gameover() || panel_table->is_rised()))
+        offset = panel_size;
+
+    for (int i = 0; i < panel_table->height(); i++)
     {
-        int x = selector_x * panel_size - 2 + startx + panel_size / 2;
-        int y = (selector_y + 1) * panel_size - 2 - offset + starty + panel_size / 2;
-        selector->draw(x, y, 0, frames.selector * SELECTOR_GFX_HEIGHT / 2, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT / 2);
+        for (int j = 0; j < panel_table->width(); j++)
+        {
+            const Panel& panel = panel_table->get(i, j);
+            if (panel.value == Panel::EMPTY) continue;
+
+            int x = startx + j * panel_size + panel_size / 2 + 2;
+            int y = starty + (i + 1) * panel_size + panel_size / 2 - offset + 2;
+
+            if (panel.is_right_swap()) x -= panel_size / 2;
+            if (panel.is_left_swap()) x += panel_size / 2;
+
+            panels->draw(x, y, (panel.value - 1) * PANEL_SIZE, panel.frame(frames.panel) * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
+        }
     }
 
+    for (int j = 0; j < panel_table->width(); j++)
+    {
+        const int i = panel_table->height();
+        const Panel& panel = panel_table->get(i, j);
+        int status = (panel_table->is_gameover() ? 7 : 4);
+
+        int x = j * panel_size + 2 + startx + panel_size / 2;
+        int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
+
+        panels->draw(x, y, (panel.value - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
+    }
+}
+
+void EndlessScene::draw_selector()
+{
+    int startx = (BOTTOM_SCREEN_WIDTH - border->width()) / 2;
+    int starty = BOTTOM_SCREEN_HEIGHT - border->height();
+    const int panel_size = PANEL_SIZE + 2;
+    const int step = get_current_speed(level) / panel_size;
+    int offset = panel_table->rise / step;
+
+    if (!panel_table->is_puzzle() && (panel_table->is_clogged() || panel_table->is_gameover() || panel_table->is_rised()))
+        offset = panel_size;
+
+    int x = startx + selector_x * panel_size + panel_size / 2 - 2;
+    int y = starty + (selector_y + 1) * panel_size + panel_size / 2 - offset - 2;
+    selector->draw(x, y, 0, frames.selector * SELECTOR_GFX_HEIGHT / 2, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT / 2);
+}
+
+void EndlessScene::draw_board()
+{
+    int startx = (BOTTOM_SCREEN_WIDTH - border->width()) / 2;
+    int starty = BOTTOM_SCREEN_HEIGHT - border->height();
     border->draw(startx, starty);
 }
+

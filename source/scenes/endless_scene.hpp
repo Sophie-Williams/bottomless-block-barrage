@@ -26,6 +26,10 @@ protected:
     void draw_top_right();
     void draw_bottom();
 
+    void draw_selector();
+    void draw_board();
+    void draw_panels();
+
 private:
     Config config;
     std::unique_ptr<InfoWindow> info;
@@ -50,6 +54,5 @@ private:
     u64 last_frame = 0;
     u64 last_rise = 0;
 };
-
 
 #endif

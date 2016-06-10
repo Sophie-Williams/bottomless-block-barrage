@@ -25,7 +25,6 @@ protected:
     virtual void draw_top_right() {}
     virtual void draw_bottom() {}
     KeyRepeatStore repeat;
-private:
 };
 
 extern Scene* current_scene;

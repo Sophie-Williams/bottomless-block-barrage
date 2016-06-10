@@ -206,6 +206,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/game_common.cpp" />
+		<Unit filename="source/game_common.hpp" />
 		<Unit filename="source/game_state.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -416,22 +418,6 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
-		<Unit filename="source/util/cursor.cpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
-		<Unit filename="source/util/cursor.hpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
 		<Unit filename="source/util/font.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -448,6 +434,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/util/hid_helper.cpp" />
+		<Unit filename="source/util/hid_helper.hpp" />
 		<Unit filename="source/util/resource_manager.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -480,6 +468,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/util/text.cpp" />
+		<Unit filename="source/util/text.hpp" />
 		<Unit filename="source/util/texture.cpp">
 			<Option target="release" />
 			<Option target="citra" />
