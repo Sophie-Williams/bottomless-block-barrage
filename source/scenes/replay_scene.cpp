@@ -46,14 +46,6 @@ void ReplayScene::initialize()
 
 void ReplayScene::update()
 {
-    if (panel_table.is_gameover())
-        update_gameover();
-    else
-        update_game();
-}
-
-void ReplayScene::update_game()
-{
     u32 held = 0;
     u32 trigger = 0;
     recorder.keys(trigger, held);
@@ -136,10 +128,9 @@ void ReplayScene::update_game()
     last_frame = osGetTime();
     recorder.update();
     frame++;
-}
 
-void ReplayScene::update_gameover()
-{
+    if (recorder.done())
+        current_scene = new TitleScene();
 }
 
 void ReplayScene::draw_top_left()

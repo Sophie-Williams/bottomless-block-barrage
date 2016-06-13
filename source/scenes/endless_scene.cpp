@@ -1,4 +1,5 @@
 #include "endless_scene.hpp"
+#include "endless_config_scene.hpp"
 #include "title_scene.hpp"
 #include "game_common.hpp"
 #include <algorithm>
@@ -40,6 +41,21 @@ void EndlessScene::initialize()
     selector.create(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
     border.create(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
     debug.create(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+
+    game_over.create(0, 0, "Game Over, Save Replay?");
+    game_over.set_hidden(true);
+    game_over.centerx(TOP_SCREEN_WIDTH);
+
+    try_again.create(0, 0, "Try Again?");
+    try_again.set_hidden(true);
+    try_again.centerx(TOP_SCREEN_WIDTH);
+
+    save_replay_command.create(0, 0, 48, 16, 2, {"Yes", "No"});
+    save_replay_command.set_hidden(true);
+    save_replay_command.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
+    try_again_command.create(0, 0, 48, 16, 2, {"Yes", "No"});
+    try_again_command.set_hidden(true);
+    try_again_command.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
 
     frames.reset();
 }
@@ -137,22 +153,83 @@ void EndlessScene::update_game()
     frames.update(panel_table, panel_table.is_warning());
     last_frame = osGetTime();
     frame++;
+
+    if (panel_table.is_gameover())
+    {
+        game_over.set_hidden(false);
+        try_again.set_hidden(true);
+        save_replay_command.set_hidden(false);
+        save_replay_command.set_active(true);
+    }
 }
 
 void EndlessScene::update_gameover()
 {
+    save_replay_command.update();
+    try_again_command.update();
+    u32 trigger = hidKeysDown();
+
+    if (save_replay_command.is_active())
+    {
+        if (trigger & KEY_A)
+        {
+            if (save_replay_command.selection() == 0)
+                recorder.save("/bbb-moves/test");
+
+            save_replay_command.set_active(false);
+            save_replay_command.set_hidden(true);
+            try_again_command.set_active(true);
+            try_again_command.set_hidden(false);
+            game_over.set_hidden(true);
+            try_again.set_hidden(false);
+        }
+    }
+    else if (try_again_command.is_active())
+    {
+        if (trigger & KEY_A)
+        {
+            if (try_again_command.selection() == 0)
+            {
+                EndlessScene::Config save_config = config;
+                save_config.level = level;
+                current_scene = new EndlessConfigScene(save_config);
+            }
+            else
+                current_scene = new TitleScene();
+        }
+    }
 }
 
 void EndlessScene::draw_top_left()
 {
-    info.draw();
-    ccc_stats.draw();
+    if (panel_table.is_gameover())
+    {
+        game_over.draw();
+        try_again.draw();
+        save_replay_command.draw();
+        try_again_command.draw();
+    }
+    else
+    {
+        info.draw();
+        ccc_stats.draw();
+    }
 }
 
 void EndlessScene::draw_top_right()
 {
-    info.draw();
-    ccc_stats.draw();
+    if (panel_table.is_gameover())
+    {
+        game_over.draw();
+        try_again.draw();
+        save_replay_command.draw();
+        try_again_command.draw();
+    }
+    else
+    {
+        info.draw();
+        ccc_stats.draw();
+    }
 }
 
 void EndlessScene::draw_bottom()

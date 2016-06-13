@@ -208,14 +208,6 @@
 		</Unit>
 		<Unit filename="source/game_common.cpp" />
 		<Unit filename="source/game_common.hpp" />
-		<Unit filename="source/game_state.cpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
 		<Unit filename="source/main.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -336,6 +328,10 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/scenes/replay_scene.cpp" />
+		<Unit filename="source/scenes/replay_scene.hpp" />
+		<Unit filename="source/scenes/replay_select_scene.cpp" />
+		<Unit filename="source/scenes/replay_select_scene.hpp" />
 		<Unit filename="source/scenes/scene.cpp">
 			<Option target="release" />
 			<Option target="citra" />

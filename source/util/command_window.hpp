@@ -42,6 +42,9 @@ public:
     int rows() const {return std::max(choices.size() / items_per_row, 1U);}
     int columns() const {return items_per_row;}
     int selection() const {return index;}
+    void set_selection(int sel) {index = sel;}
+    std::string choice() const {return choices[index];}
+    bool empty() const {return choices.empty();}
 
     void set_choices(const std::vector<std::string>& new_choices) {choices = new_choices;}
 private:

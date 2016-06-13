@@ -4,6 +4,7 @@
 #include <util/window.hpp>
 #include "endless_config_scene.hpp"
 #include "puzzle_select_scene.hpp"
+#include "replay_select_scene.hpp"
 
 void TitleScene::initialize()
 {
@@ -18,6 +19,7 @@ void TitleScene::update()
     command_window.update();
 
     u32 trigger = hidKeysDown();
+    u32 held = hidKeysHeld();
 
     if (trigger & KEY_A)
     {
@@ -40,6 +42,8 @@ void TitleScene::update()
                 break;
         }
     }
+    else if (held & (KEY_L | KEY_R | KEY_START))
+        current_scene = new ReplaySelectScene();
     else if (trigger & KEY_B)
         current_scene = NULL;
 }

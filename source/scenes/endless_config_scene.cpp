@@ -2,12 +2,16 @@
 #include "title_scene.hpp"
 #include "endless_scene.hpp"
 
+
 void EndlessConfigScene::initialize()
 {
     difficulty_choices.create(0, 0, 8 * 16, 16, 3, {"Easy", "Normal", "Hard"});
     difficulty_choices.set_active(true);
+    difficulty_choices.set_selection(saved_config.difficulty);
+
     level_text.create(0, 24, "Level");
     level_slider.create(1, 100, 1, 80 + 8, 24, 100, 4);
+    level_slider.set_value(saved_config.level);
 }
 
 void EndlessConfigScene::update()

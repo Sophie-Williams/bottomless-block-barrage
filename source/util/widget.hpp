@@ -26,6 +26,8 @@ public:
     void set_height(int h) {height = h;}
 
     void center(int sw, int sh);
+    void centerx(int sw) {x = (sw - width) / 2;}
+    void centery(int sh) {y = (sh - height) / 2;}
     void move(int dx, int dy);
 protected:
     int x;

@@ -4,6 +4,8 @@
 #include "scene.hpp"
 #include <windows/info_window.hpp>
 #include <windows/ccc_window.hpp>
+#include <util/command_window.hpp>
+#include <util/text.hpp>
 #include <util/texture.hpp>
 #include "panel_table.hpp"
 #include "animation_params.hpp"
@@ -35,6 +37,8 @@ protected:
     void update_gameover();
 private:
     Config config;
+
+    // game
     InfoWindow info;
     CCCWindow ccc_stats;
     Texture panels;
@@ -45,6 +49,11 @@ private:
     AnimationParams frames;
     MatchInfo last_match;
     MovesRecorder recorder;
+    // game over
+    Text game_over;
+    Text try_again;
+    CommandWindow save_replay_command;
+    CommandWindow try_again_command;
 
     int selector_x = 2;
     int selector_y = 6;

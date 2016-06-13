@@ -24,6 +24,7 @@ public:
     bool load(const std::string& filename);
     void keys(u32& trigger, u32& held);
     void update();
+    bool done() const {return index > moves.size();}
 
 
     u32 seed;
