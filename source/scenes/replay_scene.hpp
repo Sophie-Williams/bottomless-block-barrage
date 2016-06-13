@@ -1,7 +1,8 @@
-#ifndef ENDLESS_SCENE_HPP
-#define ENDLESS_SCENE_HPP
+#ifndef REPLAY_SCENE_HPP
+#define REPLAY_SCENE_HPP
 
 #include "scene.hpp"
+#include <string>
 #include <windows/info_window.hpp>
 #include <windows/ccc_window.hpp>
 #include <util/texture.hpp>
@@ -9,16 +10,17 @@
 #include "animation_params.hpp"
 #include "moves_recorder.hpp"
 
-class EndlessScene : public Scene
+class ReplayScene : public Scene
 {
 public:
     struct Config
     {
+        std::string replay_filename;
         Difficulty difficulty;
         int level;
     };
-    EndlessScene(const Config& config);
-    ~EndlessScene() {}
+    ReplayScene(const Config& config);
+    ~ReplayScene() {}
     void initialize();
     void update();
 

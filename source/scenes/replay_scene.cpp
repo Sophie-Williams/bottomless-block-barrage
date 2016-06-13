@@ -1,4 +1,4 @@
-#include "endless_scene.hpp"
+#include "replay_scene.hpp"
 #include "title_scene.hpp"
 #include "game_common.hpp"
 #include <algorithm>
@@ -10,14 +10,14 @@
 #include "selector_gfx.h"
 #include "debug_text.h"
 
-EndlessScene::EndlessScene(const Config& c) : config(c), level(c.level)
+ReplayScene::ReplayScene(const Config& c) : config(c), level(c.level)
 {
 
 }
 
-void EndlessScene::initialize()
+void ReplayScene::initialize()
 {
-    recorder.seed = (unsigned int) time(NULL);
+    recorder.load(config.replay_filename);
     srand(recorder.seed);
 
     switch (config.difficulty)
@@ -44,7 +44,7 @@ void EndlessScene::initialize()
     frames.reset();
 }
 
-void EndlessScene::update()
+void ReplayScene::update()
 {
     if (panel_table.is_gameover())
         update_gameover();
@@ -52,13 +52,11 @@ void EndlessScene::update()
         update_game();
 }
 
-void EndlessScene::update_game()
+void ReplayScene::update_game()
 {
-    u32 trigger = hidKeysDown();
-    u32 held = hidKeysHeld();
-
-    if (trigger || (held & KEY_R))
-        recorder.add(frame, trigger, held);
+    u32 held = 0;
+    u32 trigger = 0;
+    recorder.keys(trigger, held);
 
     info.update();
 
@@ -136,33 +134,34 @@ void EndlessScene::update_game()
 
     frames.update(panel_table, panel_table.is_warning());
     last_frame = osGetTime();
+    recorder.update();
     frame++;
 }
 
-void EndlessScene::update_gameover()
+void ReplayScene::update_gameover()
 {
 }
 
-void EndlessScene::draw_top_left()
-{
-    info.draw();
-    ccc_stats.draw();
-}
-
-void EndlessScene::draw_top_right()
+void ReplayScene::draw_top_left()
 {
     info.draw();
     ccc_stats.draw();
 }
 
-void EndlessScene::draw_bottom()
+void ReplayScene::draw_top_right()
+{
+    info.draw();
+    ccc_stats.draw();
+}
+
+void ReplayScene::draw_bottom()
 {
     draw_panels();
     draw_selector();
     draw_board();
 }
 
-void EndlessScene::draw_panels()
+void ReplayScene::draw_panels()
 {
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();
@@ -203,7 +202,7 @@ void EndlessScene::draw_panels()
     }
 }
 
-void EndlessScene::draw_selector()
+void ReplayScene::draw_selector()
 {
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();
@@ -219,7 +218,7 @@ void EndlessScene::draw_selector()
     selector.draw(x, y, 0, frames.selector * SELECTOR_GFX_HEIGHT / 2, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT / 2);
 }
 
-void EndlessScene::draw_board()
+void ReplayScene::draw_board()
 {
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();

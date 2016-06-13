@@ -20,19 +20,19 @@ int* KeyRepeatStore::get_step(int key)
     return &get(key).step;
 }
 
-bool hidKeyRepeat(KeyRepeatItem& kri, unsigned int repeat_ms)
+bool hidKeyRepeat(KeyRepeatItem& kri, unsigned int repeat_ms, u32 fake_held)
 {
-    return hidKeyRepeat(kri.key, &kri.frame, repeat_ms);
+    return hidKeyRepeat(kri.key, &kri.frame, repeat_ms, fake_held);
 }
 
-bool hidKeyRepeatQuick(KeyRepeatItem& kri, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms)
+bool hidKeyRepeatQuick(KeyRepeatItem& kri, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held)
 {
-    return hidKeyRepeatQuick(kri.key, &kri.frame, &kri.step, repeat_ms, triggers_until_quick, repeat_quick_ms);
+    return hidKeyRepeatQuick(kri.key, &kri.frame, &kri.step, repeat_ms, triggers_until_quick, repeat_quick_ms, fake_held);
 }
 
-bool hidKeyRepeat(int key, u64* old_time, unsigned int repeat_ms)
+bool hidKeyRepeat(int key, u64* old_time, unsigned int repeat_ms, u32 fake_held)
 {
-    u32 held = hidKeysHeld();
+    u32 held = (fake_held == KEY_SENTINEL) ? hidKeysHeld() : fake_held;
     if ((held & key) == 0)
     {
         *old_time = 0;
@@ -48,9 +48,9 @@ bool hidKeyRepeat(int key, u64* old_time, unsigned int repeat_ms)
     return false;
 }
 
-bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms)
+bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held)
 {
-    u32 held = hidKeysHeld();
+    u32 held = (fake_held == KEY_SENTINEL) ? hidKeysHeld() : fake_held;
     if ((held & key) == 0)
     {
         *step = 0;

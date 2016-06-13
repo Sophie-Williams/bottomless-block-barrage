@@ -1,6 +1,6 @@
 #include "animation_params.hpp"
 
-void AnimationParams::Update(const PanelTable& table, bool danger)
+void AnimationParams::update(const PanelTable& table, bool danger)
 {
     static const std::vector<int> panel_frames = {0, 1, 2, 1, 0, 3};
     if (!danger)

@@ -4,7 +4,6 @@
 #include "scene.hpp"
 #include <util/texture.hpp>
 #include <util/command_window.hpp>
-#include <memory>
 
 enum
 {
@@ -25,8 +24,8 @@ protected:
     void draw_top_right();
     void draw_bottom();
 private:
-    std::unique_ptr<Texture> background;
-    std::unique_ptr<CommandWindow> command_window;
+    Texture background;
+    CommandWindow command_window;
     int mode;
 };
 

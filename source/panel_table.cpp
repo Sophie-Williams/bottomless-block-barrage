@@ -21,8 +21,25 @@ PanelTable::PanelTable(int height, int width, int num_colors, const PanelSpeedSe
     generate();
 }
 
-PanelTable::PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings) : settings(ssettings)
+PanelTable::PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings)
 {
+    create(puzzle, ssettings);
+}
+
+void PanelTable::create(int height, int width, int num_colors, const PanelSpeedSettings& ssettings)
+{
+    panels.resize(width * (height + 1));
+    settings = ssettings;
+    rows = height;
+    columns = width;
+    colors = num_colors;
+
+    generate();
+}
+
+void PanelTable::create(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings)
+{
+    settings = ssettings;
     const char* magic = puzzle.magic;
     if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
         return;

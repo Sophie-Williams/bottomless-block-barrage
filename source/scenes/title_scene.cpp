@@ -7,21 +7,21 @@
 
 void TitleScene::initialize()
 {
-    background.reset(new Texture(generic_title_screen, GENERIC_TITLE_SCREEN_WIDTH, GENERIC_TITLE_SCREEN_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM));
-    command_window.reset(new CommandWindow(0, 0,  7 * 16, 16, 1, {"Endless", "Score", "Puzzle", "Mission", "Versus"}));
-    command_window->center(BOTTOM_SCREEN_WIDTH, BOTTOM_SCREEN_WIDTH);
-    command_window->set_active(true);
+    background.create(generic_title_screen, GENERIC_TITLE_SCREEN_WIDTH, GENERIC_TITLE_SCREEN_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+    command_window.create(0, 0,  7 * 16, 16, 1, {"Endless", "Score", "Puzzle", "Mission", "Versus"});
+    command_window.center(BOTTOM_SCREEN_WIDTH, BOTTOM_SCREEN_WIDTH);
+    command_window.set_active(true);
 }
 
 void TitleScene::update()
 {
-    command_window->update();
+    command_window.update();
 
     u32 trigger = hidKeysDown();
 
     if (trigger & KEY_A)
     {
-        switch (command_window->selection())
+        switch (command_window.selection())
         {
             case ENDLESS:
                 current_scene = new EndlessConfigScene();
@@ -46,15 +46,15 @@ void TitleScene::update()
 
 void TitleScene::draw_top_left()
 {
-    background->draw();
+    background.draw();
 }
 
 void TitleScene::draw_top_right()
 {
-    background->draw();
+    background.draw();
 }
 
 void TitleScene::draw_bottom()
 {
-    command_window->draw();
+    command_window.draw();
 }

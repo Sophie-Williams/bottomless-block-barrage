@@ -2,6 +2,14 @@
 #include <3ds.h>
 #include <algorithm>
 
+void Cursor::set(int w, int h, u32 min, u32 max, int speed, u32 b)
+{
+    width = w;
+    height = h;
+    border = b;
+    color.set(min, max, speed);
+}
+
 void Cursor::update()
 {
     color.update();
@@ -21,6 +29,17 @@ CommandWindow::CommandWindow(int wx, int wy, int cwidth, int cheight, int ipr, c
     Window(wx, wy, cwidth * ipr, std::max(commands.size() / ipr, 1U) * cheight), choices(commands), command_width(cwidth),
     command_height(cheight), items_per_row(ipr), cursor(cwidth, cheight), index(0)
 {
+}
+
+void CommandWindow::create(int wx, int wy, int cwidth, int cheight, int ipr, const std::vector<std::string>& commands)
+{
+    Window::create(wx, wy, cwidth * ipr, std::max(commands.size() / ipr, 1U) * cheight);
+    choices = commands;
+    command_width = cwidth;
+    command_height = cheight;
+    items_per_row = ipr;
+    cursor.set(cwidth, cheight);
+    index = 0;
 }
 
 void CommandWindow::update()

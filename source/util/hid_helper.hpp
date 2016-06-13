@@ -4,6 +4,8 @@
 #include <3ds.h>
 #include <map>
 
+#define KEY_SENTINEL 0xFFFFFFFFU
+
 struct KeyRepeatItem
 {
     int key;
@@ -19,9 +21,9 @@ struct KeyRepeatStore
     std::map<int, KeyRepeatItem> key_repeat_store_map;
 };
 
-bool hidKeyRepeat(int key, u64* old_time, unsigned int repeat_ms);
-bool hidKeyRepeat(KeyRepeatItem& kri, unsigned int repeat_ms);
-bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms);
-bool hidKeyRepeatQuick(KeyRepeatItem& kri, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms);
+bool hidKeyRepeat(int key, u64* old_time, unsigned int repeat_ms, u32 fake_held = KEY_SENTINEL);
+bool hidKeyRepeat(KeyRepeatItem& kri, unsigned int repeat_ms, u32 fake_held = KEY_SENTINEL);
+bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held = KEY_SENTINEL);
+bool hidKeyRepeatQuick(KeyRepeatItem& kri, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held = KEY_SENTINEL);
 
 #endif

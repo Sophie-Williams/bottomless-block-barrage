@@ -6,6 +6,16 @@ Bar::Bar(int val, int max, int x, int y, int width, int height, u32 fore, u32 ba
 {
 }
 
+void Bar::create(int val, int max, int x, int y, int width, int height, u32 fore, u32 back)
+{
+    Widget::create(x, y, width, height);
+    value = val;
+    maximum = max;
+    foreground = fore;
+    background = back;
+}
+
+
 void Bar::update()
 {
 

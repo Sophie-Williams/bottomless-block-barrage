@@ -9,6 +9,12 @@ Text::Text(int x, int y, const std::string& str) : Widget(x, y, str.size() * 16,
 
 }
 
+void Text::create(int x, int y, const std::string& str)
+{
+    Widget::create(x, y, str.size() * 16, 16);
+    text = str;
+}
+
 void Text::draw()
 {
     font->draw(x, y, text);

@@ -6,10 +6,14 @@
 class Texture
 {
 public:
+    Texture() : texture(nullptr) {}
     Texture(int width, int height, sf2d_texfmt pixel_format, sf2d_place place);
     Texture(const void *src_buffer, int sw, int sh, sf2d_texfmt pixel_format, sf2d_place place);
     ~Texture();
     bool valid() const {return texture;}
+    void create(int width, int height, sf2d_texfmt pixel_format, sf2d_place place);
+    void create(const void *src_buffer, int sw, int sh, sf2d_texfmt pixel_format, sf2d_place place);
+
     void draw(int x = 0, int y = 0);
     void draw(int x, int y, int sx, int sy, int sw, int sh);
     void draw(int x, int y, int sx, int sy, int sw, int sh, u32 blend_color);

@@ -4,7 +4,6 @@
 #include "scene.hpp"
 #include <util/texture.hpp>
 #include <util/command_window.hpp>
-#include <memory>
 
 class PuzzleSelectScene : public Scene
 {
@@ -19,10 +18,10 @@ private:
     void update_set_select();
     void update_stage_select();
     void update_level_select();
-    std::unique_ptr<Texture> background;
-    std::unique_ptr<CommandWindow> set_choices;
-    std::unique_ptr<CommandWindow> stage_choices;
-    std::unique_ptr<CommandWindow> level_choices;
+    Texture background;
+    CommandWindow set_choices;
+    CommandWindow stage_choices;
+    CommandWindow level_choices;
 };
 
 #endif

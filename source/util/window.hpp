@@ -8,7 +8,9 @@
 class Window : public Widget
 {
 public:
-    Window(int wx, int wy, int ww, int wh);
+    Window() {}
+    Window(int wx, int wy, int ww, int wh, int style = 0);
+    void create(int wx, int wy, int ww, int wh, int style = 0);
     virtual ~Window() {}
     virtual void update() {}
     virtual void draw();

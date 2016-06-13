@@ -15,8 +15,10 @@ public:
         // Show Current Value
         LABELS = 1,
     };
+    Slider() {}
     Slider(int mi, int max, int val, int x, int y, int w, int h, int style = DEFAULT);
     ~Slider() {}
+    void create(int mi, int max, int val, int x, int y, int w, int h, int style = DEFAULT);
     void update();
     void draw();
     int get_value() const {return value;}

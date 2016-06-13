@@ -7,7 +7,9 @@
 class ColorModulation
 {
 public:
+    ColorModulation() {}
     ColorModulation(u32 min, u32 max, int speed);
+    void set(u32 min, u32 max, int speed);
     u32 color() const {return RGBA8(r, g, b, a);}
     u32 start() const {return RGBA8(minr, ming, minb, mina);}
     u32 end() const {return RGBA8(maxr, maxg, maxb, maxa);}

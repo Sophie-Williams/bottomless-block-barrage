@@ -6,7 +6,6 @@
 #include <util/command_window.hpp>
 #include <util/slider.hpp>
 #include <util/text.hpp>
-#include <memory>
 
 class EndlessConfigScene : public Scene
 {
@@ -20,9 +19,9 @@ protected:
 private:
     void update_difficulty_select();
     void update_level_select();
-    std::unique_ptr<CommandWindow> difficulty_choices;
-    std::unique_ptr<Text> level_text;
-    std::unique_ptr<Slider> level_slider;
+    CommandWindow difficulty_choices;
+    Text level_text;
+    Slider level_slider;
 
 };
 

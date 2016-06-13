@@ -14,10 +14,11 @@ enum Difficulty
 class InfoWindow : public Window
 {
 public:
-    InfoWindow(int level, Difficulty difficulty);
+    InfoWindow();
     ~InfoWindow() {}
     void update();
     void draw();
+    void set_difficulty(Difficulty diff) {difficulty = diff;}
     void set_score(int s) {score = s;}
     void set_level(int l) {level = l;}
     void set_experience(int exp, int exp_req) {speed_exp_bar.set(exp, exp_req);}
@@ -38,7 +39,7 @@ private:
     bool timeout_started;
     int score;
     int level;
-    const Difficulty difficulty;
+    Difficulty difficulty;
 };
 
 #endif

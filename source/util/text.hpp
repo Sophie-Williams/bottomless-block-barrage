@@ -7,7 +7,9 @@
 class Text : public Widget
 {
 public:
+    Text() {}
     Text(int x, int y, const std::string& str);
+    virtual void create(int x, int y, const std::string& str);
     virtual void update() {};
     virtual void draw();
     void set_value(const std::string& str) {text = str;}

@@ -15,8 +15,24 @@ Texture::~Texture()
 {
     if (texture)
         sf2d_free_texture(texture);
-    texture = NULL;
+    texture = nullptr;
 }
+
+void Texture::create(int width, int height, sf2d_texfmt pixel_format, sf2d_place place)
+{
+    if (valid()) return;
+
+    texture = sf2d_create_texture(width, height, pixel_format, place);
+
+}
+
+void Texture::create(const void *src_buffer, int sw, int sh, sf2d_texfmt pixel_format, sf2d_place place)
+{
+    if (valid()) return;
+
+    texture = sf2d_create_texture_mem_RGBA8(src_buffer, sw, sh, pixel_format, place);
+}
+
 
 void Texture::draw(int x, int y)
 {

@@ -7,10 +7,12 @@
 class Widget
 {
 public:
+    Widget();
     Widget(int x, int y, int width, int height, int style = 0);
     virtual ~Widget() {}
     virtual void update() = 0;
     virtual void draw() = 0;
+    virtual void create(int x, int y, int width, int height, int style = 0);
     void set_active(bool a) {active = a;}
     bool is_active() const  {return active;}
     void set_hidden(bool h) {hidden = h;}
@@ -24,6 +26,7 @@ public:
     void set_height(int h) {height = h;}
 
     void center(int sw, int sh);
+    void move(int dx, int dy);
 protected:
     int x;
     int y;

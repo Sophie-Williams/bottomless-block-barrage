@@ -57,8 +57,12 @@ public:
         WIN_PUZZLE = 7,
     };
 
+    PanelTable() : state(RISING), type(RISES), chain(0), cascade(0) {}
     PanelTable(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
     PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings);
+
+    void create(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
+    void create(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings);
 
     bool is_puzzle() const {return type == PUZZLE;}
 
@@ -100,7 +104,7 @@ public:
     friend class TestUpdateMatches;
 
     std::vector<Panel> panels;
-    const PanelSpeedSettings settings;
+    PanelSpeedSettings settings;
     int rows;
     int columns;
     int colors;

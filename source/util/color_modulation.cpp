@@ -14,6 +14,21 @@ ColorModulation::ColorModulation(u32 modulate_min, u32 modulate_max, int spd) : 
     maxa = modulate_max >> 24 & 0xFF;
 }
 
+void ColorModulation::set(u32 min, u32 max, int spd)
+{
+    r = minr = min >> 0  & 0xFF;
+    g = ming = min >> 8  & 0xFF;
+    b = minb = min >> 16 & 0xFF;
+    a = mina = min >> 24 & 0xFF;
+
+    maxr = max >> 0  & 0xFF;
+    maxg = max >> 8  & 0xFF;
+    maxb = max >> 16 & 0xFF;
+    maxa = max >> 24 & 0xFF;
+
+    speed = spd;
+}
+
 void ColorModulation::update()
 {
     count = (count + 1) % (2 * speed - 2);

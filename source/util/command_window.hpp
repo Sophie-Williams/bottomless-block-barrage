@@ -8,26 +8,34 @@
 #include "hid_helper.hpp"
 #include "window.hpp"
 
+#define CURSOR_MIN_COLOR 0x609F9060U
+#define CURSOR_MAX_COLOR 0xA0FFB080U
+#define CURSOR_COLOR_SPEED 32
+#define CURSOR_BORDER 0xFFFFD0C0U
 
 class Cursor
 {
 public:
-    Cursor(int w, int h, u32 min = 0x609F9060, u32 max = 0xA0FFB080, int speed = 32, u32 b = 0xFFFFD0C0) :
+    Cursor() {}
+    Cursor(int w, int h, u32 min = CURSOR_MIN_COLOR, u32 max = CURSOR_MAX_COLOR, int speed = CURSOR_COLOR_SPEED, u32 b = CURSOR_BORDER) :
         width(w), height(h), border(b), color(min, max, speed) {}
+    void set(int w, int h, u32 min = CURSOR_MIN_COLOR, u32 max = CURSOR_MAX_COLOR, int speed = CURSOR_COLOR_SPEED, u32 b = CURSOR_BORDER);
     void update();
     void draw(int ox = 0, int oy = 0, bool disabled = false);
 private:
     int width;
     int height;
-    int border;
+    u32 border;
     ColorModulation color;
 };
 
 class CommandWindow : public Window
 {
 public:
+    CommandWindow() {}
     CommandWindow(int wx, int wy, int command_width, int command_height, int items_per_row, const std::vector<std::string>& commands);
     virtual ~CommandWindow() {}
+    void create(int wx, int wy, int command_width, int command_height, int items_per_row, const std::vector<std::string>& commands);
     void update();
     void draw();
 

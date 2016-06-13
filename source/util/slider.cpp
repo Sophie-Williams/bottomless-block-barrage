@@ -6,9 +6,23 @@
 #include <scenes/scene.hpp>
 #include <util/hid_helper.hpp>
 
+#define DEFAULT_MIN_COLOR 0xFF787878U
+#define DEFAULT_MAX_COLOR 0xFFE0E0E0U
+#define DEFAULT_STEPS 16
+
+
 Slider::Slider(int mi, int ma, int val, int wx, int wy, int ww, int wh, int style) : Widget(wx, wy, ww, wh, style),
-    min(mi), max(ma), value(val), color(0xFF787878, 0xFFE0E0E0, 16)
+    min(mi), max(ma), value(val), color(DEFAULT_MIN_COLOR, DEFAULT_MAX_COLOR, DEFAULT_STEPS)
 {
+}
+
+void Slider::create(int mi, int ma, int val, int x, int y, int w, int h, int style)
+{
+    Widget::create(x, y, w, h, style);
+    min = mi;
+    max = ma;
+    value = val;
+    color.set(DEFAULT_MIN_COLOR, DEFAULT_MAX_COLOR, DEFAULT_STEPS);
 }
 
 void Slider::update()

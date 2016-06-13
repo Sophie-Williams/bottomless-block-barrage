@@ -3,8 +3,13 @@
 
 extern std::unique_ptr<Font> font;
 
-Window::Window(int wx, int wy, int ww, int wh) : Widget(wx, wy, ww, wh)
+Window::Window(int wx, int wy, int ww, int wh, int style) : Widget(wx, wy, ww, wh, style)
 {
+}
+
+void Window::create(int wx, int wy, int ww, int wh, int style)
+{
+    Widget::create(wx, wy, ww, wh, style);
 }
 
 void Window::draw()
