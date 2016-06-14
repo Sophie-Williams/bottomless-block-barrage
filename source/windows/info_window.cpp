@@ -3,10 +3,10 @@
 #include <cstdio>
 #include <scenes/scene.hpp> // for TOP_SCREEN_HEIGHT
 
-InfoWindow::InfoWindow() : Window(0, 0, 8 * 16, TOP_SCREEN_HEIGHT),
-speed_exp_bar(0, 100, 24, 96, 6 * 16, 6, 0xFF809018, 0xFF101010),
-time_left_bar(0, 1, 24, 152, 6 * 16, 6, 0xFF000080, 0xFF101010),
-last_update(0), timeout(1), timeout_started(false), score(0)
+InfoWindow::InfoWindow() : Window(0, 0, 8 * 16, TOP_SCREEN_HEIGHT - WINDOW_BORDER_SIZE * 2),
+speed_exp_bar(0, 100, 24 - WINDOW_BORDER_SIZE, 96, 6 * 16, 6, 0xFF809018, 0xFF101010),
+time_left_bar(0, 1, 24 - WINDOW_BORDER_SIZE, 152, 6 * 16, 6, 0xFF000080, 0xFF101010),
+last_update(0), timeout(0), timeout_started(false), score(0)
 {
     start_time = osGetTime();
 }

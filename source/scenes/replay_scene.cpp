@@ -55,17 +55,17 @@ void ReplayScene::update()
     if (last_frame == 0)
         last_frame = osGetTime();
 
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 250, 1, 75, held))
         selector_x = std::max(std::min(selector_x - 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 250, 1, 75, held))
         selector_x = std::max(std::min(selector_x + 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 250, 1, 75, held))
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 250, 1, 75, held))
         selector_y = std::max(std::min(selector_y + 1, 10), 0);
     if (trigger & KEY_A)
         panel_table.swap(selector_y, selector_x);
-    if (trigger & KEY_START)
+    if (hidKeysDown() & KEY_START)
         current_scene = new TitleScene();
 
     if (panel_table.is_rised())
@@ -128,9 +128,6 @@ void ReplayScene::update()
     last_frame = osGetTime();
     recorder.update();
     frame++;
-
-    if (recorder.done())
-        current_scene = new TitleScene();
 }
 
 void ReplayScene::draw_top_left()

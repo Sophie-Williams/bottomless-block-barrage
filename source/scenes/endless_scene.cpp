@@ -73,21 +73,19 @@ void EndlessScene::update_game()
     u32 trigger = hidKeysDown();
     u32 held = hidKeysHeld();
 
-    if (trigger || (held & KEY_R))
-        recorder.add(frame, trigger, held);
-
+    recorder.add(frame, trigger, held);
     info.update();
 
     if (last_frame == 0)
         last_frame = osGetTime();
 
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 250, 1, 75, held))
         selector_x = std::max(std::min(selector_x - 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 250, 1, 75, held))
         selector_x = std::max(std::min(selector_x + 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 250, 1, 75, held))
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 250, 1, 75))
+    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 250, 1, 75, held))
         selector_y = std::max(std::min(selector_y + 1, 10), 0);
     if (trigger & KEY_A)
         panel_table.swap(selector_y, selector_x);

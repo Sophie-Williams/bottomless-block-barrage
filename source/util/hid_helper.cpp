@@ -60,7 +60,7 @@ bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms
 
     if (*step < triggers_until_quick + 1)
     {
-        if (hidKeyRepeat(key, old_time, repeat_ms))
+        if (hidKeyRepeat(key, old_time, repeat_ms, held))
         {
             *step += 1;
             return true;
@@ -68,7 +68,7 @@ bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms
     }
     else
     {
-        return hidKeyRepeat(key, old_time, repeat_quick_ms);
+        return hidKeyRepeat(key, old_time, repeat_quick_ms, held);
     }
 
     return false;

@@ -9,8 +9,9 @@ void EndlessConfigScene::initialize()
     difficulty_choices.set_active(true);
     difficulty_choices.set_selection(saved_config.difficulty);
 
-    level_text.create(0, 24, "Level");
-    level_slider.create(1, 100, 1, 80 + 8, 24, 100, 4);
+    const int y = difficulty_choices.get_height() + 8;
+    level_text.create(0, y, "Level");
+    level_slider.create(1, 100, 1, 80 + 8, y, 100, 4);
     level_slider.set_value(saved_config.level);
 }
 

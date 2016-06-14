@@ -5,10 +5,12 @@
 #include <memory>
 #include <sf2d.h>
 
-#include "scenes/scene.hpp"
-#include "scenes/title_scene.hpp"
+#include <scenes/scene.hpp>
+#include <scenes/title_scene.hpp>
+#include <util/window.hpp>
 
 #include "font_gfx.h"
+#include "windowskin.h"
 
 Scene* current_scene = NULL;
 std::unique_ptr<Font> font;
@@ -20,6 +22,7 @@ int main()
     sf2d_set_3D(0);
 
     font.reset(new Font(font_gfx, FONT_GFX_WIDTH, FONT_GFX_HEIGHT, 16, 16, TEXFMT_RGBA8, SF2D_PLACE_RAM));
+    Window::set_skin(windowskin, TEXFMT_RGBA8, SF2D_PLACE_RAM);
     std::unique_ptr<Scene> scene;
     current_scene = new TitleScene();
 

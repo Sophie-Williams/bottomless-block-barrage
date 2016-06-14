@@ -20,6 +20,11 @@ public:
     void set_style(int s) {style = s;}
     int get_style() const {return style;}
 
+    int get_x() const {return x;}
+    int get_y() const {return y;}
+    int get_width() const {return width;}
+    int get_height() const {return height;}
+
     void set_x(int xpos) {x = xpos;}
     void set_y(int ypos) {y = ypos;}
     void set_width(int w) {width = w;}

@@ -3,7 +3,7 @@
 #include <cstdio>
 
 
-CCCWindow::CCCWindow() : Window(TOP_SCREEN_WIDTH - 8 * 16, 0, 8 * 16, TOP_SCREEN_HEIGHT)
+CCCWindow::CCCWindow() : Window(TOP_SCREEN_WIDTH - 8 * 16 - WINDOW_BORDER_SIZE * 2, 0, 8 * 16, TOP_SCREEN_HEIGHT - WINDOW_BORDER_SIZE * 2)
 {
 
 }

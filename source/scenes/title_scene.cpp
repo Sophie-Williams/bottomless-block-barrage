@@ -42,7 +42,7 @@ void TitleScene::update()
                 break;
         }
     }
-    else if (held & (KEY_L | KEY_R | KEY_START))
+    else if (held == (KEY_L | KEY_R | KEY_START))
         current_scene = new ReplaySelectScene();
     else if (trigger & KEY_B)
         current_scene = NULL;

@@ -71,5 +71,6 @@ void CommandWindow::draw()
     }
     int mx = index % items_per_row;
     int my = index / items_per_row;
-    cursor.draw(x + mx * command_width, y + my * command_height, !is_active());
+    /// TODO make it so WINDOW_BORDER_SIZE doesn't need to be added
+    cursor.draw(x + mx * command_width + WINDOW_BORDER_SIZE, y + my * command_height + WINDOW_BORDER_SIZE, !is_active());
 }

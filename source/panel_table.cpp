@@ -486,7 +486,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         }
         else
         {
-            rise += time;
+            rise += fast_rise ? (max_wait / 9) : time;
             if ((int) rise >= max_wait)
                 state = GAMEOVER;
         }

@@ -16,6 +16,7 @@ public:
 
     void draw(int x = 0, int y = 0);
     void draw(int x, int y, int sx, int sy, int sw, int sh);
+    void draw(int x, int y, int tx, int ty, int tw, int th, int sw, int sh);
     void draw(int x, int y, int sx, int sy, int sw, int sh, u32 blend_color);
     unsigned int width() const {return valid() ? texture->width : 0;}
     unsigned int height() const {return valid() ? texture->height : 0;}
