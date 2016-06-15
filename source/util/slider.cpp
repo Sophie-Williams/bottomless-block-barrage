@@ -48,5 +48,5 @@ void Slider::draw()
     sf2d_draw_rectangle(x + percent - 2, y - 6 + height / 2, 5, 12, RGBA8(0x60, 0x60, 0x60, 255));
     sf2d_draw_rectangle(x + percent - 2 + 1, y - 6 + height / 2 + 1, 3, 10, !is_active() ? color.start() : color.color());
     if (style & LABELS)
-        font->draw(x + width, y, value);
+        font->draw(value, x + width, y);
 }

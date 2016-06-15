@@ -21,8 +21,10 @@ public:
     virtual void update() {}
     void draw();
 protected:
-    virtual void draw_top_left() {}
-    virtual void draw_top_right() {}
+    virtual void draw_top_left() {draw_top();}
+    virtual void draw_top_right() {draw_top();}
+
+    virtual void draw_top() {}
     virtual void draw_bottom() {}
     KeyRepeatStore repeat;
 };

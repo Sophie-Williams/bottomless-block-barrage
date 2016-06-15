@@ -64,14 +64,7 @@ void EndlessConfigScene::update_level_select()
     }
 }
 
-void EndlessConfigScene::draw_top_left()
-{
-    difficulty_choices.draw();
-    level_text.draw();
-    level_slider.draw();
-}
-
-void EndlessConfigScene::draw_top_right()
+void EndlessConfigScene::draw_top()
 {
     difficulty_choices.draw();
     level_text.draw();

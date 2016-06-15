@@ -48,12 +48,7 @@ void TitleScene::update()
         current_scene = NULL;
 }
 
-void TitleScene::draw_top_left()
-{
-    background.draw();
-}
-
-void TitleScene::draw_top_right()
+void TitleScene::draw_top()
 {
     background.draw();
 }

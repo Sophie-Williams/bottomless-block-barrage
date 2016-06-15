@@ -112,14 +112,7 @@ void PuzzleSelectScene::update_level_select()
     }
 }
 
-void PuzzleSelectScene::draw_top_left()
-{
-    set_choices.draw();
-    stage_choices.draw();
-    level_choices.draw();
-}
-
-void PuzzleSelectScene::draw_top_right()
+void PuzzleSelectScene::draw_top()
 {
     set_choices.draw();
     stage_choices.draw();

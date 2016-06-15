@@ -46,7 +46,7 @@ void Window::draw()
 
 void Window::draw_text(int wx, int wy, const std::string& str)
 {
-    font->draw(x + wx + WINDOW_BORDER_SIZE, y + wy + WINDOW_BORDER_SIZE, str);
+    font->draw(str, x + wx + WINDOW_BORDER_SIZE, y + wy + WINDOW_BORDER_SIZE);
 }
 
 void Window::set_skin(const void *src_buffer, sf2d_texfmt pixel_format, sf2d_place place)

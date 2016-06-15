@@ -15,8 +15,7 @@ public:
     void initialize();
     void update();
 protected:
-    void draw_top_left();
-    void draw_top_right();
+    void draw_top();
     void draw_bottom();
 private:
     void update_difficulty_select();

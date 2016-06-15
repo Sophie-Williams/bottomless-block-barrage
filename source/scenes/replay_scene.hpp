@@ -16,8 +16,6 @@ public:
     struct Config
     {
         std::string replay_filename;
-        Difficulty difficulty;
-        int level;
     };
     ReplayScene(const Config& config);
     ~ReplayScene() {}
@@ -25,8 +23,7 @@ public:
     void update();
 
 protected:
-    void draw_top_left();
-    void draw_top_right();
+    void draw_top();
     void draw_bottom();
 
     void draw_selector();

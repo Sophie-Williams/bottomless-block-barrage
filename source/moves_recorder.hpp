@@ -28,6 +28,8 @@ public:
 
 
     u32 seed;
+    u32 difficulty = 0;
+    u32 level = 1;
 private:
     std::vector<Move> moves;
     u32 frame = 0;

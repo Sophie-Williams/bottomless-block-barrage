@@ -19,6 +19,8 @@ EndlessScene::EndlessScene(const Config& c) : config(c), level(c.level)
 void EndlessScene::initialize()
 {
     recorder.seed = (unsigned int) time(NULL);
+    recorder.difficulty = config.difficulty;
+    recorder.level = config.level;
     srand(recorder.seed);
 
     switch (config.difficulty)
@@ -172,7 +174,7 @@ void EndlessScene::update_gameover()
         if (trigger & KEY_A)
         {
             if (save_replay_command.selection() == 0)
-                recorder.save("/bbb-moves/test");
+                recorder.save();
 
             save_replay_command.set_active(false);
             save_replay_command.set_hidden(true);
@@ -198,23 +200,7 @@ void EndlessScene::update_gameover()
     }
 }
 
-void EndlessScene::draw_top_left()
-{
-    if (panel_table.is_gameover())
-    {
-        game_over.draw();
-        try_again.draw();
-        save_replay_command.draw();
-        try_again_command.draw();
-    }
-    else
-    {
-        info.draw();
-        ccc_stats.draw();
-    }
-}
-
-void EndlessScene::draw_top_right()
+void EndlessScene::draw_top()
 {
     if (panel_table.is_gameover())
     {

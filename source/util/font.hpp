@@ -3,26 +3,21 @@
 
 #include <sf2d.h>
 #include <string>
+#include "BmpFont.h"
 
 class Font
 {
 public:
-    Font(const void *src_buffer, int sw, int sh, int cw, int ch, sf2d_texfmt pixel_format, sf2d_place place);
-    ~Font();
-    bool valid() const {return texture;}
-    int char_width() const {return text_width;}
-    int char_height() const {return text_height;}
-    void draw(int x, int y, const std::string& str);
-    void draw(int x, int y, char ch);
-    void set_blend_color(u32 color) {blend_color = color;}
-    u32 get_blend_color() const {return blend_color;}
+    Font(const std::string& filename) : impl(filename.c_str()) {}
+    ~Font() {}
+    void load(const std::string& filename) {impl.load(filename.c_str());}
+    bool valid() const {return impl;}
+    void draw(const std::string& str, int x, int y, u32 color = 0xFFFFFFFF);
+    void draw(int value, int x, int y, u32 color = 0xFFFFFFFF);
+    void draw(const std::string& str, int x, int y, int w, int h, u32 color = 0xFFFFFFFF);
 
 private:
-    sf2d_texture* texture;
-    int text_width;
-    int text_height;
-    int chars_per_row;
-    u32 blend_color;
+    BmpFont impl;
     Font(const Font&) = delete;
     Font(Font&&) = delete;
     Font& operator=(const Font&) = delete;

@@ -10,10 +10,12 @@
 const std::string generate_filename()
 {
     char buffer[128];
-    time_t now = time(0);
+    /*time_t now = time(0);
     struct tm tstruct = *localtime(&now);
-    strftime(buffer, sizeof(buffer), "/bbb-moves/%Y-%m-%d-%X", &tstruct);
+    strftime(buffer, sizeof(buffer), "/bbb-moves/%Y-%m-%d-%X", &tstruct);*/
+    sprintf(buffer, "/bbb-moves/%ld", osGetTime());
     return buffer;
+
 }
 
 void MovesRecorder::clear()
@@ -45,6 +47,8 @@ bool MovesRecorder::save(const std::string& specific_filename)
 
     file.write(reinterpret_cast<char*>(&size), sizeof(size));
     file.write(reinterpret_cast<char*>(&seed), sizeof(seed));
+    file.write(reinterpret_cast<char*>(&difficulty), sizeof(difficulty));
+    file.write(reinterpret_cast<char*>(&level), sizeof(level));
     for (u32 i = 0; i < moves.size(); i++)
     {
         const Move& move = moves[i];
@@ -66,6 +70,8 @@ bool MovesRecorder::load(const std::string& filename)
     u32 size = 0;
     file.read(reinterpret_cast<char*>(&size), sizeof(size));
     file.read(reinterpret_cast<char*>(&seed), sizeof(seed));
+    file.read(reinterpret_cast<char*>(&difficulty), sizeof(difficulty));
+    file.read(reinterpret_cast<char*>(&level), sizeof(level));
     for (u32 i = 0; i < size; i++)
     {
         Move move;
@@ -76,6 +82,7 @@ bool MovesRecorder::load(const std::string& filename)
         moves.push_back(move);
     }
     file.close();
+    return true;
 }
 
 void MovesRecorder::keys(u32& trigger, u32& held)

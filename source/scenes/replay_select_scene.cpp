@@ -28,7 +28,7 @@ std::vector<std::string> get_replays()
 
 void ReplaySelectScene::initialize()
 {
-    replays.create(0, 0, TOP_SCREEN_WIDTH / 3 - 2 * WINDOW_BORDER_SIZE, 16, 3, get_replays());
+    replays.create(0, 0, TOP_SCREEN_WIDTH - 2 * WINDOW_BORDER_SIZE, 16, 1, get_replays());
     replays.set_active(true);
 }
 
@@ -40,11 +40,9 @@ void ReplaySelectScene::update()
     if (trigger & KEY_A)
     {
         std::string choice = replays.choice();
-        choice = "/bbb-moves/test";// + choice;
+        choice = "/bbb-moves/" + choice;
         ReplayScene::Config config;
         config.replay_filename = choice;
-        config.level = 1;
-        config.difficulty = EASY;
         current_scene = new ReplayScene(config);
     }
     else if (trigger & KEY_B || (trigger == 0 && replays.empty()))
@@ -54,12 +52,7 @@ void ReplaySelectScene::update()
 
 }
 
-void ReplaySelectScene::draw_top_left()
-{
-    replays.draw();
-}
-
-void ReplaySelectScene::draw_top_right()
+void ReplaySelectScene::draw_top()
 {
     replays.draw();
 }

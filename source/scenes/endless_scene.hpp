@@ -25,8 +25,7 @@ public:
     void update();
 
 protected:
-    void draw_top_left();
-    void draw_top_right();
+    void draw_top();
     void draw_bottom();
 
     void draw_selector();

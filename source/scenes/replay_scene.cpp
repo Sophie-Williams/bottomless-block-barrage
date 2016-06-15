@@ -10,7 +10,7 @@
 #include "selector_gfx.h"
 #include "debug_text.h"
 
-ReplayScene::ReplayScene(const Config& c) : config(c), level(c.level)
+ReplayScene::ReplayScene(const Config& c) : config(c)
 {
 
 }
@@ -18,9 +18,10 @@ ReplayScene::ReplayScene(const Config& c) : config(c), level(c.level)
 void ReplayScene::initialize()
 {
     recorder.load(config.replay_filename);
+    level = recorder.level;
     srand(recorder.seed);
 
-    switch (config.difficulty)
+    switch (recorder.difficulty)
     {
         case EASY:
             panel_table.create(11, 6, 5, easy_speed_settings);
@@ -33,8 +34,8 @@ void ReplayScene::initialize()
             break;
     }
 
-    info.set_level(config.level);
-    info.set_difficulty(config.difficulty);
+    info.set_level(level);
+    info.set_difficulty(static_cast<Difficulty>(recorder.difficulty));
 
     panels.create(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
     selector.create(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
@@ -90,7 +91,7 @@ void ReplayScene::update()
         if (last_match.is_timeout())
         {
             int timeout = calculate_timeout(last_match.combo, last_match.cascade + 1,
-                                            3 - (int)config.difficulty, panel_table.is_danger());
+                                            3 - (int)recorder.difficulty, panel_table.is_danger());
             panel_table.set_timeout(timeout);
             info.set_timeout(timeout);
         }
@@ -118,7 +119,7 @@ void ReplayScene::update()
         if (minfo.is_timeout())
         {
             int timeout = calculate_timeout(minfo.combo, minfo.cascade + 1,
-                                            3 - (int)config.difficulty, panel_table.is_danger());
+                                            3 - (int)recorder.difficulty, panel_table.is_danger());
             info.set_timeout(timeout);
         }
         last_match = minfo;
@@ -130,13 +131,7 @@ void ReplayScene::update()
     frame++;
 }
 
-void ReplayScene::draw_top_left()
-{
-    info.draw();
-    ccc_stats.draw();
-}
-
-void ReplayScene::draw_top_right()
+void ReplayScene::draw_top()
 {
     info.draw();
     ccc_stats.draw();

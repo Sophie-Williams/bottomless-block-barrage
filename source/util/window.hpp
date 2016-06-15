@@ -46,6 +46,7 @@ public:
 private:
     Texture skin;
 };
+
 class Window : public Widget
 {
 public:

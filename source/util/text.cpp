@@ -18,5 +18,5 @@ void Text::create(int x, int y, const std::string& str)
 void Text::draw()
 {
     if (is_hidden()) return;
-    font->draw(x, y, text);
+    font->draw(text, x, y);
 }
