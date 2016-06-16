@@ -22,8 +22,8 @@ public:
     void draw(const std::string& str, int x, int y, u32 color = 0xFFFFFFFF);
     void draw(int value, int x, int y, u32 color = 0xFFFFFFFF);
     void draw(const std::string& str, int x, int y, int w, int h, u32 color = 0xFFFFFFFF, Alignment align = LEFT);
-    int width(const std::string& str) const {return impl->getTextWidth(str);}
-    int height() const {return impl->height();}
+    int width(const std::string& str) const {return impl.getTextWidth(str);}
+    int height() const {return impl.height();}
 
 private:
     BmpFont impl;
