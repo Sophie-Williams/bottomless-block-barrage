@@ -22,8 +22,8 @@ int main()
     sf2d_set_clear_color(RGBA8(0x0, 0x0, 0x0, 0xFF));
     sf2d_set_3D(0);
 
-    font.reset(new Font("romfs:/Arial_Black.bff"));
-    if (!font->valid()) abort();
+    font.reset(new Font("romfs:/font/Arial_Black.bff"));
+
     Window::set_skin(windowskin, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 
 

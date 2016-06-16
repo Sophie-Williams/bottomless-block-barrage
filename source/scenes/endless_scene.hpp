@@ -64,7 +64,6 @@ private:
 
     int frame = 0;
     u64 last_frame = 0;
-    u64 last_rise = 0;
 };
 
 #endif

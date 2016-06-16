@@ -374,6 +374,8 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         }
         need_update_matches = true;
         need_generate_next = true;
+        // Need to do this here if we stop at this exact frame blocks will rise a lot.
+        state = RISING;
     }
 
     // Iterate in reverse so that falls work correctly.
@@ -474,10 +476,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
                 state = RISED;
         }
     }
-    else if (is_rised())
-    {
-        state = RISING;
-    }
+    /*else if (is_rised())*/ // Handled above.
     else if (is_clogged())
     {
         if (!is_danger())

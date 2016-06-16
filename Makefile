@@ -177,7 +177,7 @@ else
 	3DSTOOL = 3dstool
 endif
 
-_3DSXFLAGS += --smdh=$(OUTPUT_FILE).smdh --romfs=$(TOPDIR)/$(ROMFS)
+_3DSXFLAGS += --smdh=$(OUTPUT_FILE).smdh --romfs=$(APP_ROMFS)
 
 #---------------------------------------------------------------------------------
 # Main Targets

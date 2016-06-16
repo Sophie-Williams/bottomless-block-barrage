@@ -95,20 +95,12 @@ void EndlessScene::update_game()
         current_scene = new TitleScene();
 
     if (panel_table.is_rised())
-    {
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
-        last_rise = osGetTime();
-    }
-
-    if (last_rise == 0)
-        last_rise = osGetTime();
 
     int max_wait = get_current_speed(level);
 
     if (held & KEY_R)
-    {
         info.clear_timeout();
-    }
 
     MatchInfo minfo = panel_table.update(osGetTime() - last_frame, max_wait, held & KEY_R);
     if (minfo.empty() && !last_match.empty())
