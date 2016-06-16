@@ -207,8 +207,6 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
-		<Unit filename="source/fonts.cpp" />
-		<Unit filename="source/fonts.hpp" />
 		<Unit filename="source/game_common.cpp" />
 		<Unit filename="source/game_common.hpp" />
 		<Unit filename="source/main.cpp">
