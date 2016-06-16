@@ -182,6 +182,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="resources/template.rsf" />
 		<Unit filename="source/animation_params.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -206,6 +207,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/fonts.cpp" />
+		<Unit filename="source/fonts.hpp" />
 		<Unit filename="source/game_common.cpp" />
 		<Unit filename="source/game_common.hpp" />
 		<Unit filename="source/main.cpp">
@@ -364,6 +367,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/util/BmpFont.cpp" />
+		<Unit filename="source/util/BmpFont.h" />
 		<Unit filename="source/util/bar.cpp">
 			<Option target="release" />
 			<Option target="citra" />

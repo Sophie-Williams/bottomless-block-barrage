@@ -9,22 +9,24 @@
 #include <scenes/title_scene.hpp>
 #include <util/window.hpp>
 
-#include "font_gfx.h"
 #include "windowskin.h"
 
 Scene* current_scene = NULL;
 std::unique_ptr<Font> font;
 
+
 int main()
 {
-	romfsInit();
+    romfsInit();
     sf2d_init();
     sf2d_set_clear_color(RGBA8(0x0, 0x0, 0x0, 0xFF));
     sf2d_set_3D(0);
 
-    font.reset(new Font("/Arial Black.bff"));
-    if (font->valid())
-        Window::set_skin(windowskin, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+    font.reset(new Font("romfs:/Arial_Black.bff"));
+    if (!font->valid()) abort();
+    Window::set_skin(windowskin, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+
+
     std::unique_ptr<Scene> scene;
     current_scene = new TitleScene();
 
@@ -49,3 +51,4 @@ int main()
     romfsExit();
     return 0;
 }
+

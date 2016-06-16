@@ -141,6 +141,8 @@ APP_DESCRIPTION := $(shell echo "$(APP_DESCRIPTION)" | cut -c1-256)
 APP_AUTHOR := $(shell echo "$(APP_AUTHOR)" | cut -c1-128)
 APP_PRODUCT_CODE := $(shell echo $(APP_PRODUCT_CODE) | cut -c1-16)
 APP_UNIQUE_ID := $(shell echo $(APP_UNIQUE_ID) | cut -c1-7)
+APP_ICON := $(TOPDIR)/$(ICON)
+APP_ROMFS := $(TOPDIR)/$(ROMFS)
 ifneq ("$(wildcard $(TOPDIR)/$(BANNER_IMAGE).cgfx)","")
 	BANNER_IMAGE_FILE := $(TOPDIR)/$(BANNER_IMAGE).cgfx
 	BANNER_IMAGE_ARG := -ci $(BANNER_IMAGE_FILE)
@@ -163,23 +165,19 @@ OUTPUT_NAME := $(subst $(SPACE),,$(APP_TITLE))
 OUTPUT_DIR := $(TOPDIR)/$(OUTPUT)
 OUTPUT_FILE := $(OUTPUT_DIR)/$(OUTPUT_NAME)
 
-APP_ICON := $(TOPDIR)/$(ICON)
-APP_ROMFS := $(TOPDIR)/$(ROMFS)
-
-COMMON_MAKEROM_PARAMS := -rsf $(RSF) -target t -exefslogo -elf $(OUTPUT_FILE).elf -icon icon.icn -banner banner.bnr -DAPP_TITLE="$(APP_TITLE)" -DAPP_PRODUCT_CODE="$(APP_PRODUCT_CODE)" -DAPP_UNIQUE_ID="$(APP_UNIQUE_ID)" -DAPP_ROMFS="$(APP_ROMFS)" -DAPP_SYSTEM_MODE="64MB" -DAPP_SYSTEM_MODE_EXT="Legacy"
+COMMON_MAKEROM_PARAMS := -rsf $(RSF) -target t -exefslogo -elf $(OUTPUT_FILE).elf -icon icon.icn -banner banner.bnr -DAPP_TITLE="$(APP_TITLE)" -DAPP_PRODUCT_CODE="$(APP_PRODUCT_CODE)" -DAPP_UNIQUE_ID="$(APP_UNIQUE_ID)" -DAPP_SYSTEM_MODE="64MB" -DAPP_SYSTEM_MODE_EXT="Legacy" -DAPP_ROMFS="$(APP_ROMFS)"
 
 ifeq ($(OS),Windows_NT)
 	MAKEROM = makerom.exe
 	BANNERTOOL = bannertool.exe
+	3DSTOOL = 3dstool.exe
 else
 	MAKEROM = makerom
 	BANNERTOOL = bannertool
+	3DSTOOL = 3dstool
 endif
 
-_3DSXFLAGS += --smdh=$(OUTPUT_FILE).smdh
-ifneq ("$(wildcard $(TOPDIR)/$(ROMFS))","")
-	_3DSXFLAGS += --romfs=$(TOPDIR)/$(ROMFS)
-endif
+_3DSXFLAGS += --smdh=$(OUTPUT_FILE).smdh --romfs=$(TOPDIR)/$(ROMFS)
 
 #---------------------------------------------------------------------------------
 # Main Targets
@@ -202,7 +200,7 @@ $(OUTPUT_FILE).3ds: $(OUTPUT_FILE).elf banner.bnr icon.icn
 	@echo "built ... $(notdir $@)"
 
 $(OUTPUT_FILE).cia: $(OUTPUT_FILE).elf banner.bnr icon.icn
-	@$(MAKEROM) -f cia -o $(OUTPUT_FILE).cia -DAPP_ENCRYPTED=false $(COMMON_MAKEROM_PARAMS)
+	$(MAKEROM) -f cia -o $(OUTPUT_FILE).cia -DAPP_ENCRYPTED=false $(COMMON_MAKEROM_PARAMS)
 	@echo "built ... $(notdir $@)"
 
 $(OUTPUT_FILE).zip: $(OUTPUT_FILE).smdh $(OUTPUT_FILE).3dsx
@@ -256,6 +254,7 @@ spunch : $(OUTPUT_FILE).cia
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@nin10kit -mode=rgba8 -output_dir=../build $(basename $<) $<
+
 
 -include $(DEPENDS)
 
