@@ -15,12 +15,6 @@ void Bar::create(int val, int max, int x, int y, int width, int height, u32 fore
     background = back;
 }
 
-
-void Bar::update()
-{
-
-}
-
 void Bar::draw()
 {
     sf2d_draw_rectangle(x, y, width, height, background);

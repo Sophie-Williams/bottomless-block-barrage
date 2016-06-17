@@ -1,18 +1,24 @@
 #include "text.hpp"
-#include "font.hpp"
-#include <memory>
 
-extern std::unique_ptr<Font> font;
+extern Font* default_font;
 
-Text::Text(int x, int y, const std::string& str) : Widget(x, y, str.size() * 16, 16), text(str)
+Text::Text(const std::string& str, int x, int y, Font* font)
 {
-
+    create(str, x, y, font);
 }
 
-void Text::create(int x, int y, const std::string& str)
+void Text::create(const std::string& str, int x, int y, Font* f)
 {
-    Widget::create(x, y, str.size() * 16, 16);
+    u32 width, height;
+    if (!f) f = default_font;
+    f->dimensions(str, width, height);
+    Widget::create(x, y, width, height);
     text = str;
+    if (f != default_font)
+    {
+        font = f;
+        font_owned = f != default_font;
+    }
 }
 
 void Text::draw()

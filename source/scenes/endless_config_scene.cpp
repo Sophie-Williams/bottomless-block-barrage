@@ -5,13 +5,13 @@
 
 void EndlessConfigScene::initialize()
 {
-    difficulty_choices.create(0, 0, 8 * 16, 16, 3, {"Easy", "Normal", "Hard"});
+    difficulty_choices.create(0, 0, 6 * 16, 16, 3, {"Easy", "Normal", "Hard"});
     difficulty_choices.set_active(true);
     difficulty_choices.set_selection(saved_config.difficulty);
 
-    const int y = difficulty_choices.get_height() + 8;
-    level_text.create(0, y, "Level");
-    level_slider.create(1, 100, 1, 80 + 8, y, 100, 4);
+    const int y = difficulty_choices.window_height() + 4;
+    level_text.create("Level", 0, y);
+    level_slider.create(1, 100, 1, 80 + 8, y + 4, 100, 4);
     level_slider.set_value(saved_config.level);
 }
 
@@ -66,12 +66,11 @@ void EndlessConfigScene::update_level_select()
 
 void EndlessConfigScene::draw_top()
 {
-    difficulty_choices.draw();
-    level_text.draw();
-    level_slider.draw();
 }
 
 void EndlessConfigScene::draw_bottom()
 {
-
+    difficulty_choices.draw();
+    level_text.draw();
+    level_slider.draw();
 }

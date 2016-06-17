@@ -25,10 +25,9 @@ void Cursor::draw(int ox, int oy, bool disabled)
     sf2d_draw_rectangle(ox + 1, oy + 1, width - 2, height - 2, disabled ? color.start() : color.color());
 }
 
-CommandWindow::CommandWindow(int wx, int wy, int cwidth, int cheight, int ipr, const std::vector<std::string>& commands) :
-    Window(wx, wy, cwidth * ipr, std::max(commands.size() / ipr, 1U) * cheight), choices(commands), command_width(cwidth),
-    command_height(cheight), items_per_row(ipr), cursor(cwidth, cheight), index(0)
+CommandWindow::CommandWindow(int wx, int wy, int cwidth, int cheight, int ipr, const std::vector<std::string>& commands)
 {
+    create(wx, wy, cwidth, cheight, ipr, commands);
 }
 
 void CommandWindow::create(int wx, int wy, int cwidth, int cheight, int ipr, const std::vector<std::string>& commands)
@@ -40,6 +39,8 @@ void CommandWindow::create(int wx, int wy, int cwidth, int cheight, int ipr, con
     items_per_row = ipr;
     cursor.set(cwidth, cheight);
     index = 0;
+    alignment = CENTER;
+    default_color = 0xFFFFFFFF;
 }
 
 void CommandWindow::update()
@@ -67,10 +68,10 @@ void CommandWindow::draw()
     {
         int mx = i % items_per_row;
         int my = i / items_per_row;
-        draw_text(mx * command_width, my * command_height, choices[i]);
+        u32 color = (colors.find(i) != colors.end()) ? colors[i] : default_color;
+        draw_text(choices[i], mx * command_width, my * command_height, command_width, command_height, color, alignment);
     }
     int mx = index % items_per_row;
     int my = index / items_per_row;
-    /// TODO make it so WINDOW_BORDER_SIZE doesn't need to be added
-    cursor.draw(x + mx * command_width + WINDOW_BORDER_SIZE, y + my * command_height + WINDOW_BORDER_SIZE, !is_active());
+    cursor.draw(x + mx * command_width, y + my * command_height, !is_active());
 }

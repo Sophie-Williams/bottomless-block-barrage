@@ -3,13 +3,15 @@
 
 #include <3ds.h>
 #include <sf2d.h>
+#include "unnamed.hpp"
+#include "font.hpp"
 
 class Widget
 {
 public:
-    Widget();
+    Widget() {}
     Widget(int x, int y, int width, int height, int style = 0);
-    virtual ~Widget() {}
+    virtual ~Widget();
     virtual void update() = 0;
     virtual void draw() = 0;
     virtual void create(int x, int y, int width, int height, int style = 0);
@@ -34,6 +36,8 @@ public:
     void centerx(int sw) {x = (sw - width) / 2;}
     void centery(int sh) {y = (sh - height) / 2;}
     void move(int dx, int dy);
+
+    void set_font(Font* newfont, bool own = true) {font = newfont; font_owned = own;}
 protected:
     int x;
     int y;
@@ -42,7 +46,8 @@ protected:
     int style;
     bool active;
     bool hidden;
-
+    const Font* font;
+    bool font_owned;
 };
 
 

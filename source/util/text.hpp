@@ -3,13 +3,15 @@
 
 #include <string>
 #include "widget.hpp"
+#include "font.hpp"
 
 class Text : public Widget
 {
 public:
     Text() {}
-    Text(int x, int y, const std::string& str);
-    virtual void create(int x, int y, const std::string& str);
+    Text(const std::string& str, int x, int y, Font* font = NULL);
+    virtual ~Text() {}
+    virtual void create(const std::string& str, int x, int y, Font* font = NULL);
     virtual void update() {};
     virtual void draw();
     void set_value(const std::string& str) {text = str;}

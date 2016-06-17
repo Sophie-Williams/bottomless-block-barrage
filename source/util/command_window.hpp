@@ -42,9 +42,13 @@ public:
     int rows() const {return std::max(choices.size() / items_per_row, 1U);}
     int columns() const {return items_per_row;}
     int selection() const {return index;}
-    void set_selection(int sel) {index = sel;}
     std::string choice() const {return choices[index];}
     bool empty() const {return choices.empty();}
+
+    void set_selection(int sel) {index = sel;}
+    void set_color(int index, u32 color) {colors[index] = color;}
+    void set_default_color(u32 color) {default_color = color;}
+    void set_alignment(Alignment align) {alignment = align;}
 
     void set_choices(const std::vector<std::string>& new_choices) {choices = new_choices;}
 private:
@@ -54,6 +58,9 @@ private:
     int items_per_row;
     Cursor cursor;
     int index;
+    std::map<int, u32> colors;
+    u32 default_color;
+    Alignment alignment;
     KeyRepeatStore repeat;
 };
 

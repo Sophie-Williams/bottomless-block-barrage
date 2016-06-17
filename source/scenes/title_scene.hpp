@@ -3,6 +3,7 @@
 
 #include "scene.hpp"
 #include <util/texture.hpp>
+#include <util/text.hpp>
 #include <util/command_window.hpp>
 
 enum
@@ -25,6 +26,7 @@ protected:
 private:
     Texture background;
     CommandWindow command_window;
+    Text version;
     int mode;
 };
 

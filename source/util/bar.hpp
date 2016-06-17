@@ -10,7 +10,7 @@ public:
     Bar(int val, int max, int x, int y, int width, int height, u32 foreground, u32 background);
     virtual ~Bar() {}
     virtual void create(int val, int max, int x, int y, int width, int height, u32 foreground, u32 background);
-    virtual void update();
+    virtual void update() {}
     virtual void draw();
     void set(int val, int max) {value = val; maximum = max;}
     void set_value(int val) {value = val;}

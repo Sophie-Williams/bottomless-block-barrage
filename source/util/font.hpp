@@ -4,13 +4,7 @@
 #include <sf2d.h>
 #include <string>
 #include "BmpFont.h"
-
-enum Alignment
-{
-    LEFT = 0,
-    CENTER = 1,
-    RIGHT = 2,
-};
+#include "unnamed.hpp"
 
 class Font
 {
@@ -18,12 +12,17 @@ public:
     Font(const std::string& filename) : impl(filename.c_str()) {}
     ~Font() {}
     void load(const std::string& filename) {impl.load(filename.c_str());}
+
     bool valid() const {return impl;}
-    void draw(const std::string& str, int x, int y, u32 color = 0xFFFFFFFF);
-    void draw(int value, int x, int y, u32 color = 0xFFFFFFFF);
-    void draw(const std::string& str, int x, int y, int w, int h, u32 color = 0xFFFFFFFF, Alignment align = LEFT);
-    int width(const std::string& str) const {return impl.getTextWidth(str);}
-    int height() const {return impl.height();}
+
+    void draw(const std::string& str, int x, int y, u32 color = 0xFFFFFFFF) const;
+    void draw(int value, int x, int y, u32 color = 0xFFFFFFFF) const;
+    void draw(const std::string& str, int x, int y, int w, int h, u32 color = 0xFFFFFFFF, Alignment align = LEFT_TOP) const;
+
+    u32 size() const {return impl.height();}
+    u32 width(const std::string& str) const {return impl.getTextWidth(str);}
+    u32 height(const std::string& str) const {return impl.getTextHeight(str);}
+    void dimensions(const std::string& str, u32& width, u32& height) {return impl.getTextDims(str, width, height);}
 
 private:
     BmpFont impl;

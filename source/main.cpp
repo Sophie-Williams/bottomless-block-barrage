@@ -7,13 +7,9 @@
 
 #include <scenes/scene.hpp>
 #include <scenes/title_scene.hpp>
-#include <util/window.hpp>
-
-#include "windowskin.h"
+#include <util/unnamed.hpp>
 
 Scene* current_scene = NULL;
-std::unique_ptr<Font> font;
-
 
 int main()
 {
@@ -21,11 +17,7 @@ int main()
     sf2d_init();
     sf2d_set_clear_color(RGBA8(0x0, 0x0, 0x0, 0xFF));
     sf2d_set_3D(0);
-
-    font.reset(new Font("romfs:/font/Arial_Black.bff"));
-
-    Window::set_skin(windowskin, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-
+    unnamed_init();
 
     std::unique_ptr<Scene> scene;
     current_scene = new TitleScene();
@@ -47,8 +39,10 @@ int main()
         sf2d_swapbuffers();
     }
 
+    unnamed_exit();
     sf2d_fini();
     romfsExit();
+
     return 0;
 }
 

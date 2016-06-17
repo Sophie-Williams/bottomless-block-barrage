@@ -1,8 +1,6 @@
 #include "window.hpp"
 #include "font.hpp"
 
-extern std::unique_ptr<Font> font;
-
 WindowSkin Window::skin;
 
 void WindowSkin::create(const void* src_buffer, sf2d_texfmt pixel_format, sf2d_place place)
@@ -32,7 +30,7 @@ Window::Window(int wx, int wy, int ww, int wh, int style)
 
 void Window::create(int wx, int wy, int ww, int wh, int style)
 {
-    Widget::create(wx, wy, ww + WINDOW_BORDER_SIZE * 2, wh + WINDOW_BORDER_SIZE * 2, style);
+    Widget::create(wx + WINDOW_BORDER_SIZE, wy + WINDOW_BORDER_SIZE, ww, wh, style);
 }
 
 void Window::draw()
@@ -41,12 +39,17 @@ void Window::draw()
     if (!skin.valid())
         sf2d_draw_rectangle(x, y, width, height, RGBA8(0, 0, 255, 255));
     else
-        skin.draw(x, y, width, height);
+        skin.draw(x - WINDOW_BORDER_SIZE, y - WINDOW_BORDER_SIZE, width + WINDOW_BORDER_SIZE * 2, height + WINDOW_BORDER_SIZE * 2);
 }
 
-void Window::draw_text(int wx, int wy, const std::string& str)
+void Window::draw_text(const std::string& str, int wx, int wy, u32 color)
 {
-    font->draw(str, x + wx + WINDOW_BORDER_SIZE, y + wy + WINDOW_BORDER_SIZE);
+    font->draw(str, x + wx, y + wy, color);
+}
+
+void Window::draw_text(const std::string& str, int wx, int wy, int ww, int wh, u32 color, Alignment align)
+{
+    font->draw(str, x + wx, y + wy, ww, wh, color, align);
 }
 
 void Window::set_skin(const void *src_buffer, sf2d_texfmt pixel_format, sf2d_place place)

@@ -34,7 +34,6 @@
 #define WINDOW_DISABLED_BORDER_X 64
 #define WINDOW_DISABLED_BORDER_Y 64
 
-
 class WindowSkin
 {
 public:
@@ -53,13 +52,17 @@ public:
     Window() {}
     Window(int wx, int wy, int ww, int wh, int style = 0);
     void create(int wx, int wy, int ww, int wh, int style = 0);
-    virtual ~Window() {}
+    ~Window() {}
     virtual void update() {}
     virtual void draw();
-    void draw_text(int wx, int wy, const std::string& str);
+
+    int window_width() const {return width + WINDOW_BORDER_SIZE * 2;}
+    int window_height() const {return height + WINDOW_BORDER_SIZE * 2;}
+
+    void draw_text(const std::string& str, int wx, int wy, u32 color = 0xFFFFFFFF);
+    void draw_text(const std::string& str, int wx, int wy, int ww, int wh, u32 color = 0xFFFFFFFF, Alignment align = LEFT_CENTER);
     static void set_skin(const void *src_buffer, sf2d_texfmt pixel_format, sf2d_place place);
     static WindowSkin skin;
-
 };
 
 #endif

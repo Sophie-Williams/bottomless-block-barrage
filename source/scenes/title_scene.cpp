@@ -5,6 +5,7 @@
 #include "endless_config_scene.hpp"
 #include "puzzle_select_scene.hpp"
 #include "replay_select_scene.hpp"
+#include "version.hpp"
 
 void TitleScene::initialize()
 {
@@ -12,6 +13,8 @@ void TitleScene::initialize()
     command_window.create(0, 0,  7 * 16, 16, 1, {"Endless"/*, "Score", "Puzzle", "Mission", "Versus"*/});
     command_window.center(BOTTOM_SCREEN_WIDTH, BOTTOM_SCREEN_WIDTH);
     command_window.set_active(true);
+    version.create(version_str, 0, 0);
+    version.set_x(BOTTOM_SCREEN_WIDTH - version.get_width());
 }
 
 void TitleScene::update()
@@ -56,4 +59,5 @@ void TitleScene::draw_top()
 void TitleScene::draw_bottom()
 {
     command_window.draw();
+    version.draw();
 }

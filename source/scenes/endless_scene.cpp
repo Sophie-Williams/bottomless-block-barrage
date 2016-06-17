@@ -44,11 +44,11 @@ void EndlessScene::initialize()
     border.create(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
     debug.create(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
 
-    game_over.create(0, 0, "Game Over, Save Replay?");
+    game_over.create("Game Over\nSave Replay?", 0, 0);
     game_over.set_hidden(true);
     game_over.centerx(TOP_SCREEN_WIDTH);
 
-    try_again.create(0, 0, "Try Again?");
+    try_again.create("Try Again?", 0, 0);
     try_again.set_hidden(true);
     try_again.centerx(TOP_SCREEN_WIDTH);
 
