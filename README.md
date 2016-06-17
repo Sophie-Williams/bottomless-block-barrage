@@ -37,5 +37,6 @@ New Gameplay features
 2) If you care not to build everything then just type make [elf, cia, 3ds, 3dsx] to build the corresponding format, or make citra to run it in citra (requires citra to be installed and in your $PATH)
 
 ## Credits
-Panel Graphics are based off http://thewolfbunny.deviantart.com/art/Pokemon-Puzzle-Challenge-Panels-TA-Style-510289235 by TheWolfBunny
-Text is generated from http://www.codehead.co.uk/cbfg/, and using flarn2006's SF2DBmpFont library to render it.
+[Panel Graphics](http://thewolfbunny.deviantart.com/art/Pokemon-Puzzle-Challenge-Panels-TA-Style-510289235) by TheWolfBunny
+
+Font is generated from http://www.codehead.co.uk/cbfg/, and using flarn2006's SF2DBmpFont library to render it.
