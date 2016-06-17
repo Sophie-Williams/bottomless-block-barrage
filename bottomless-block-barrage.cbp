@@ -485,6 +485,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/util/unnamed.cpp" />
+		<Unit filename="source/util/unnamed.hpp" />
 		<Unit filename="source/util/widget.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -519,6 +521,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/version.hpp" />
 		<Unit filename="source/windows/ccc_window.cpp">
 			<Option target="release" />
 			<Option target="citra" />
