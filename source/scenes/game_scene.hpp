@@ -5,6 +5,7 @@
 #include <util/command_window.hpp>
 #include <util/text.hpp>
 #include <util/texture.hpp>
+#include <string>
 #include "panel_table.hpp"
 #include "animation_params.hpp"
 #include "moves_recorder.hpp"
@@ -21,8 +22,11 @@ class GameScene : public Scene
 public:
     struct Config
     {
+        // Either replay_filename is set or difficulty/level
         Difficulty difficulty;
         int level;
+
+        std::string replay_filename;
     };
 
     GameScene(const Config& c) : config(c), level(c.level) {}

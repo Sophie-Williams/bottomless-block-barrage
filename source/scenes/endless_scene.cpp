@@ -1,7 +1,6 @@
 #include "endless_scene.hpp"
 #include "game_common.hpp"
 
-#include <algorithm>
 #include <ctime>
 
 void EndlessScene::init_menu()

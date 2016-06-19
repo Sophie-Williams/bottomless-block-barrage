@@ -15,7 +15,6 @@ const std::string generate_filename()
     strftime(buffer, sizeof(buffer), "/bbb-moves/%Y-%m-%d-%X", &tstruct);*/
     sprintf(buffer, "/bbb-moves/%ld", osGetTime());
     return buffer;
-
 }
 
 void MovesRecorder::clear()
