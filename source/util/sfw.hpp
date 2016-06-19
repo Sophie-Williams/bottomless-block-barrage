@@ -1,6 +1,5 @@
-///TODO give this mini library a better name.
-#ifndef UNNAMED_HPP
-#define UNNAMED_HPP
+#ifndef SFWIDGETS_HPP
+#define SFWIDGETS_HPP
 
 enum Alignment
 {
@@ -22,7 +21,7 @@ enum Alignment
     RIGHT_BOTTOM = RIGHT|BOTTOM,
 };
 
-void unnamed_init();
-void unnamed_exit();
+void sfw_init();
+void sfw_exit();
 
 #endif

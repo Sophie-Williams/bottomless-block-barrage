@@ -1,18 +1,18 @@
 #include "animation_params.hpp"
 
-void AnimationParams::update(const PanelTable& table, bool danger)
+void AnimationParams::update(int state, bool danger)
 {
     static const std::vector<int> panel_frames = {0, 1, 2, 1, 0, 3};
     if (!danger)
         panel_counter = 0;
 
-    if ((table.is_rising() && !danger) || table.is_rised() || table.is_stopped())
+    if ((state == PanelTable::RISING && !danger) || state == PanelTable::RISED || state == PanelTable::STOPPED)
         panel = 0;
-    else if (table.is_gameover())
+    else if (state == PanelTable::GAMEOVER)
         panel = 7;
-    else if (table.is_clogged())
+    else if (state == PanelTable::CLOGGED)
         panel = 2;
-    else if (table.is_rising() && danger)
+    else if (state == PanelTable::RISING && danger)
     {
         panel_counter++;
         panel = panel_frames[(panel_counter >> 2) % panel_frames.size()];

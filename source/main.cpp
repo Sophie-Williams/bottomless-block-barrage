@@ -7,7 +7,7 @@
 
 #include <scenes/scene.hpp>
 #include <scenes/title_scene.hpp>
-#include <util/unnamed.hpp>
+#include <util/sfw.hpp>
 
 Scene* current_scene = NULL;
 
@@ -17,7 +17,7 @@ int main()
     sf2d_init();
     sf2d_set_clear_color(RGBA8(0x0, 0x0, 0x0, 0xFF));
     sf2d_set_3D(0);
-    unnamed_init();
+    sfw_init();
 
     std::unique_ptr<Scene> scene;
     current_scene = new TitleScene();
@@ -39,7 +39,7 @@ int main()
         sf2d_swapbuffers();
     }
 
-    unnamed_exit();
+    sfw_exit();
     sf2d_fini();
     romfsExit();
 

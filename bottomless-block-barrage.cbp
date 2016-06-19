@@ -313,6 +313,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/scenes/game_scene.cpp" />
+		<Unit filename="source/scenes/game_scene.hpp" />
 		<Unit filename="source/scenes/puzzle_select_scene.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -451,6 +453,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/util/sfw.cpp" />
+		<Unit filename="source/util/sfw.hpp" />
 		<Unit filename="source/util/slider.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -485,8 +489,6 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
-		<Unit filename="source/util/unnamed.cpp" />
-		<Unit filename="source/util/unnamed.hpp" />
 		<Unit filename="source/util/widget.cpp">
 			<Option target="release" />
 			<Option target="citra" />

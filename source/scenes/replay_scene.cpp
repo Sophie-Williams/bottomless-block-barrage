@@ -125,7 +125,7 @@ void ReplayScene::update()
         last_match = minfo;
     }
 
-    frames.update(panel_table, panel_table.is_warning());
+    frames.update(panel_table.get_state(), panel_table.is_warning());
     last_frame = osGetTime();
     recorder.update();
     frame++;

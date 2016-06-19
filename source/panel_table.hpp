@@ -72,6 +72,7 @@ public:
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
     bool is_win_puzzle() const {return state == WIN_PUZZLE;}
+    int get_state() {return state;}
 
     bool is_warning() const;
     bool is_danger() const;

@@ -3,13 +3,7 @@
 
 #include <util/window.hpp>
 #include <util/bar.hpp>
-
-enum Difficulty
-{
-    EASY = 0,
-    NORMAL = 1,
-    HARD = 2,
-};
+#include <scenes/game_scene.hpp> // For Difficulty
 
 class InfoWindow : public Window
 {
