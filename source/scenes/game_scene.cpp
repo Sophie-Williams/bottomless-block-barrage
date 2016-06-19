@@ -257,7 +257,8 @@ void GameScene::draw_panels()
 {
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();
-    const int panel_size = PANEL_SIZE + 2;
+    /// TODO extensible panel sizes
+    const int panel_size = PANEL_SIZE;
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
 
@@ -298,7 +299,7 @@ void GameScene::draw_selector()
 {
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();
-    const int panel_size = PANEL_SIZE + 2;
+    const int panel_size = PANEL_SIZE;
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
 
