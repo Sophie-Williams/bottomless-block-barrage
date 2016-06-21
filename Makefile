@@ -116,6 +116,9 @@ elf: $(BUILD) $(OUTPUT_DIR)
 spunch: $(BUILD) $(OUTPUT_DIR)
 	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
+3dsxlink: $(BUILD) $(OUTPUT_DIR)
+	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 
@@ -225,6 +228,9 @@ citra : $(OUTPUT_FILE).elf
 
 spunch : $(OUTPUT_FILE).cia
 	java -jar ../sockfile-2.0.jar $(IP3DS) $(OUTPUT_FILE).cia
+
+3dsxlink : $(OUTPUT_FILE).3dsx
+	3dslink -a $(IP3DS) $(OUTPUT_FILE).3dsx
 
 #---------------------------------------------------------------------------------
 # Binary Data Rules

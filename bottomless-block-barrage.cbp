@@ -86,6 +86,18 @@
 					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
 				</MakeCommands>
 			</Target>
+			<Target title="3dsxlink">
+				<Option type="4" />
+				<Option compiler="gcc" />
+				<MakeCommands>
+					<Build command="$make -f $makefile $target" />
+					<CompileFile command="$make -f $makefile source/$file" />
+					<Clean command="$make -f $makefile clean" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -f $makefile $target &gt; $(CMD_NULL)" />
+				</MakeCommands>
+			</Target>
 			<Target title="spunch">
 				<Option type="4" />
 				<Option compiler="gcc" />
@@ -369,6 +381,8 @@
 		</Unit>
 		<Unit filename="source/util/BmpFont.cpp" />
 		<Unit filename="source/util/BmpFont.h" />
+		<Unit filename="source/util/background.cpp" />
+		<Unit filename="source/util/background.hpp" />
 		<Unit filename="source/util/bar.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -377,6 +391,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="source/util/bar.hpp">
 			<Option target="release" />
@@ -386,6 +401,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="source/util/color_modulation.cpp">
 			<Option target="release" />
@@ -497,6 +513,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="source/util/widget.hpp">
 			<Option target="release" />
@@ -506,6 +523,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="source/util/window.cpp">
 			<Option target="release" />
@@ -532,6 +550,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="source/windows/ccc_window.hpp">
 			<Option target="release" />
@@ -541,6 +560,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="source/windows/info_window.cpp">
 			<Option target="release" />
@@ -550,6 +570,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="source/windows/info_window.hpp">
 			<Option target="release" />
@@ -559,6 +580,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 			<Option target="spunch" />
+			<Option target="3dsxlink" />
 		</Unit>
 		<Unit filename="testing/panel_table_test.cpp" />
 		<Extensions>
