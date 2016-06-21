@@ -13,7 +13,7 @@ const std::string generate_filename()
     /*time_t now = time(0);
     struct tm tstruct = *localtime(&now);
     strftime(buffer, sizeof(buffer), "/bbb-moves/%Y-%m-%d-%X", &tstruct);*/
-    sprintf(buffer, "/bbb-moves/%ld", osGetTime());
+    sprintf(buffer, "/bbb-moves/%lld", osGetTime());
     return buffer;
 }
 
