@@ -12,7 +12,7 @@ Game Modes that will be supported
 * Versus Barrage - 2 player game with AI (and possibly online play)
 
 New Gameplay features
-* New concept of "Chaining" (chaining as defined by previous entries is renamed to cascading here) in which you match groups of 3 rapidly before blocks are removed from the board.
+* Introducing C-Links (Chain Links) in which you match groups of 3 or more rapidly before blocks are removed from the board.
 
 
 ## The demo
