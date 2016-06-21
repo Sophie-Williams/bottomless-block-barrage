@@ -270,7 +270,8 @@ void GameScene::draw_panels()
         for (int j = 0; j < panel_table.width(); j++)
         {
             const Panel& panel = panel_table.get(i, j);
-            if (panel.value == Panel::EMPTY) continue;
+            int status = panel.frame(frames.panel);
+            if (panel.value == Panel::EMPTY || status == -1) continue;
 
             int x = startx + j * panel_size + panel_size / 2 + 2;
             int y = starty + (i + 1) * panel_size + panel_size / 2 - offset + 2;
@@ -278,7 +279,7 @@ void GameScene::draw_panels()
             if (panel.is_right_swap()) x -= panel_size / 2;
             if (panel.is_left_swap()) x += panel_size / 2;
 
-            panels.draw(x, y, (panel.value - 1) * PANEL_SIZE, panel.frame(frames.panel) * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
+            panels.draw(x, y, (panel.value - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
         }
     }
 

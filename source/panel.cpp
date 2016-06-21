@@ -111,8 +111,12 @@ int Panel::frame(int def) const
     static const std::vector<int> panel_fell_frames = {3, 2, 1};
     int frame = def;
 
-    if (is_removed())
+    if (is_pending_match())
+        frame = 6;
+    else if (is_matched())
         frame = 5;
+    else if (is_removed())
+        frame = -1;
     else if (is_falling() || is_fall_end())
         frame = 0;
     else if (is_fell_idle())
