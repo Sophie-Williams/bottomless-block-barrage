@@ -16,15 +16,15 @@ void CCCWindow::draw()
 
     char buf[9];
 
-    sprintf(buf, "%d", info.cascade);
-    draw_text("Cascade", 0, 0);
+    sprintf(buf, "%d", info.chain);
+    draw_text("Chain", 0, 0);
     draw_text(buf, 0, 16, 64, 16, 0xFFFFFFFF, RIGHT_CENTER);
 
     sprintf(buf, "%d", info.combo);
     draw_text("Combo", 0, 32);
     draw_text(buf, 0, 48, 64, 16, 0xFFFFFFFF, RIGHT_CENTER);
 
-    sprintf(buf, "%d", info.chain);
-    draw_text("Chain", 0, 64);
+    sprintf(buf, "%d", info.clink);
+    draw_text("C-link", 0, 64);
     draw_text(buf, 0, 80, 64, 16, 0xFFFFFFFF, RIGHT_CENTER);
 }

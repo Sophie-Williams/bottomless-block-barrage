@@ -42,7 +42,7 @@ void Panel::update()
         // Panel table handles transitioning to FALLING again.
         state = State::IDLE_FELL;
         countdown = settings->idle_fell;
-        cascade = false;
+        chain = false;
     }
     else if (is_fell_idle())
     {
@@ -80,7 +80,7 @@ void Panel::update()
     else if (is_match_end())
     {
         state = State::IDLE;
-        cascade = false;
+        chain = false;
     }
 }
 
@@ -91,11 +91,11 @@ void Panel::swap(Panel::Type swap_panel, bool is_left)
     countdown = settings->swap;
 }
 
-void Panel::fall(bool already_falling, bool is_cascade)
+void Panel::fall(bool already_falling, bool is_chain)
 {
     state = already_falling ? State::FALLING : State::PENDING_FALL;
     countdown = already_falling ? settings->falling : settings->pending_fall;
-    cascade = is_cascade;
+    chain = is_chain;
 }
 
 void Panel::match(int index, int total)

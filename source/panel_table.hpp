@@ -19,20 +19,20 @@ struct Point
 
 struct MatchInfo
 {
-    MatchInfo() : chain(0), cascade(0), combo(0), swap_match(false), fall_match(false) {}
-    bool empty() const {return chain == 0 && cascade == 0 && combo == 0;}
+    MatchInfo() : clink(0), chain(0), combo(0), swap_match(false), fall_match(false) {}
+    bool empty() const {return clink == 0 && chain == 0 && combo == 0;}
     bool matched() const {return swap_match || fall_match;}
-    bool is_timeout() const {return combo > 3 || cascade > 0;}
+    bool is_timeout() const {return combo > 3 || chain > 0;}
     std::string str() const;
-    /** Chains are rapidly matching 3 or more blocks before they disappear */
+    /** C-links (Chain links) are rapidly matching 3 or more blocks before they disappear */
+    int clink;
+    /** Chains are sequential matches after blocks are removed */
     int chain;
-    /** Cascades are sequential matches after blocks are removed */
-    int cascade;
     /** Combos are matches of more than 3 blocks */
     int combo;
-    /** If any panels was in state IDLE then this will be true (part of a chain) */
+    /** If any panels was in state IDLE then this will be true (part of a clink) */
     bool swap_match;
-    /** If any panels was in state END_FALL this will be true (part of a cascade) */
+    /** If any panels was in state END_FALL this will be true (part of a chain) */
     bool fall_match;
 };
 
@@ -57,7 +57,7 @@ public:
         WIN_PUZZLE = 7,
     };
 
-    PanelTable() : state(RISING), type(RISES), chain(0), cascade(0) {}
+    PanelTable() : state(RISING), type(RISES), clink(0), chain(0) {}
     PanelTable(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
     PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings);
 
@@ -118,10 +118,10 @@ public:
     int rise;
     /** Hold long we are stopped */
     int cooloff;
+    /** Clink link */
+    int clink;
     /** Chain link */
     int chain;
-    /** Cascade link */
-    int cascade;
 
 private:
     bool next_horizontal_error(int j);

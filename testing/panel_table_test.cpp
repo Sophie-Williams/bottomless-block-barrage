@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE(TestUpdateMatches)
 
 
 
-BOOST_AUTO_TEST_CASE(TestCascades)
+BOOST_AUTO_TEST_CASE(TestChains)
 {
     const int columns = 6;
     const int rows = 11;
@@ -310,19 +310,19 @@ BOOST_AUTO_TEST_CASE(TestCascades)
     MatchInfo a = table.update_matches();
 
     BOOST_CHECK_EQUAL(a.combo, 3);
+    BOOST_CHECK_EQUAL(a.clink, 0);
     BOOST_CHECK_EQUAL(a.chain, 0);
-    BOOST_CHECK_EQUAL(a.cascade, 0);
     BOOST_CHECK(a.swap_match);
     BOOST_CHECK(!a.fall_match);
 
     a = Update(table);
     BOOST_CHECK_EQUAL(a.combo, 0);
+    BOOST_CHECK_EQUAL(a.clink, 0);
     BOOST_CHECK_EQUAL(a.chain, 0);
-    BOOST_CHECK_EQUAL(a.cascade, 0);
     BOOST_CHECK(!a.swap_match);
     BOOST_CHECK(!a.fall_match);
-    BOOST_CHECK_EQUAL(table.cascade, 0);
     BOOST_CHECK_EQUAL(table.chain, 0);
+    BOOST_CHECK_EQUAL(table.clink, 0);
 
     Update(table);
     Update(table);
@@ -336,14 +336,14 @@ BOOST_AUTO_TEST_CASE(TestCascades)
     Update(table); // fall
     a = Update(table); // match
     Panel& p = table.get(8, 2);
-    BOOST_CHECK(p.cascade);
+    BOOST_CHECK(p.chain);
     BOOST_CHECK_EQUAL(a.combo, 3);
-    BOOST_CHECK_EQUAL(a.chain, 0);
-    BOOST_CHECK_EQUAL(a.cascade, 1);
+    BOOST_CHECK_EQUAL(a.clink, 0);
+    BOOST_CHECK_EQUAL(a.chain, 1);
     BOOST_CHECK(!a.swap_match);
     BOOST_CHECK(a.fall_match);
-    BOOST_CHECK_EQUAL(table.cascade, 1);
-    BOOST_CHECK_EQUAL(table.chain, 0);
+    BOOST_CHECK_EQUAL(table.chain, 1);
+    BOOST_CHECK_EQUAL(table.clink, 0);
 
     Update(table);
     Update(table);
@@ -356,12 +356,12 @@ BOOST_AUTO_TEST_CASE(TestCascades)
 
     a = Update(table); // pending match
     BOOST_CHECK_EQUAL(a.combo, 3);
-    BOOST_CHECK_EQUAL(a.chain, 0);
-    BOOST_CHECK_EQUAL(a.cascade, 2);
+    BOOST_CHECK_EQUAL(a.clink, 0);
+    BOOST_CHECK_EQUAL(a.chain, 2);
     BOOST_CHECK(!a.swap_match);
     BOOST_CHECK(a.fall_match);
-    BOOST_CHECK_EQUAL(table.cascade, 2);
-    BOOST_CHECK_EQUAL(table.chain, 0);
+    BOOST_CHECK_EQUAL(table.chain, 2);
+    BOOST_CHECK_EQUAL(table.clink, 0);
 
     Update(table); // matched
     Update(table);
@@ -377,12 +377,12 @@ BOOST_AUTO_TEST_CASE(TestCascades)
 
     a = Update(table); // end_fall ->match
     BOOST_CHECK_EQUAL(a.combo, 3);
-    BOOST_CHECK_EQUAL(a.chain, 0);
-    BOOST_CHECK_EQUAL(a.cascade, 3);
+    BOOST_CHECK_EQUAL(a.clink, 0);
+    BOOST_CHECK_EQUAL(a.chain, 3);
     BOOST_CHECK(!a.swap_match);
     BOOST_CHECK(a.fall_match);
-    BOOST_CHECK_EQUAL(table.cascade, 3);
-    BOOST_CHECK_EQUAL(table.chain, 0);
+    BOOST_CHECK_EQUAL(table.chain, 3);
+    BOOST_CHECK_EQUAL(table.clink, 0);
 
     Update(table); // matched
     Update(table);
@@ -396,12 +396,12 @@ BOOST_AUTO_TEST_CASE(TestCascades)
 
     a = Update(table); // end_fall ->match
     BOOST_CHECK_EQUAL(a.combo, 3);
-    BOOST_CHECK_EQUAL(a.chain, 0);
-    BOOST_CHECK_EQUAL(a.cascade, 4);
+    BOOST_CHECK_EQUAL(a.clink, 0);
+    BOOST_CHECK_EQUAL(a.chain, 4);
     BOOST_CHECK(!a.swap_match);
     BOOST_CHECK(a.fall_match);
-    BOOST_CHECK_EQUAL(table.cascade, 4);
-    BOOST_CHECK_EQUAL(table.chain, 0);
+    BOOST_CHECK_EQUAL(table.chain, 4);
+    BOOST_CHECK_EQUAL(table.clink, 0);
 
     Update(table); // matched
     Update(table);
@@ -415,10 +415,10 @@ BOOST_AUTO_TEST_CASE(TestCascades)
 
     a = Update(table); // end_fall ->match
     BOOST_CHECK_EQUAL(a.combo, 0);
+    BOOST_CHECK_EQUAL(a.clink, 0);
     BOOST_CHECK_EQUAL(a.chain, 0);
-    BOOST_CHECK_EQUAL(a.cascade, 0);
     BOOST_CHECK(!a.swap_match);
     BOOST_CHECK(!a.fall_match);
-    BOOST_CHECK_EQUAL(table.cascade, 0);
     BOOST_CHECK_EQUAL(table.chain, 0);
+    BOOST_CHECK_EQUAL(table.clink, 0);
 }

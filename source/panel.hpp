@@ -76,7 +76,7 @@ public:
 
     void update();
     void swap(Type swap_to, bool is_left);
-    void fall(bool already_falling, bool is_cascade = false);
+    void fall(bool already_falling, bool is_chain = false);
     void match(int index, int total);
     int frame(int def) const;
 
@@ -92,7 +92,7 @@ public:
     int countdown = 0;
     int match_time = 0;
     int remove_time = 0;
-    bool cascade = false;
+    bool chain = false;
 };
 
 #endif

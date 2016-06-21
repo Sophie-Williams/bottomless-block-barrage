@@ -42,7 +42,7 @@ void EndlessScene::update_on_matched()
     info.set_experience(experience, needed);
     if (current_match.is_timeout())
     {
-        int timeout = calculate_timeout(current_match.combo, current_match.cascade + 1,
+        int timeout = calculate_timeout(current_match.combo, current_match.chain + 1,
                                         3 - (int)config.difficulty, panel_table.is_danger());
         info.set_timeout(timeout);
     }

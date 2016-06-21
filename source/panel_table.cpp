@@ -16,7 +16,7 @@
 
 PanelTable::PanelTable(int height, int width, int num_colors, const PanelSpeedSettings& ssettings) :
      panels(width * (height + 1)), settings(ssettings), rows(height), columns(width), colors(num_colors), state(RISING),
-     type(RISES), chain(0), cascade(0)
+     type(RISES), clink(0), chain(0)
 {
     generate();
 }
@@ -74,8 +74,8 @@ void PanelTable::generate()
     state = RISING;
     rise = 0;
     cooloff = 0;
+    clink = 0;
     chain = 0;
-    cascade = 0;
 
     for (int i = 0; i < rows; i++)
     {
@@ -252,8 +252,8 @@ MatchInfo PanelTable::update_matches(void)
     for (const auto& pt : remove)
     {
         auto& panel = get(pt.y, pt.x);
-        match_info.fall_match |= (panel.is_fall_end() && panel.cascade);
-        match_info.swap_match &= !(panel.is_fall_end() && panel.cascade);
+        match_info.fall_match |= (panel.is_fall_end() && panel.chain);
+        match_info.swap_match &= !(panel.is_fall_end() && panel.chain);
         panel.match(index, remove.size());
         index--;
     }
@@ -360,8 +360,8 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
 {
     bool need_update_matches = false;
     bool need_generate_next = false;
+    bool in_clink = false;
     bool in_chain = false;
-    bool in_cascade = false;
 
     if (is_rised() && (type & RISES))
     {
@@ -384,7 +384,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         for (int x = 0; x < columns; x++)
         {
             auto& panel = get(y, x);
-            bool panel_in_cascade = panel.cascade;
+            bool panel_in_chain = panel.chain;
             //if (panel.empty() && panel.is_idle()) continue;
 
             auto& below = get(y + 1, x);
@@ -397,9 +397,9 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
                 {
                     below.value = panel.value;
                     panel.value = Panel::Type::EMPTY;
-                    below.fall(true, panel.cascade);
+                    below.fall(true, panel.chain);
                     panel.state = Panel::State::IDLE;
-                    panel.cascade = false;
+                    panel.chain = false;
                 }
                 else
                     need_update_matches = true;
@@ -411,24 +411,24 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
             else if ((panel.is_idle() || panel.is_swapped()) && !panel.empty() && y < rows - 1)
             {
                 if (below.is_falling_process() || below.empty())
-                    panel.fall(false, below.is_match_end() || below.cascade);
+                    panel.fall(false, below.is_match_end() || below.chain);
             }
 
             if (panel.is_swapped())
                 need_update_matches = true;
 
-            in_chain |= panel.is_match_process();
-            in_cascade |= panel_in_cascade;
+            in_clink |= panel.is_match_process();
+            in_chain |= panel_in_chain;
         }
     }
 
-    if (!in_chain)
+    if (!in_clink)
+    {
+        clink = 0;
+    }
+    if (!(in_clink || in_chain))
     {
         chain = 0;
-    }
-    if (!(in_chain || in_cascade))
-    {
-        cascade = 0;
     }
 
     MatchInfo info;
@@ -438,15 +438,15 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         generate_next();
 
     if (info.fall_match)
-        cascade++;
-    if (info.swap_match)
         chain++;
+    if (info.swap_match)
+        clink++;
 
+    info.clink = clink;
     info.chain = chain;
-    info.cascade = cascade;
 
     // Board is stopped while matches are being removed.
-    if (in_chain)
+    if (in_clink)
         return info;
 
     if (is_puzzle() && !(is_gameover() || is_win_puzzle()))
@@ -520,7 +520,7 @@ std::string PanelTable::str() const
     std::stringstream oss;
     for (unsigned int i = 0; i < panels.size(); i++)
     {
-        oss << (int)panels[i].value << "(" << panels[i].state << "|" << panels[i].cascade << ") ";
+        oss << (int)panels[i].value << "(" << panels[i].state << "|" << panels[i].chain << ") ";
         if (i % columns == (unsigned int)columns - 1) oss << "\n";
     }
     oss << "\n";
@@ -531,8 +531,8 @@ std::string MatchInfo::str() const
 {
     std::stringstream oss;
     oss << "Combo: " << combo << "\n"
+        << "C-Link: " << clink << "\n"
         << "Chain: " << chain << "\n"
-        << "Cascade: " << cascade << "\n"
         << "Swapped? " << swap_match << " Fall? " << fall_match << "\n";
     return oss.str();
 }

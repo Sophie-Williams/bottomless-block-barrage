@@ -195,14 +195,14 @@ void GameScene::update_match()
 
 void GameScene::update_on_timeout()
 {
-    current_timeout = calculate_timeout(last_match.combo, last_match.cascade + 1,
+    current_timeout = calculate_timeout(last_match.combo, last_match.chain + 1,
                                     3 - (int)config.difficulty, panel_table.is_danger());
     panel_table.set_timeout(current_timeout);
 }
 
 void GameScene::update_score()
 {
-    score += calculate_score(current_match.combo, current_match.cascade);
+    score += calculate_score(current_match.combo, current_match.chain);
 }
 
 void GameScene::update_level()
