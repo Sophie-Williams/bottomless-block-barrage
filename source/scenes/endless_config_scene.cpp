@@ -2,6 +2,8 @@
 #include "title_scene.hpp"
 #include "endless_scene.hpp"
 
+#include "menu_background_gfx.h"
+
 
 void EndlessConfigScene::initialize()
 {
@@ -13,12 +15,19 @@ void EndlessConfigScene::initialize()
     level_text.create("Level", 0, y);
     level_slider.create(1, 100, 1, 80 + 8, y + 4, 100, 4);
     level_slider.set_value(saved_config.level);
+
+    menu_background_top.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
+                               -1, 1, Background::Autoscroll | Background::Repeating | Background::TopScreen);
+    menu_background_bottom.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
+                                  -1, 1, Background::Autoscroll | Background::Repeating | Background::BottomScreen);
 }
 
 void EndlessConfigScene::update()
 {
     difficulty_choices.update();
     level_slider.update();
+    menu_background_top.update();
+    menu_background_bottom.update();
 
     if (difficulty_choices.is_active())
         update_difficulty_select();
@@ -66,10 +75,12 @@ void EndlessConfigScene::update_level_select()
 
 void EndlessConfigScene::draw_top()
 {
+    menu_background_top.draw();
 }
 
 void EndlessConfigScene::draw_bottom()
 {
+    menu_background_bottom.draw();
     difficulty_choices.draw();
     level_text.draw();
     level_slider.draw();

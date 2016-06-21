@@ -4,6 +4,7 @@
 #include "scene.hpp"
 #include "endless_scene.hpp"
 #include <util/texture.hpp>
+#include <util/background.hpp>
 #include <util/command_window.hpp>
 #include <util/slider.hpp>
 #include <util/text.hpp>
@@ -25,6 +26,8 @@ private:
     CommandWindow difficulty_choices;
     Text level_text;
     Slider level_slider;
+    Background menu_background_top;
+    Background menu_background_bottom;
 };
 
 #endif
