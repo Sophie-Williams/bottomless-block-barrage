@@ -101,8 +101,8 @@ void Panel::fall(bool already_falling, bool is_cascade)
 void Panel::match(int index, int total)
 {
     state = State::PENDING_MATCH;
-    match_time = (index + 1) * settings->match;
-    remove_time = (total + 1) * settings->match;
+    match_time = settings->first_removed + index * settings->subsequent_removed;
+    remove_time = settings->first_removed + total * settings->subsequent_removed;
     countdown = settings->pending_match;
 }
 

@@ -12,7 +12,8 @@ struct PanelSpeedSettings
     int pending_fall;
     int falling;
     int pending_match;
-    int match;
+    int first_removed;
+    int subsequent_removed;
     int idle_fell;
 };
 

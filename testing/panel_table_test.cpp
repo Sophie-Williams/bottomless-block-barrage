@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(TestFall)
         1, 0, 0, 0, 0, 0,
         8, 8, 8, 8, 8, 8,
     };
-    PanelSpeedSettings speed_settings = {1, 1, 1, 1, 1, 1};
+    PanelSpeedSettings speed_settings = {1, 1, 1, 1, 1, 1, 1};
     PanelTable table(rows, columns, colors, speed_settings);
     set_data(table, data);
     table.type = PanelTable::Type::PUZZLE;
