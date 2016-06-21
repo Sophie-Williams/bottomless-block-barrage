@@ -3,9 +3,9 @@
 #include <map>
 
 PanelSpeedSettings slow_speed_settings   = {8, 12, 8, 72, 36, 12, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 36, 18, 6, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings normal_speed_settings = {3, 5, 3, 27, 13, 4, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings hard_speed_settings   = {2, 4, 2, 18, 9, 3, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 54, 27, 9, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings normal_speed_settings = {3, 5, 3, 40, 20, 6, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings hard_speed_settings   = {2, 4, 2, 27, 13, 4, FALL_ANIMATION_FRAMES};
 
 const int CHAIN_VALUE[24] =
 {

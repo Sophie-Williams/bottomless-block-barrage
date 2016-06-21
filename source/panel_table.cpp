@@ -411,7 +411,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
             else if ((panel.is_idle() || panel.is_swapped()) && !panel.empty() && y < rows - 1)
             {
                 if (below.is_falling_process() || below.empty())
-                    panel.fall(false, below.is_match_end() || below.chain);
+                    panel.fall(panel.is_idle(), below.is_match_end() || below.chain);
             }
 
             if (panel.is_swapped())

@@ -18,7 +18,7 @@ void set_data(PanelTable& table, const int* data)
 MatchInfo Update(PanelTable& table)
 {
     MatchInfo ret = table.update(1, 4, false);
-    printf("%s\n", ret.str().c_str());
+    //printf("%s\n", ret.str().c_str());
     //PrintPanelTable(table);
     return ret;
 }
@@ -332,7 +332,6 @@ BOOST_AUTO_TEST_CASE(TestChains)
 
     Update(table);
     Update(table);
-    Update(table);
     Update(table); // fall
     a = Update(table); // match
     Panel& p = table.get(8, 2);
@@ -351,7 +350,6 @@ BOOST_AUTO_TEST_CASE(TestChains)
     Update(table);
     Update(table); // removed
 
-    Update(table);
     Update(table); // fall
 
     a = Update(table); // pending match
@@ -372,7 +370,6 @@ BOOST_AUTO_TEST_CASE(TestChains)
 
     Update(table); // idle being fall
     Update(table);
-    Update(table);
     Update(table); // fall
 
     a = Update(table); // end_fall ->match
@@ -391,7 +388,6 @@ BOOST_AUTO_TEST_CASE(TestChains)
 
     Update(table); // end match / pending fall
 
-    Update(table); // idle being fall
     Update(table); // fall
 
     a = Update(table); // end_fall ->match
