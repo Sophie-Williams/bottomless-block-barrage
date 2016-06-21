@@ -15,19 +15,21 @@ const int CHAIN_VALUE[24] =
     3800, 4200, 4600, 5000, 5500, 6000
 };
 
-int recursive_combo_score(int combo, int combonum)
+const int COMBO_VALUE[73] =
 {
-    int scored = 0;
-    if (combo > 3 && combo <= 5)
-        scored = 10 * (combonum - 2);
-    else if (combo > 5)
-        scored = 10 * (combonum - combo - 1) + recursive_combo_score(combo - 2, combonum);
-    return scored;
+    0, 0, 0, 30, 60, 80, 90, 110, 140, 160, 210,
+    230, 300, 320, 410, 430, 540, 560, 690, 710, 860,
+    880, 1050, 1070, 1260, 1280, 1490, 1510, 1740, 1760, 2010,
+    2030, 2300, 2320, 2610, 2630, 2940, 2960, 3290, 3310, 3660,
+    3680, 4050, 4070, 4460, 4480, 4890, 4910, 5340, 5360, 5810,
+    5830, 6300, 6320, 6810, 6830, 7340, 7360, 7890, 7910, 8460,
+    8480, 9050, 9070, 9660, 9680, 10290, 10310, 10940, 10960, 11610,
+    11630, 12300,
 }
 
 int calculate_score(int combo_num, int chain_num)
 {
-    return CHAIN_VALUE[chain_num] +  10 * combo_num + recursive_combo_score(combo_num, combo_num);
+    return CHAIN_VALUE[chain_num] + COMBO_VALUE[combo_num];
 }
 
 int calculate_timeout(int combo, int chain, int difficulty, bool in_danger)
