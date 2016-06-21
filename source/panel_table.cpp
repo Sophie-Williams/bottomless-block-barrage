@@ -485,8 +485,8 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         }
         else
         {
-            rise += fast_rise ? (max_wait / 9) : time;
-            if ((int) rise >= max_wait)
+            rise += time;
+            if ((int) rise >= max_wait || fast_rise)
                 state = GAMEOVER;
         }
     }
@@ -501,7 +501,8 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         cooloff -= time;
         if (cooloff <= 0)
         {
-            state = RISING;
+            state = previous_state;
+            previous_state = 0;
             cooloff = 0;
         }
     }
@@ -512,6 +513,8 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
 void PanelTable::set_timeout(int timeout)
 {
     cooloff = timeout;
+    if (!is_stopped())
+        previous_state = state;
     state = STOPPED;
 }
 

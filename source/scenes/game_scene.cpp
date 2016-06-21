@@ -255,14 +255,17 @@ void GameScene::draw_gameover_bottom()
 
 void GameScene::draw_panels()
 {
-    int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2;
+    // 2 px addition to accomadate selector.
+    int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 2;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();
     /// TODO extensible panel sizes
     const int panel_size = PANEL_SIZE;
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
 
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised()))
+    /// TODO clean up this section of code.
+    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised() ||
+                                     panel_table.was_rised()))
         offset = panel_size;
 
     for (int i = 0; i < panel_table.height(); i++)
@@ -304,10 +307,11 @@ void GameScene::draw_selector()
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
 
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised()))
+    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised() ||
+                                     panel_table.was_rised()))
         offset = panel_size;
 
-    int x = startx + selector_x * panel_size + panel_size / 2 - 2;
+    int x = startx + selector_x * panel_size + panel_size / 2;
     int y = starty + (selector_y + 1) * panel_size + panel_size / 2 - offset - 2;
     selector.draw(x, y, 0, frames.selector * SELECTOR_GFX_HEIGHT / 2, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT / 2);
 }

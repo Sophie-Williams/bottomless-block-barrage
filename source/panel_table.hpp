@@ -72,6 +72,7 @@ public:
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
     bool is_win_puzzle() const {return state == WIN_PUZZLE;}
+    bool was_rised() const {return previous_state == CLOGGED || previous_state == RISED;}
     int get_state() {return state;}
 
     bool is_warning() const;
@@ -118,6 +119,8 @@ public:
     int rise;
     /** Hold long we are stopped */
     int cooloff;
+    /** Previous state before we transitioned to STOPPED */
+    int previous_state = 0;
     /** Clink link */
     int clink;
     /** Chain link */
