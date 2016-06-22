@@ -2,14 +2,14 @@
 #include "scenes/scene.hpp" // FOR Screen Sizes
 
 Background::Background(const void* src_buffer, int sw, int sh, int sx, int sy, unsigned int style) :
-    Widget(0, 0, sw, sh, style), texture(src_buffer, sw, sh, TEXFMT_RGBA8, SF2D_PLACE_RAM), speed_x(sx), speed_y(sy)
+    Widget(0, 0, sw, sh, style), texture(src_buffer, sw, sh), speed_x(sx), speed_y(sy)
 {
 }
 
 void Background::create(const void* src_buffer, int sw, int sh, int sx, int sy, unsigned int style)
 {
     Widget::create(0, 0, sw, sh, style);
-    texture.create(src_buffer, sw, sh, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+    texture.create(src_buffer, sw, sh);
     speed_x = sx;
     speed_y = sy;
 }

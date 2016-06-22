@@ -61,7 +61,7 @@ public:
 
     void draw_text(const std::string& str, int wx, int wy, u32 color = 0xFFFFFFFF);
     void draw_text(const std::string& str, int wx, int wy, int ww, int wh, u32 color = 0xFFFFFFFF, Alignment align = LEFT_CENTER);
-    static void set_skin(const void *src_buffer, sf2d_texfmt pixel_format, sf2d_place place);
+    static void set_skin(const void *src_buffer, sf2d_texfmt pixel_format = TEXFMT_RGBA8, sf2d_place place = SF2D_PLACE_RAM);
     static WindowSkin skin;
 };
 

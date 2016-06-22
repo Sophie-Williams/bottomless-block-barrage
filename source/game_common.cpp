@@ -2,10 +2,10 @@
 #include <algorithm>
 #include <map>
 
-PanelSpeedSettings slow_speed_settings   = {8, 12, 8, 72, 36, 12, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 54, 27, 9, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings normal_speed_settings = {3, 5, 3, 40, 20, 6, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings hard_speed_settings   = {2, 4, 2, 27, 13, 4, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings slow_speed_settings   = {8, 12, 8, 72, 36, 12, FALL_ANIMATION_FRAMES, false};
+PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 66, 33, 11, FALL_ANIMATION_FRAMES, false};
+PanelSpeedSettings normal_speed_settings = {3, 5, 3, 45, 25, 9, FALL_ANIMATION_FRAMES, false};
+PanelSpeedSettings hard_speed_settings   = {2, 4, 2, 33, 17, 6, FALL_ANIMATION_FRAMES, false};
 
 const int CHAIN_VALUE[24] =
 {
@@ -15,6 +15,7 @@ const int CHAIN_VALUE[24] =
     3800, 4200, 4600, 5000, 5500, 6000
 };
 
+/// TODO verify these values.
 const int COMBO_VALUE[73] =
 {
     0, 0, 0, 30, 60, 80, 90, 110, 140, 160, 210,

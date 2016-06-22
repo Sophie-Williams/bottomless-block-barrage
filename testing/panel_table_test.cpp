@@ -9,6 +9,8 @@
 #include <memory>
 #include <panel_table.hpp>
 
+PanelSpeedSettings speed_settings = {1, 1, 1, 1, 1, 1, false};
+
 void set_data(PanelTable& table, const int* data)
 {
     for (unsigned int i = 0; i < table.panels.size(); i++)
@@ -43,7 +45,6 @@ BOOST_AUTO_TEST_CASE(TestFall)
         1, 0, 0, 0, 0, 0,
         8, 8, 8, 8, 8, 8,
     };
-    PanelSpeedSettings speed_settings = {1, 1, 1, 1, 1, 1, 1};
     PanelTable table(rows, columns, colors, speed_settings);
     set_data(table, data);
     table.type = PanelTable::Type::PUZZLE;
@@ -70,7 +71,7 @@ BOOST_AUTO_TEST_CASE(TestFall)
     // swapped -> idle
     BOOST_CHECK_EQUAL(swapee.state, Panel::State::IDLE);
     // swapped -> pending fall
-    BOOST_CHECK_EQUAL(swaper.state, Panel::State::FALLING);
+    BOOST_CHECK_EQUAL(swaper.state, Panel::State::PENDING_FALL);
 
     BOOST_CHECK_EQUAL(swapee.value, Panel::Type::EMPTY);
     BOOST_CHECK_EQUAL(swaper.value, (Panel::Type) 2);
@@ -143,7 +144,6 @@ BOOST_AUTO_TEST_CASE(TestStackDown)
         0, 0, 0, 0, 0, 0,
         8, 8, 8, 8, 8, 8,
     };
-    PanelSpeedSettings speed_settings = {1, 1, 1, 1, 1, 1};
     PanelTable table(rows, columns, colors, speed_settings);
     set_data(table, data);
     table.type = PanelTable::Type::PUZZLE;
@@ -217,7 +217,6 @@ BOOST_AUTO_TEST_CASE(TestUpdateMatches)
         1, 1, 1, 0, 1, 1,
         8, 8, 8, 8, 8, 8,
     };
-    PanelSpeedSettings speed_settings = {1, 1, 1, 1, 1, 1};
     PanelTable table(rows, columns, colors, speed_settings);
     set_data(table, data);
     table.type = PanelTable::Type::PUZZLE;
@@ -301,7 +300,6 @@ BOOST_AUTO_TEST_CASE(TestChains)
 
         8, 8, 8, 8, 8, 8,
     };
-    PanelSpeedSettings speed_settings = {1, 1, 1, 1, 1, 1};
     PanelTable table(rows, columns, colors, speed_settings);
     set_data(table, data);
     table.type = PanelTable::Type::PUZZLE;

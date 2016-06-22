@@ -453,6 +453,8 @@
 		</Unit>
 		<Unit filename="source/util/hid_helper.cpp" />
 		<Unit filename="source/util/hid_helper.hpp" />
+		<Unit filename="source/util/image_selector.cpp" />
+		<Unit filename="source/util/image_selector.hpp" />
 		<Unit filename="source/util/resource_manager.cpp">
 			<Option target="release" />
 			<Option target="citra" />

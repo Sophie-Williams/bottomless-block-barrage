@@ -5,8 +5,10 @@
 #include "endless_config_scene.hpp"
 
 #include "game_common.hpp"
+#include "panel.hpp"
 
 #include "panels_gfx.h"
+#include "panels2_gfx.h"
 #include "border_gfx.h"
 #include "selector_gfx.h"
 #include "debug_text.h"
@@ -45,10 +47,20 @@ void GameScene::init_panel_table()
 
 void GameScene::init_sprites()
 {
-    panels.create(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-    selector.create(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-    border.create(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
-    debug.create(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+    /// TODO make this more extensible
+    switch (config.panel_gfx)
+    {
+        case 0:
+            panels.create(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT);
+            break;
+        case 1:
+            panels.create(panels2_gfx, PANELS2_GFX_WIDTH, PANELS2_GFX_HEIGHT);
+            break;
+    }
+
+    selector.create(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT);
+    border.create(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT);
+    debug.create(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT);
 
     frames.reset();
 }
@@ -264,8 +276,7 @@ void GameScene::draw_panels()
     int offset = panel_table.rise / step;
 
     /// TODO clean up this section of code.
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised() ||
-                                     panel_table.was_rised()))
+    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised()))
         offset = panel_size;
 
     for (int i = 0; i < panel_table.height(); i++)
@@ -275,6 +286,7 @@ void GameScene::draw_panels()
             const Panel& panel = panel_table.get(i, j);
             int status = panel.frame(frames.panel);
             if (panel.value == Panel::EMPTY || status == -1) continue;
+            if (panel_table.is_gameover()) status = Panel::LOST;
 
             int x = startx + j * panel_size + panel_size / 2 + 2;
             int y = starty + (i + 1) * panel_size + panel_size / 2 - offset + 2;
@@ -290,13 +302,27 @@ void GameScene::draw_panels()
     {
         const int i = panel_table.height();
         const Panel& panel = panel_table.get(i, j);
-        int status = (panel_table.is_gameover() ? 7 : 4);
+        int status = (panel_table.is_gameover() ? Panel::LOST : Panel::PENDING);
 
         int x = j * panel_size + 2 + startx + panel_size / 2;
         int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
 
         panels.draw(x, y, (panel.value - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
     }
+
+    /*
+    for (int i = 0; i < panel_table.height() + 1; i++)
+    {
+         for (int j = 0; j < panel_table.width(); j++)
+         {
+             const Panel& panel = panel_table.get(i, j);
+             if (panel.empty()) continue;
+             int x = j * panel_size + 2 + startx + panel_size / 2;
+             int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
+             debug.draw(x, y, panel.state * 5, 0, 5, 10);
+             debug.draw(x + 11, y + 6, panel.chain * 5, 0, 5, 10);
+        }
+    }*/
 }
 
 void GameScene::draw_selector()
@@ -307,8 +333,7 @@ void GameScene::draw_selector()
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
 
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised() ||
-                                     panel_table.was_rised()))
+    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised()))
         offset = panel_size;
 
     int x = startx + selector_x * panel_size + panel_size / 2;

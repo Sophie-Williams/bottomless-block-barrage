@@ -6,12 +6,12 @@ void AnimationParams::update(int state, bool danger)
     if (!danger)
         panel_counter = 0;
 
-    if ((state == PanelTable::RISING && !danger) || state == PanelTable::RISED || state == PanelTable::STOPPED)
-        panel = 0;
+    if ((state == PanelTable::RISING && !danger) || state == PanelTable::RISED)
+        panel = Panel::NORMAL;
     else if (state == PanelTable::GAMEOVER)
-        panel = 7;
+        panel = Panel::LOST;
     else if (state == PanelTable::CLOGGED)
-        panel = 2;
+        panel = Panel::UP;
     else if (state == PanelTable::RISING && danger)
     {
         panel_counter++;

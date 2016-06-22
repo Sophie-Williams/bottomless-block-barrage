@@ -15,6 +15,8 @@ struct PanelSpeedSettings
     int first_removed;
     int subsequent_removed;
     int idle_fell;
+    // If true in danger go to clogged state, otherwise gameover immediately.
+    bool allow_clogged_state;
 };
 
 class Panel
@@ -36,20 +38,44 @@ public:
     enum State
     {
         INVALID = 0,
+        /** Doing nothing */
         IDLE = 1,
+        /* Pending swap states, the difference is the priority when drawing in these states */
         LEFT_SWAP = 2, // swap_to
         RIGHT_SWAP = 3,
+        /** Panel has been swapped */
         SWAPPED = 4,
+        /** Panel was swapped and about to fall, transitions directly to end fall now */
         PENDING_FALL = 5, // nothing
+        /** Falling panel */
         FALLING = 6,
+        /** End of falling sequence for this row, panel table will transition this back to falling if it hasn't landed yet */
         END_FALL = 7,
+        /** Dummy state for showing a bounce this state is the same as idle */
         IDLE_FELL = 8, // for animation
+        /** Panel has been matched showing blink frame */
         PENDING_MATCH = 9, // index_removal, total_removed
+        /** Panel has been matched showing panel face graphic */
         MATCHED = 10,
+        /** Panel has been removed from board */
         REMOVED = 11,
+        /** Dummy state to go back to idle */
         END_MATCH = 12,
     };
 
+    enum FrameGraphic
+    {
+        NO_DRAW = -1,
+        NORMAL = 0,
+        SLIGHT_UP = 1,
+        UP = 2,
+        DOWN = 3,
+        PENDING = 4,
+        MATCH = 5,
+        BLINK = 6,
+        LOST = 7,
+
+    };
     bool empty() const {return value == EMPTY;}
     bool normal() const {return !empty() && !special();}
     bool special() const {return value == SPECIAL;}

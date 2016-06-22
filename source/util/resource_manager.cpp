@@ -8,7 +8,7 @@ Texture* ResourceManager::load_image(const void* data, int width, int height)
 	if(i != images.end())
 		return i->second.get();
 
-    Texture* image = new Texture(data, width, height, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+    Texture* image = new Texture(data, width, height);
 	images[data].reset(image);
 
     return image;

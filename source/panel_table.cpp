@@ -281,6 +281,20 @@ bool PanelTable::is_warning() const
     return false;
 }
 
+
+bool PanelTable::all_idle() const
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            if (!get(i, j).is_idle())
+                return false;
+        }
+    }
+    return true;
+}
+
 std::set<Point> PanelTable::check_horizontal_combo(int i, int j)
 {
     std::set<Point> remove;
@@ -449,7 +463,22 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
     if (in_clink)
         return info;
 
-    if (is_puzzle() && !(is_gameover() || is_win_puzzle()))
+    if (stopped)
+    {
+        if (fast_rise)
+        {
+            stopped = false;
+            cooloff = 0;
+        }
+
+        cooloff -= time;
+        if (cooloff <= 0)
+        {
+            stopped = false;
+            cooloff = 0;
+        }
+    }
+    else if (is_puzzle() && !(is_gameover() || is_win_puzzle()))
     {
         bool win = true;
         bool idle = true;
@@ -471,6 +500,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         {
             rise = 0;
             if (is_danger())
+                // This state could immediately transition to Game over if !allow_clogged_state
                 state = CLOGGED;
             else
                 state = RISED;
@@ -479,6 +509,12 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
     /*else if (is_rised())*/ // Handled above.
     else if (is_clogged())
     {
+        // For endless mode
+        if (!settings.allow_clogged_state && all_idle())
+        {
+            state = GAMEOVER;
+        }
+
         if (!is_danger())
         {
             state = RISED;
@@ -486,24 +522,8 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         else
         {
             rise += time;
-            if ((int) rise >= max_wait || fast_rise)
+            if (((int) rise >= max_wait || fast_rise) && all_idle())
                 state = GAMEOVER;
-        }
-    }
-    else if (is_stopped())
-    {
-        if (fast_rise)
-        {
-            state = FAST_RISING;
-            cooloff = 0;
-        }
-
-        cooloff -= time;
-        if (cooloff <= 0)
-        {
-            state = previous_state;
-            previous_state = 0;
-            cooloff = 0;
         }
     }
 
@@ -513,9 +533,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
 void PanelTable::set_timeout(int timeout)
 {
     cooloff = timeout;
-    if (!is_stopped())
-        previous_state = state;
-    state = STOPPED;
+    stopped = true;
 }
 
 std::string PanelTable::str() const

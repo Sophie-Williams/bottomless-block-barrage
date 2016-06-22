@@ -51,10 +51,9 @@ public:
         RISING = 1,
         FAST_RISING = 2,
         RISED = 3,
-        STOPPED = 4,
-        CLOGGED = 5,
-        GAMEOVER = 6,
-        WIN_PUZZLE = 7,
+        CLOGGED = 4,
+        GAMEOVER = 5,
+        WIN_PUZZLE = 6,
     };
 
     PanelTable() : state(RISING), type(RISES), clink(0), chain(0) {}
@@ -68,15 +67,15 @@ public:
 
     bool is_rising() const {return state == RISING || state == FAST_RISING;}
     bool is_rised() const {return state == RISED;}
-    bool is_stopped() const {return state == STOPPED;}
+    bool is_stopped() const {return stopped;}
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
     bool is_win_puzzle() const {return state == WIN_PUZZLE;}
-    bool was_rised() const {return previous_state == CLOGGED || previous_state == RISED;}
     int get_state() {return state;}
 
     bool is_warning() const;
     bool is_danger() const;
+    bool all_idle() const;
 
     int width() const {return columns;}
     int height() const {return rows;}
@@ -117,10 +116,10 @@ public:
     int type;
     /** Rise amount */
     int rise;
+    /** Are we currently stopped */
+    bool stopped = false;
     /** Hold long we are stopped */
     int cooloff;
-    /** Previous state before we transitioned to STOPPED */
-    int previous_state = 0;
     /** Clink link */
     int clink;
     /** Chain link */

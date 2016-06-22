@@ -22,16 +22,7 @@ void Panel::update()
     {
         state = State::IDLE;
     }
-    else if (is_pending_fall())
-    {
-        countdown -= 1;
-        if (countdown <= 0)
-        {
-            state = State::FALLING;
-            countdown = settings->falling;
-        }
-    }
-    else if (is_falling())
+    else if (is_falling() || is_pending_fall())
     {
         countdown -= 1;
         if (countdown <= 0)
@@ -94,7 +85,7 @@ void Panel::swap(Panel::Type swap_panel, bool is_left)
 void Panel::fall(bool already_falling, bool is_chain)
 {
     state = already_falling ? State::FALLING : State::PENDING_FALL;
-    countdown = already_falling ? settings->falling : settings->pending_fall;
+    countdown = already_falling ? settings->falling : settings->pending_fall + settings->falling;
     chain = is_chain;
 }
 
@@ -112,13 +103,13 @@ int Panel::frame(int def) const
     int frame = def;
 
     if (is_pending_match())
-        frame = 6;
+        frame = BLINK;
     else if (is_matched())
-        frame = 5;
+        frame = MATCH;
     else if (is_removed())
-        frame = -1;
+        frame = NO_DRAW;
     else if (is_falling() || is_fall_end())
-        frame = 0;
+        frame = NORMAL;
     else if (is_fell_idle())
         frame = panel_fell_frames[(FALL_ANIMATION_FRAMES - countdown) / FALL_ANIMATION_DELAY];
     return frame;

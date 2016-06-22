@@ -34,7 +34,7 @@ static std::vector<std::string> get_stage_choices()
 void PuzzleSelectScene::initialize()
 {
     ///TODO Implement a resource manager so this isn't done multiple times.
-    background.create(generic_title_screen, GENERIC_TITLE_SCREEN_WIDTH, GENERIC_TITLE_SCREEN_HEIGHT, TEXFMT_RGBA8, SF2D_PLACE_RAM);
+    background.create(generic_title_screen, GENERIC_TITLE_SCREEN_WIDTH, GENERIC_TITLE_SCREEN_HEIGHT);
 
     set_choices.create(0, 0, 5 * 16, 16, 1, {"TA", "TA-EX"});
     set_choices.set_active(true);
