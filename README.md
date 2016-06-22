@@ -38,5 +38,6 @@ New Gameplay features
 
 ## Credits
 [Panel Graphics](http://thewolfbunny.deviantart.com/art/Pokemon-Puzzle-Challenge-Panels-TA-Style-510289235) by TheWolfBunny
+[Panel Graphics](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/graphics/panels2_gfx.png) by SRKTiberious
 
 Font is generated from http://www.codehead.co.uk/cbfg/, and using flarn2006's SF2DBmpFont library to render it.
