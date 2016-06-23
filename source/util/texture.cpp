@@ -46,3 +46,10 @@ void Texture::draw(int x, int y, int tx, int ty, int tw, int th, u32 blend_color
     if (!valid()) return;
     sf2d_draw_texture_part_blend(texture.get(), x, y, tx, ty, tw, th, blend_color);
 }
+
+void Texture::draw(int x, int y, int sx, int sy, int sw, int sh, float opacity)
+{
+    if (!valid()) return;
+    unsigned char percent = 255 * opacity;
+    sf2d_draw_texture_part_blend(texture.get(), x, y, sx, sy, sw, sh, RGBA8(0xff, 0xff, 0xff, percent));
+}

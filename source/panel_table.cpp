@@ -256,6 +256,8 @@ MatchInfo PanelTable::update_matches(void)
         match_info.swap_match &= !(panel.is_fall_end() && panel.chain);
         panel.match(index, remove.size());
         index--;
+        match_info.x = pt.x;
+        match_info.y = pt.y;
     }
 
     return match_info;
@@ -457,7 +459,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         clink++;
 
     info.clink = clink;
-    info.chain = chain;
+    info.chain = chain == 0 ? 0 : chain + 1;
 
     // Board is stopped while matches are being removed.
     if (in_clink)

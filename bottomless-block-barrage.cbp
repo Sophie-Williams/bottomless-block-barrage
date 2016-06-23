@@ -229,6 +229,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/marker_manager.cpp" />
+		<Unit filename="source/marker_manager.hpp" />
 		<Unit filename="source/moves_recorder.cpp">
 			<Option target="release" />
 			<Option target="citra" />

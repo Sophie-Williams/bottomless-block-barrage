@@ -22,8 +22,15 @@ struct MatchInfo
     MatchInfo() : clink(0), chain(0), combo(0), swap_match(false), fall_match(false) {}
     bool empty() const {return clink == 0 && chain == 0 && combo == 0;}
     bool matched() const {return swap_match || fall_match;}
+    bool is_combo() const {return combo > 3;}
+    bool is_chain() const {return chain > 1;}
+    bool is_clink() const {return clink > 1;}
     bool is_timeout() const {return combo > 3 || chain > 0;}
     std::string str() const;
+    /** Panel x where match occurred */
+    int x;
+    /** Panel y where match occurred */
+    int y;
     /** C-links (Chain links) are rapidly matching 3 or more blocks before they disappear */
     int clink;
     /** Chains are sequential matches after blocks are removed */

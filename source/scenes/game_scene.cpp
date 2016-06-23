@@ -35,14 +35,18 @@ void GameScene::init_panel_table()
     {
         case EASY:
             panel_table.create(11, 6, 5, easy_speed_settings);
+            markers.create(&easy_speed_settings);
             break;
         case NORMAL:
             panel_table.create(11, 6, 6, normal_speed_settings);
+            markers.create(&normal_speed_settings);
             break;
         case HARD:
             panel_table.create(11, 6, 6, hard_speed_settings);
+            markers.create(&hard_speed_settings);
             break;
     }
+
 }
 
 void GameScene::init_sprites()
@@ -196,6 +200,15 @@ void GameScene::update_match()
 
     if (current_match.matched())
     {
+        int x = current_match.x * PANEL_SIZE;
+        int y = current_match.y * PANEL_SIZE;
+        if (current_match.is_combo())
+            markers.add(x, y, Marker::COMBO, current_match.combo);
+        if (current_match.is_chain() && current_match.chain != last_match.chain)
+            markers.add(x, y + (current_match.is_combo() ? -PANEL_SIZE : 0), Marker::CHAIN, current_match.chain);
+        if (current_match.is_clink())
+            markers.add(x, y + ((current_match.is_combo() || current_match.is_chain()) ? -PANEL_SIZE : 0), Marker::CLINK, current_match.clink);
+
         update_score();
         update_level();
         update_on_matched();
@@ -203,6 +216,7 @@ void GameScene::update_match()
     }
 
     frames.update(panel_table.get_state(), panel_table.is_warning());
+    markers.update();
 }
 
 void GameScene::update_on_timeout()
@@ -310,6 +324,7 @@ void GameScene::draw_panels()
         panels.draw(x, y, (panel.value - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
     }
 
+    markers.draw(startx + panel_size / 2 + 2, starty + panel_size + panel_size / 2 - offset + 2);
     /*
     for (int i = 0; i < panel_table.height() + 1; i++)
     {

@@ -9,6 +9,7 @@
 #include "panel_table.hpp"
 #include "animation_params.hpp"
 #include "moves_recorder.hpp"
+#include "marker_manager.hpp"
 
 enum Difficulty
 {
@@ -89,6 +90,7 @@ protected:
 
     // Animation
     AnimationParams frames;
+    MarkerManager markers;
 
     // Debugging
     MovesRecorder recorder;
