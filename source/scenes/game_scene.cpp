@@ -36,15 +36,12 @@ void GameScene::init_panel_table()
     {
         case EASY:
             panel_table.create(11, 6, 5, easy_speed_settings);
-            markers.create(&easy_speed_settings);
             break;
         case NORMAL:
             panel_table.create(11, 6, 6, normal_speed_settings);
-            markers.create(&normal_speed_settings);
             break;
         case HARD:
             panel_table.create(11, 6, 6, hard_speed_settings);
-            markers.create(&hard_speed_settings);
             break;
     }
 
@@ -52,11 +49,23 @@ void GameScene::init_panel_table()
 
 void GameScene::init_sprites()
 {
-    /// TODO make this more extensible
     PanelGfxDescription pdscr = panel_sets[config.panel_gfx];
     int width = pdscr.panel_size * 7 + (pdscr.include_unmatchable ? pdscr.panel_size : 0);
-    int height = pdscr.panel_size * 7;
+    int height = pdscr.panel_size * PANEL_GRAPHICS_SIZE;
     panels.create(pdscr.gfx, width, height);
+
+    switch (config.difficulty)
+    {
+        case EASY:
+            markers.create(&easy_speed_settings);
+            break;
+        case NORMAL:
+            markers.create(&normal_speed_settings);
+            break;
+        case HARD:
+            markers.create(&hard_speed_settings);
+            break;
+    }
 
     selector.create(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT);
     border.create(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT);
