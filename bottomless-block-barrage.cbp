@@ -279,6 +279,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/panels_gfx.cpp" />
+		<Unit filename="source/panels_gfx.hpp" />
 		<Unit filename="source/puzzles/tetris_attack.cpp">
 			<Option target="release" />
 			<Option target="citra" />
