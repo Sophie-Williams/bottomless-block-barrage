@@ -7,11 +7,12 @@
 #include "game_common.hpp"
 #include "panel.hpp"
 
-#include "panels_gfx.h"
-#include "panels2_gfx.h"
+#include "panels_gfx.hpp"
 #include "border_gfx.h"
 #include "selector_gfx.h"
 #include "debug_text.h"
+
+#include <util/font.hpp>
 
 void GameScene::initialize()
 {
@@ -52,15 +53,10 @@ void GameScene::init_panel_table()
 void GameScene::init_sprites()
 {
     /// TODO make this more extensible
-    switch (config.panel_gfx)
-    {
-        case 0:
-            panels.create(panels_gfx, PANELS_GFX_WIDTH, PANELS_GFX_HEIGHT);
-            break;
-        case 1:
-            panels.create(panels2_gfx, PANELS2_GFX_WIDTH, PANELS2_GFX_HEIGHT);
-            break;
-    }
+    PanelGfxDescription pdscr = panel_sets[config.panel_gfx];
+    int width = pdscr.panel_size * 7 + (pdscr.include_unmatchable ? pdscr.panel_size : 0);
+    int height = pdscr.panel_size * 7;
+    panels.create(pdscr.gfx, width, height);
 
     selector.create(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT);
     border.create(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT);

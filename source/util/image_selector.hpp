@@ -1,6 +1,7 @@
 #ifndef IMAGE_SELECTOR_HPP
 #define IMAGE_SELECTOR_HPP
 
+#include "color_modulation.hpp"
 #include "widget.hpp"
 #include "texture.hpp"
 #include "hid_helper.hpp"
@@ -18,6 +19,7 @@ public:
 private:
     std::vector<Texture> images;
     int index;
+    ColorModulation color;
     KeyRepeatStore repeat;
 };
 

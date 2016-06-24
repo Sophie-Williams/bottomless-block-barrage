@@ -8,7 +8,7 @@
 
 #define DEFAULT_MIN_COLOR 0xFF787878U
 #define DEFAULT_MAX_COLOR 0xFFE0E0E0U
-#define DEFAULT_STEPS 16
+#define DEFAULT_STEPS 32
 
 
 Slider::Slider(int mi, int ma, int val, int wx, int wy, int ww, int wh, int style) : Widget(wx, wy, ww, wh, style),

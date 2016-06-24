@@ -3,8 +3,7 @@
 #include "endless_scene.hpp"
 
 #include "menu_background_gfx.h"
-#include "panels_gfx.h"
-#include "panels2_gfx.h"
+#include "panels_gfx.hpp"
 
 
 void EndlessConfigScene::initialize()
@@ -12,6 +11,9 @@ void EndlessConfigScene::initialize()
     difficulty_choices.create(0, 0, 6 * 16, 16, 3, {"Easy", "Normal", "Hard"});
     difficulty_choices.set_active(true);
     difficulty_choices.set_selection(saved_config.difficulty);
+    difficulty_choices.set_color(0, 0xFFE0E080);
+    difficulty_choices.set_color(1, 0xFF58B8B8);
+    difficulty_choices.set_color(2, 0xFFD098D0);
 
     const int y = difficulty_choices.window_height() + 4;
     level_text.create("Level", 0, y);
@@ -19,9 +21,16 @@ void EndlessConfigScene::initialize()
     level_slider.set_value(saved_config.level);
 
     panel_text.create("Panel", 0, y + 20);
-    panel_select.create(48, y + 20, 128, 16);
-    panel_select.add(panels_gfx);
-    panel_select.add(panels2_gfx);
+    panel_select.create(48, y + 20, 112, 16);
+    int id = 0;
+    for (const auto& name_pdscr : panel_sets)
+    {
+        const auto& pdscr = name_pdscr.second;
+        int pitch = pdscr.panel_size * 7 + (pdscr.include_unmatchable ? pdscr.panel_size : 0);
+        panel_select.add(pdscr.gfx, pitch);
+        index_to_id[id] = name_pdscr.first;
+        id++;
+    }
 
     menu_background_top.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
                                -1, 1, Background::Autoscroll | Background::Repeating | Background::TopScreen);
@@ -42,7 +51,7 @@ void EndlessConfigScene::update()
         EndlessScene::Config config;
         config.difficulty = (Difficulty) difficulty_choices.selection();
         config.level = level_slider.get_value();
-        config.panel_gfx = panel_select.selection();
+        config.panel_gfx = index_to_id[panel_select.selection()];
         current_scene = new EndlessScene(config);
         return;
     }
@@ -93,7 +102,7 @@ void EndlessConfigScene::update_panel_select()
         EndlessScene::Config config;
         config.difficulty = (Difficulty) difficulty_choices.selection();
         config.level = level_slider.get_value();
-        config.panel_gfx = panel_select.selection();
+        config.panel_gfx = index_to_id[panel_select.selection()];
         current_scene = new EndlessScene(config);
         return;
     }

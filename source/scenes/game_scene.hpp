@@ -26,7 +26,7 @@ public:
         // Either replay_filename is set or difficulty/level
         Difficulty difficulty;
         int level;
-        int panel_gfx;
+        std::string panel_gfx;
 
         std::string replay_filename;
     };
