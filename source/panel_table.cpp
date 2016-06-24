@@ -409,6 +409,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
             if (panel.is_fall_end())
             {
                 Panel& below = get(y + 1, x);
+                // If below panel is not blocking and non empty panel
                 if (y + 1 < rows && below.empty() && below.is_idle() && !panel.empty())
                 {
                     below.value = panel.value;
@@ -416,6 +417,12 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
                     below.fall(true, panel.chain);
                     panel.state = Panel::State::IDLE;
                     panel.chain = false;
+                }
+                // Slip case: Below panel is in fall process
+                else if (y + 1 < rows && !below.empty() && below.is_falling_process() && !panel.empty())
+                {
+                    panel.state = below.state;
+                    panel.countdown = below.countdown;
                 }
                 else
                     need_update_matches = true;
