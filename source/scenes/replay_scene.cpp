@@ -22,13 +22,13 @@ void ReplayScene::update_input()
     held = 0;
     recorder.keys(trigger, held);
 
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 250, 1, 75, held))
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 200, 1, 50, held))
         selector_x = std::max(std::min(selector_x - 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 250, 1, 75, held))
+    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 200, 1, 50, held))
         selector_x = std::max(std::min(selector_x + 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 250, 1, 75, held))
+    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 200, 1, 50, held))
         selector_y = std::max(std::min(selector_y - 1, 10), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 250, 1, 75, held))
+    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 200, 1, 50, held))
         selector_y = std::max(std::min(selector_y + 1, 10), 0);
     if (trigger & KEY_A)
         panel_table.swap(selector_y, selector_x);
@@ -75,6 +75,7 @@ void ReplayScene::update_on_matched()
     }
 }
 
+//TODO write this and GameScene so I don't have to override this method.
 void ReplayScene::update_match()
 {
     u64 current_frame = osGetTime();
@@ -96,6 +97,7 @@ void ReplayScene::update_match()
 
     if (current_match.matched())
     {
+        update_create_markers();
         update_score();
         update_level();
         update_on_matched();
@@ -103,6 +105,7 @@ void ReplayScene::update_match()
     }
 
     frames.update(panel_table.get_state(), panel_table.is_warning());
+    markers.update();
 }
 
 void ReplayScene::draw_game_top()

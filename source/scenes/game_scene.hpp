@@ -55,6 +55,7 @@ protected:
     virtual void update_end_match() {}
     virtual void update_on_timeout();
 
+    void update_create_markers();
     void update_score();
     void update_level();
     virtual void update_on_matched() {}

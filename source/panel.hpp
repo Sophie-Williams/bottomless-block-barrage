@@ -74,7 +74,7 @@ public:
         MATCH = 5,
         BLINK = 6,
         LOST = 7,
-        PANEL_GRAPHICS_SIZE = 8,
+        GRAPHICS_SIZE = 8,
     };
     bool empty() const {return value == EMPTY;}
     bool normal() const {return !empty() && !special();}

@@ -22,14 +22,11 @@ void EndlessConfigScene::initialize()
 
     panel_text.create("Panel", 0, y + 20);
     panel_select.create(48, y + 20, 112, 16);
-    int id = 0;
     for (const auto& name_pdscr : panel_sets)
     {
         const auto& pdscr = name_pdscr.second;
         int pitch = pdscr.panel_size * 7 + (pdscr.include_unmatchable ? pdscr.panel_size : 0);
-        panel_select.add(pdscr.gfx, pitch);
-        index_to_id[id] = name_pdscr.first;
-        id++;
+        panel_select.add(pdscr.group, pdscr.gfx, pitch, &name_pdscr.first);
     }
 
     menu_background_top.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
@@ -51,7 +48,7 @@ void EndlessConfigScene::update()
         EndlessScene::Config config;
         config.difficulty = (Difficulty) difficulty_choices.selection();
         config.level = level_slider.get_value();
-        config.panel_gfx = index_to_id[panel_select.selection()];
+        config.panel_gfx = *static_cast<const std::string*>(panel_select.client_data());
         current_scene = new EndlessScene(config);
         return;
     }
@@ -102,7 +99,7 @@ void EndlessConfigScene::update_panel_select()
         EndlessScene::Config config;
         config.difficulty = (Difficulty) difficulty_choices.selection();
         config.level = level_slider.get_value();
-        config.panel_gfx = index_to_id[panel_select.selection()];
+        config.panel_gfx = *static_cast<const std::string*>(panel_select.client_data());
         current_scene = new EndlessScene(config);
         return;
     }

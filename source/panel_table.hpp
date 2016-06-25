@@ -24,7 +24,7 @@ struct MatchInfo
     bool matched() const {return swap_match || fall_match;}
     bool is_combo() const {return combo > 3;}
     bool is_chain() const {return chain > 1;}
-    bool is_clink() const {return clink > 1;}
+    bool is_clink() const {return clink > 0;}
     bool is_timeout() const {return combo > 3 || chain > 0;}
     std::string str() const;
     /** Panel x where match occurred */

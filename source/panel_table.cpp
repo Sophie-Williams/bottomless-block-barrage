@@ -465,7 +465,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
     if (info.swap_match)
         clink++;
 
-    info.clink = clink;
+    info.clink = clink <= 1 ? 0 : clink - 1;
     info.chain = chain == 0 ? 0 : chain + 1;
 
     // Board is stopped while matches are being removed.

@@ -44,14 +44,17 @@ void GameScene::init_panel_table()
             panel_table.create(11, 6, 6, hard_speed_settings);
             break;
     }
-
 }
 
 void GameScene::init_sprites()
 {
-    PanelGfxDescription pdscr = panel_sets[config.panel_gfx];
+    PanelGfxDescription pdscr;
+    if (panel_sets.find(config.panel_gfx) == panel_sets.end())
+        pdscr = default_set;
+    else
+        pdscr = panel_sets[config.panel_gfx];
     int width = pdscr.panel_size * 7 + (pdscr.include_unmatchable ? pdscr.panel_size : 0);
-    int height = pdscr.panel_size * PANEL_GRAPHICS_SIZE;
+    int height = pdscr.panel_size * Panel::GRAPHICS_SIZE;
     panels.create(pdscr.gfx, width, height);
 
     switch (config.difficulty)
@@ -132,7 +135,7 @@ void GameScene::update_input()
     u32 held = hidKeysHeld();
     recorder.add(frame, trigger, held);
 
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 200, 1, 50, held))
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 290, 1, 50, held))
         selector_x = std::max(std::min(selector_x - 1, 4), 0);
     if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 200, 1, 50, held))
         selector_x = std::max(std::min(selector_x + 1, 4), 0);
@@ -205,15 +208,7 @@ void GameScene::update_match()
 
     if (current_match.matched())
     {
-        int x = current_match.x * PANEL_SIZE;
-        int y = current_match.y * PANEL_SIZE;
-        if (current_match.is_combo())
-            markers.add(x, y, Marker::COMBO, current_match.combo);
-        if (current_match.is_chain() && current_match.chain != last_match.chain)
-            markers.add(x, y + (current_match.is_combo() ? -PANEL_SIZE : 0), Marker::CHAIN, current_match.chain);
-        if (current_match.is_clink())
-            markers.add(x, y + ((current_match.is_combo() || current_match.is_chain()) ? -PANEL_SIZE : 0), Marker::CLINK, current_match.clink);
-
+        update_create_markers();
         update_score();
         update_level();
         update_on_matched();
@@ -222,6 +217,19 @@ void GameScene::update_match()
 
     frames.update(panel_table.get_state(), panel_table.is_warning());
     markers.update();
+}
+
+void GameScene::update_create_markers()
+{
+    int x = current_match.x * PANEL_SIZE;
+    int y = current_match.y * PANEL_SIZE;
+    if (current_match.is_combo())
+        markers.add(x, y, Marker::COMBO, current_match.combo);
+    if (current_match.is_chain() && current_match.chain != last_match.chain)
+        markers.add(x, y + (current_match.is_combo() ? -PANEL_SIZE : 0), Marker::CHAIN, current_match.chain);
+    // Not possible to have something be a combo, chain, and clink
+    if (current_match.is_clink() && current_match.clink != last_match.clink)
+        markers.add(x, y + ((current_match.is_combo() || current_match.is_chain()) ? -PANEL_SIZE : 0), Marker::CLINK, current_match.clink);
 }
 
 void GameScene::update_on_timeout()
