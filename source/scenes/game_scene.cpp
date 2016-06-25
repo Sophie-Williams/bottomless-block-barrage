@@ -135,7 +135,7 @@ void GameScene::update_input()
     u32 held = hidKeysHeld();
     recorder.add(frame, trigger, held);
 
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 290, 1, 50, held))
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 200, 1, 50, held))
         selector_x = std::max(std::min(selector_x - 1, 4), 0);
     if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 200, 1, 50, held))
         selector_x = std::max(std::min(selector_x + 1, 4), 0);
