@@ -39,7 +39,7 @@ void MarkerManager::draw(int offx, int offy)
     {
         int draws = 1;
         int sx = 0, sy = 0;
-        int s2x, s2y;
+        int s2x, s2y = 0;
         int s3x, s3y = 0;
 
         if (marker.type == Marker::COMBO)
@@ -83,9 +83,10 @@ void MarkerManager::draw(int offx, int offy)
             else if (marker.value < 100)
             {
                 draws = 3;
-                s2x = marker.value / 10 * 4;
+                sx += 16;
+                s2x = (marker.value / 10 - 1) * 5;
                 s2y = s3y;
-                s3x = marker.value % 10 * 4 + 48;
+                s3x = marker.value % 10 * 5 + 45;
             }
             else
             {
@@ -106,9 +107,9 @@ void MarkerManager::draw(int offx, int offy)
                 markers.draw(offx + marker.x + 8, y, s2x, s2y, 8, 16, percent);
                 break;
             case 3:
-                markers.draw(offx + marker.x, y, sx, sy, 8, 16, percent);
-                markers.draw(offx + marker.x + 4, y, s2x, s2y, 4, 16, percent);
-                markers.draw(offx + marker.x + 8, y, s3x, s3y, 4, 16, percent);
+                markers.draw(offx + marker.x, y, sx, sy, 6, 16, percent);
+                markers.draw(offx + marker.x + 6, y, s2x, s2y, 5, 16, percent);
+                markers.draw(offx + marker.x + 11, y, s3x, s3y, 5, 16, percent);
                 break;
         }
     }

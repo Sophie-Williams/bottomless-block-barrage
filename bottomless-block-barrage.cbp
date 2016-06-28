@@ -281,14 +281,6 @@
 		</Unit>
 		<Unit filename="source/panels_gfx.cpp" />
 		<Unit filename="source/panels_gfx.hpp" />
-		<Unit filename="source/puzzles/tetris_attack.cpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
 		<Unit filename="source/random.hpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -331,6 +323,8 @@
 		</Unit>
 		<Unit filename="source/scenes/game_scene.cpp" />
 		<Unit filename="source/scenes/game_scene.hpp" />
+		<Unit filename="source/scenes/puzzle_scene.cpp" />
+		<Unit filename="source/scenes/puzzle_scene.hpp" />
 		<Unit filename="source/scenes/puzzle_select_scene.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -439,6 +433,8 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/util/file_helper.cpp" />
+		<Unit filename="source/util/file_helper.hpp" />
 		<Unit filename="source/util/font.cpp">
 			<Option target="release" />
 			<Option target="citra" />

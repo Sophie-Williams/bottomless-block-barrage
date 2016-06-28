@@ -32,7 +32,6 @@ private:
     ImageSelector panel_select;
     Background menu_background_top;
     Background menu_background_bottom;
-    std::map<int, std::string> index_to_id;
 };
 
 #endif
