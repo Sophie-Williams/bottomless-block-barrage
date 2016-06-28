@@ -37,6 +37,7 @@ New Gameplay features
 2) If you care not to build everything then just type make [elf, cia, 3ds, 3dsx] to build the corresponding format, or make citra to run it in citra (requires citra to be installed and in your $PATH)
 
 ## Credits
+Title screen/banner and icon by cots
 [Panel Graphics](http://thewolfbunny.deviantart.com/art/Pokemon-Puzzle-Challenge-Panels-TA-Style-510289235) by TheWolfBunny
 
 [Panel Graphics](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/graphics/panels2_gfx.png) by SRKTiberious
