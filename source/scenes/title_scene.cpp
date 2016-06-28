@@ -1,6 +1,6 @@
 #include "title_scene.hpp"
 // TODO Get a better title screen.
-#include "generic_title_screen.h"
+#include "title_screen.h"
 #include <util/window.hpp>
 #include "endless_config_scene.hpp"
 #include "puzzle_select_scene.hpp"
@@ -9,7 +9,7 @@
 
 void TitleScene::initialize()
 {
-    background.create(generic_title_screen, GENERIC_TITLE_SCREEN_WIDTH, GENERIC_TITLE_SCREEN_HEIGHT);
+    background.create(title_screen, TITLE_SCREEN_WIDTH, TITLE_SCREEN_HEIGHT);
     command_window.create(0, 0,  7 * 16, 16, 1, {"Endless", "Score", "Puzzle"/*, "Mission", "Versus"*/});
     command_window.center(BOTTOM_SCREEN_WIDTH, BOTTOM_SCREEN_WIDTH);
     command_window.set_active(true);
