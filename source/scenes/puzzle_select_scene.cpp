@@ -1,8 +1,10 @@
 #include "puzzle_select_scene.hpp"
 #include "menu_background_gfx.h"
 #include "title_scene.hpp"
+#include "puzzle_scene.hpp"
 
 #include <cstdio>
+#include <sstream>
 #include <util/file_helper.hpp>
 
 
@@ -25,7 +27,7 @@ void get_official_puzzle_sets(std::map<std::string, PuzzleSet>& files)
         for (const auto& stage : stages)
         {
             PuzzleStage puzzle_stage(stage);
-            puzzle_stage.levels = dir_entries("romfs:/puzzles/" + set + "/" + stage);
+            puzzle_stage.levels = dir_filenames("romfs:/puzzles/" + set + "/" + stage, "bbb", false);
             puzzle_set.stages.emplace(stage, puzzle_stage);
         }
         files.emplace(set, puzzle_set);
@@ -115,6 +117,9 @@ void PuzzleSelectScene::update_level_select()
     u32 trigger = hidKeysDown();
     if (trigger & KEY_A)
     {
+        PuzzleScene::PuzzleConfig config;
+        config.filename = construct_filename();
+
     }
     else if (trigger & KEY_B)
     {
@@ -122,6 +127,14 @@ void PuzzleSelectScene::update_level_select()
         level_choices.set_active(false);
         level_choices.set_hidden(true);
     }
+}
+
+std::string PuzzleSelectScene::construct_filename()
+{
+    std::stringstream str;
+    str << "romfs:/puzzles/" << set_choices.choice() << "/" << stage_choices.choice() << "/";
+    str << level_choices.choice() << ".bbb";
+    return str.str();
 }
 
 void PuzzleSelectScene::draw_top()

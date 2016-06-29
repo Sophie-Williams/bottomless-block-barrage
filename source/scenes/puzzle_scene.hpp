@@ -9,7 +9,7 @@ class PuzzleScene : public GameScene
 public:
     struct PuzzleConfig
     {
-        const std::string& filename;
+        std::string filename;
     };
     PuzzleScene(const PuzzleConfig& config);
     virtual void init_panel_table();

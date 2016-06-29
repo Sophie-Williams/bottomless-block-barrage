@@ -38,6 +38,7 @@ private:
     void update_set_select();
     void update_stage_select();
     void update_level_select();
+    std::string construct_filename();
     std::map<std::string, PuzzleSet> set_files;
     CommandWindow set_choices;
     CommandWindow stage_choices;
