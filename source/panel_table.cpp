@@ -1,9 +1,10 @@
 #include "panel_table.hpp"
 #include "random.hpp"
-#include <list>
 #include <cstdlib>
 #include <ctime>
 #include <cstdio>
+#include <fstream>
+#include <list>
 #include <sstream>
 
 #define VERSION_MAJOR 1
@@ -21,9 +22,9 @@ PanelTable::PanelTable(int height, int width, int num_colors, const PanelSpeedSe
     generate();
 }
 
-PanelTable::PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings)
+PanelTable::PanelTable(const std::string& filename, const PanelSpeedSettings& ssettings)
 {
-    create(puzzle, ssettings);
+    create(filename, ssettings);
 }
 
 void PanelTable::create(int height, int width, int num_colors, const PanelSpeedSettings& ssettings)
@@ -37,25 +38,51 @@ void PanelTable::create(int height, int width, int num_colors, const PanelSpeedS
     generate();
 }
 
-void PanelTable::create(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings)
+void PanelTable::create(const std::string& filename, const PanelSpeedSettings& ssettings)
 {
     settings = ssettings;
+    rows = (11);
+    columns = (6);
+    colors = (7);
+
+    BasicPuzzle puzzle;
+    FILE* file = fopen(filename.c_str(), "rb");
+    if (!file)
+    {
+        generate();
+        return;
+    }
+    fread(&puzzle, sizeof(BasicPuzzle), 1, file);
+    fclose(file);
+
     const char* magic = puzzle.magic;
     if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
+    {
+        generate();
         return;
+    }
 
     const char* version = puzzle.version;
     if (version[0] > VERSION_MAJOR || (version[0] == VERSION_MAJOR && version[1] > VERSION_MINOR))
+    {
+        generate();
         return;
+    }
 
     if (puzzle.type != PUZZLE)
+    {
+        generate();
         return;
+    }
 
     if (puzzle.rows != MAX_PUZZLE_ROWS || puzzle.columns != MAX_PUZZLE_COLUMNS || puzzle.starting != MAX_PUZZLE_ROWS ||
         puzzle.moves > MAX_PUZZLE_MOVES)
+    {
+        generate();
         return;
+    }
 
-    state = RISING;
+    state = PUZZLE;
     type = puzzle.type;
     rows = puzzle.rows;
     columns = puzzle.columns;

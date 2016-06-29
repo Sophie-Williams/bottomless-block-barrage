@@ -24,9 +24,9 @@ public:
     struct Config
     {
         // Either replay_filename is set or difficulty/level
-        Difficulty difficulty;
-        int level;
-        std::string panel_gfx;
+        Difficulty difficulty = EASY;
+        int level = 1;
+        std::string panel_gfx = "";
 
         std::string replay_filename;
     };

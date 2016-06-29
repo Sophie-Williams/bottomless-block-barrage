@@ -65,10 +65,10 @@ public:
 
     PanelTable() : state(RISING), type(RISES), clink(0), chain(0) {}
     PanelTable(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
-    PanelTable(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings);
+    PanelTable(const std::string& filename, const PanelSpeedSettings& ssettings);
 
     void create(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
-    void create(const BasicPuzzle& puzzle, const PanelSpeedSettings& ssettings);
+    void create(const std::string& filename, const PanelSpeedSettings& ssettings);
 
     bool is_puzzle() const {return type == PUZZLE;}
 

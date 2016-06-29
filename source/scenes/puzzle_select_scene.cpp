@@ -48,13 +48,13 @@ void PuzzleSelectScene::initialize()
     for (const auto& set : set_files)
         sets.push_back(set.first);
 
-    set_choices.create(0, 0, 5 * 16, 16, 1, sets);
+    set_choices.create(0, 0, 48, 16, 1, sets);
     set_choices.set_active(true);
 
-    stage_choices.create(80, 0, 8 * 16, 16, 1, {});
+    stage_choices.create(set_choices.get_width() + 16, 0, 80, 16, 1, {});
     stage_choices.set_hidden(true);
 
-    level_choices.create(80 + 128, 0, 8 * 16, 16, 1, {});
+    level_choices.create(set_choices.get_width() + stage_choices.get_width() + 24, 0, 80, 16, 1, {});
     level_choices.set_hidden(true);
 }
 
@@ -63,6 +63,8 @@ void PuzzleSelectScene::update()
     set_choices.update();
     stage_choices.update();
     level_choices.update();
+    menu_background_bottom.update();
+    menu_background_top.update();
 
     if (set_choices.is_active())
         update_set_select();
@@ -115,11 +117,11 @@ void PuzzleSelectScene::update_stage_select()
 void PuzzleSelectScene::update_level_select()
 {
     u32 trigger = hidKeysDown();
-    if (trigger & KEY_A)
+    if (trigger & KEY_A || trigger & KEY_START)
     {
         PuzzleScene::PuzzleConfig config;
         config.filename = construct_filename();
-
+        current_scene = new PuzzleScene(config);
     }
     else if (trigger & KEY_B)
     {
@@ -140,12 +142,12 @@ std::string PuzzleSelectScene::construct_filename()
 void PuzzleSelectScene::draw_top()
 {
     menu_background_top.draw();
-    set_choices.draw();
-    stage_choices.draw();
-    level_choices.draw();
 }
 
 void PuzzleSelectScene::draw_bottom()
 {
     menu_background_bottom.draw();
+    set_choices.draw();
+    stage_choices.draw();
+    level_choices.draw();
 }

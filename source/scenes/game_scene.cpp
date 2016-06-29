@@ -294,10 +294,8 @@ void GameScene::draw_gameover_bottom()
 
 void GameScene::draw_panels()
 {
-    // 2 px addition to accomadate selector.
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 9 + 4;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height() + 9;
-    /// TODO extensible panel sizes
     const int panel_size = PANEL_SIZE;
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
