@@ -88,6 +88,11 @@ void PanelTable::create(const std::string& filename, const PanelSpeedSettings& s
     columns = puzzle.columns;
     moves = puzzle.moves;
 
+    rise = 0;
+    cooloff = 0;
+    clink = 0;
+    chain = 0;
+
     panels.resize(columns * rows);
     for (unsigned int i = 0; i < panels.size(); i++)
     {
@@ -99,6 +104,7 @@ void PanelTable::create(const std::string& filename, const PanelSpeedSettings& s
 void PanelTable::generate()
 {
     state = RISING;
+    type = RISES;
     rise = 0;
     cooloff = 0;
     clink = 0;

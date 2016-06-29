@@ -54,7 +54,7 @@ void PuzzleSelectScene::initialize()
     stage_choices.create(set_choices.get_width() + 16, 0, 80, 16, 1, {});
     stage_choices.set_hidden(true);
 
-    level_choices.create(set_choices.get_width() + stage_choices.get_width() + 24, 0, 80, 16, 1, {});
+    level_choices.create(set_choices.get_width() + stage_choices.get_width() + 32, 0, 80, 16, 1, {});
     level_choices.set_hidden(true);
 }
 
