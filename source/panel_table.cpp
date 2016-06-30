@@ -224,21 +224,28 @@ bool PanelTable::horizontal(int i, int j)
     return k == l && k == m;
 }
 
-bool PanelTable::swap(int i, int j)
+
+bool PanelTable::can_swap(int i, int j) const
+{
+    const Panel& left = get(i, j);
+    const Panel& right = get(i, j + 1);
+
+    return !(left.value == right.value || !left.swappable() || !right.swappable() || (is_puzzle() && moves <= 0));
+}
+
+void PanelTable::swap(int i, int j)
 {
     Panel& left = get(i, j);
     Panel& right = get(i, j + 1);
 
     if (left.value == right.value || !left.swappable() || !right.swappable() || (is_puzzle() && moves <= 0))
-        return false;
+        return;
 
     left.swap(right.value, true);
     right.swap(left.value, false);
 
     if (is_puzzle())
         moves -= 1;
-
-    return true;
 }
 
 MatchInfo PanelTable::update_matches(void)

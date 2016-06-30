@@ -97,10 +97,11 @@ public:
     bool normal(int i, int j) const {return get(i, j).normal();}
     bool fallable(int i, int j) const {return get(i, j).fallable();}
     bool swappable(int i, int j) const {return get(i, j).swappable();}
+    bool can_swap(int i, int j) const;
 
     void generate();
     void generate_next();
-    bool swap(int i, int j);
+    void swap(int i, int j);
     MatchInfo update(long speed, int max_wait, bool fast_rise);
     void set_timeout(int timeout);
 

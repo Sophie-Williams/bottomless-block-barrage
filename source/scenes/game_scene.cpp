@@ -135,14 +135,14 @@ void GameScene::update_input()
     u32 held = hidKeysHeld();
     recorder.add(frame, trigger, held);
 
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), 200, 1, 50, held))
-        selector_x = std::max(std::min(selector_x - 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), 200, 1, 50, held))
-        selector_x = std::max(std::min(selector_x + 1, 4), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_UP), 200, 1, 50, held))
-        selector_y = std::max(std::min(selector_y - 1, 10), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), 200, 1, 50, held))
-        selector_y = std::max(std::min(selector_y + 1, 10), 0);
+    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        selector_x = std::max(std::min(selector_x - 1, panel_table.columns - 2), 0);
+    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        selector_x = std::max(std::min(selector_x + 1, panel_table.columns - 2), 0);
+    if (hidKeyRepeatQuick(repeat.get(KEY_UP), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        selector_y = std::max(std::min(selector_y - 1, panel_table.rows - 1), 0);
+    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        selector_y = std::max(std::min(selector_y + 1, panel_table.rows - 1), 0);
     if (trigger & KEY_A)
         panel_table.swap(selector_y, selector_x);
     if (trigger & KEY_START)

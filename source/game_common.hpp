@@ -3,6 +3,9 @@
 
 #include "panel.hpp"
 
+#define SELECTOR_REPEAT_MS 200
+#define SELECTOR_QUICK_MS 50
+
 extern PanelSpeedSettings slow_speed_settings;
 extern PanelSpeedSettings easy_speed_settings;
 extern PanelSpeedSettings normal_speed_settings;

@@ -3,6 +3,7 @@
 
 #include "game_scene.hpp"
 #include <string>
+#include <deque>
 #include <util/text.hpp>
 
 class PuzzleScene : public GameScene
@@ -19,6 +20,7 @@ public:
     bool is_gameover() const;
     virtual void draw_top();
 private:
+    std::deque<PanelTable> snapshots;
     PuzzleConfig puzzle_config;
     Text debug;
 };
