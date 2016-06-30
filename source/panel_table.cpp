@@ -41,46 +41,28 @@ void PanelTable::create(int height, int width, int num_colors, const PanelSpeedS
 void PanelTable::create(const std::string& filename, const PanelSpeedSettings& ssettings)
 {
     settings = ssettings;
-    rows = (11);
-    columns = (6);
-    colors = (7);
 
     BasicPuzzle puzzle;
     FILE* file = fopen(filename.c_str(), "rb");
     if (!file)
-    {
-        generate();
         return;
-    }
     fread(&puzzle, sizeof(BasicPuzzle), 1, file);
     fclose(file);
 
     const char* magic = puzzle.magic;
     if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
-    {
-        generate();
         return;
-    }
 
     const char* version = puzzle.version;
     if (version[0] > VERSION_MAJOR || (version[0] == VERSION_MAJOR && version[1] > VERSION_MINOR))
-    {
-        generate();
         return;
-    }
 
     if (puzzle.type != PUZZLE)
-    {
-        generate();
         return;
-    }
 
     if (puzzle.rows != MAX_PUZZLE_ROWS || puzzle.columns != MAX_PUZZLE_COLUMNS || puzzle.starting != MAX_PUZZLE_ROWS ||
         puzzle.moves > MAX_PUZZLE_MOVES)
-    {
-        generate();
         return;
-    }
 
     state = PUZZLE;
     type = puzzle.type;
@@ -242,19 +224,21 @@ bool PanelTable::horizontal(int i, int j)
     return k == l && k == m;
 }
 
-void PanelTable::swap(int i, int j)
+bool PanelTable::swap(int i, int j)
 {
     Panel& left = get(i, j);
     Panel& right = get(i, j + 1);
 
     if (left.value == right.value || !left.swappable() || !right.swappable() || (is_puzzle() && moves <= 0))
-        return;
+        return false;
 
     left.swap(right.value, true);
     right.swap(left.value, false);
 
     if (is_puzzle())
         moves -= 1;
+
+    return true;
 }
 
 MatchInfo PanelTable::update_matches(void)

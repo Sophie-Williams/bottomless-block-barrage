@@ -100,7 +100,7 @@ public:
 
     void generate();
     void generate_next();
-    void swap(int i, int j);
+    bool swap(int i, int j);
     MatchInfo update(long speed, int max_wait, bool fast_rise);
     void set_timeout(int timeout);
 
