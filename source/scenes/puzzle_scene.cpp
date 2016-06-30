@@ -12,7 +12,11 @@ void PuzzleScene::init_panel_table()
 {
      panel_table.create(puzzle_config.filename, easy_speed_settings);
      snapshots.push_back(panel_table);
-     debug.create(panel_table.str(), 0, 0);
+}
+
+void PuzzleScene::init_menu()
+{
+    GameScene::init_menu();
 }
 
 void PuzzleScene::update_input()
@@ -50,7 +54,7 @@ void PuzzleScene::update_input()
 
 void PuzzleScene::update_windows()
 {
-
+    time_window.update();
 }
 
 bool PuzzleScene::is_gameover() const
@@ -58,8 +62,9 @@ bool PuzzleScene::is_gameover() const
     return panel_table.moves == 0 && panel_table.all_idle();
 }
 
-void PuzzleScene::draw_top()
+void PuzzleScene::draw_bottom()
 {
-    debug.draw();
+    GameScene::draw_bottom();
+    time_window.draw();
 }
 
