@@ -121,6 +121,7 @@ void PuzzleSelectScene::update_level_select()
     {
         PuzzleScene::PuzzleConfig config;
         config.filename = construct_filename();
+        config.stage_name = level_choices.choice();
         current_scene = new PuzzleScene(config);
     }
     else if (trigger & KEY_B)

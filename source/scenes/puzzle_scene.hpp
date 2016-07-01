@@ -5,6 +5,8 @@
 #include <string>
 #include <deque>
 #include <windows/time_window.hpp>
+#include <windows/puzzle_status_window.hpp>
+#include <util/background.hpp>
 
 class PuzzleScene : public GameScene
 {
@@ -12,6 +14,7 @@ public:
     struct PuzzleConfig
     {
         std::string filename;
+        std::string stage_name;
     };
     PuzzleScene(const PuzzleConfig& config);
     virtual void init_panel_table();
@@ -24,8 +27,7 @@ private:
     std::deque<PanelTable> snapshots;
     PuzzleConfig puzzle_config;
     TimeWindow time_window;
+    PuzzleStatusWindow status_window;
 };
 
-
 #endif
-

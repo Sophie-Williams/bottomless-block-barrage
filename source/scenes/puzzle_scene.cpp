@@ -3,7 +3,7 @@
 #include "title_scene.hpp"
 #include "game_common.hpp"
 
-PuzzleScene::PuzzleScene(const PuzzleConfig& config) : GameScene(GameScene::Config()), puzzle_config(config)
+PuzzleScene::PuzzleScene(const PuzzleConfig& config) : GameScene(GameScene::Config()), puzzle_config(config), status_window(config.stage_name)
 {
 
 }
@@ -17,6 +17,7 @@ void PuzzleScene::init_panel_table()
 void PuzzleScene::init_menu()
 {
     GameScene::init_menu();
+    status_window.set_moves(panel_table.moves);
 }
 
 void PuzzleScene::update_input()
@@ -39,6 +40,7 @@ void PuzzleScene::update_input()
             if (panel_table.all_idle())
                 snapshots.push_back(panel_table);
             panel_table.swap(selector_y, selector_x);
+            status_window.set_moves(panel_table.moves);
         }
     }
     if (trigger & KEY_Y)
@@ -46,6 +48,7 @@ void PuzzleScene::update_input()
         panel_table = snapshots.back();
         if (snapshots.size() != 1)
             snapshots.pop_back();
+        status_window.set_moves(panel_table.moves);
     }
 
     if (trigger & KEY_START)
@@ -66,5 +69,6 @@ void PuzzleScene::draw_bottom()
 {
     GameScene::draw_bottom();
     time_window.draw();
+    status_window.draw();
 }
 

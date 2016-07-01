@@ -7,6 +7,7 @@
 #include "game_common.hpp"
 #include "panel.hpp"
 
+#include "menu_background_gfx.h"
 #include "panels_gfx.hpp"
 #include "border_gfx.h"
 #include "selector_gfx.h"
@@ -94,6 +95,11 @@ void GameScene::init_menu()
     try_again_command.create(0, 0, 48, 16, 2, {"Yes", "No"});
     try_again_command.set_hidden(true);
     try_again_command.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
+
+    background_top.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
+                          0, 0, Background::Repeating | Background::TopScreen);
+    background_bottom.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
+                             0, 0, Background::Repeating | Background::BottomScreen);
 }
 
 void GameScene::update()
@@ -151,6 +157,8 @@ void GameScene::update_input()
 
 void GameScene::update_gameover()
 {
+    background_bottom.update();
+    background_top.update();
     save_replay_command.update();
     try_again_command.update();
     u32 trigger = hidKeysDown();
@@ -258,6 +266,7 @@ void GameScene::update_level()
 
 void GameScene::draw_top()
 {
+    background_top.draw();
     if (is_gameover())
         draw_gameover_top();
     else
@@ -266,6 +275,7 @@ void GameScene::draw_top()
 
 void GameScene::draw_bottom()
 {
+    background_bottom.draw();
     if (is_gameover())
         draw_gameover_bottom();
     else

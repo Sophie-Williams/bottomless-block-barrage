@@ -2,6 +2,7 @@
 #define GAME_SCENE_HPP
 
 #include "scene.hpp"
+#include <util/background.hpp>
 #include <util/command_window.hpp>
 #include <util/text.hpp>
 #include <util/texture.hpp>
@@ -101,6 +102,10 @@ protected:
     Text try_again;
     CommandWindow save_replay_command;
     CommandWindow try_again_command;
+
+    // Nice things
+    Background background_top;
+    Background background_bottom;
 
     // Housekeeping
     // Frame id

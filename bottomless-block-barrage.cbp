@@ -584,6 +584,8 @@
 			<Option target="spunch" />
 			<Option target="3dsxlink" />
 		</Unit>
+		<Unit filename="source/windows/puzzle_status_window.cpp" />
+		<Unit filename="source/windows/puzzle_status_window.hpp" />
 		<Unit filename="source/windows/time_window.cpp" />
 		<Unit filename="source/windows/time_window.hpp" />
 		<Unit filename="testing/panel_table_test.cpp" />
