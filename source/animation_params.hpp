@@ -3,8 +3,6 @@
 
 #include "panel_table.hpp"
 
-#define PANEL_SIZE 16
-
 struct AnimationParams
 {
     AnimationParams() : panel(0), selector(0), panel_counter(0), selector_counter(0) {}

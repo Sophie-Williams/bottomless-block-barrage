@@ -14,20 +14,33 @@ public:
     struct PuzzleConfig
     {
         std::string filename;
-        std::string stage_name;
+        std::string level_name;
+        // For getting next puzzle.
+        std::string set_name;
+        int stage_id;
+        int level_id;
     };
     PuzzleScene(const PuzzleConfig& config);
-    virtual void init_panel_table();
-    virtual void init_menu();
-    virtual void update_input();
-    virtual void update_windows();
+    ~PuzzleScene() {}
+
+    void init_panel_table();
+    void init_menu();
+
+    void update_input();
+    void update_windows();
+    void update_gameover();
+    void update_on_gameover();
+
     bool is_gameover() const;
-    virtual void draw_bottom();
+
+    void draw_bottom();
+    void draw_gameover_top();
 private:
     std::deque<PanelTable> snapshots;
     PuzzleConfig puzzle_config;
     TimeWindow time_window;
     PuzzleStatusWindow status_window;
+    Text result_text;
 };
 
 #endif

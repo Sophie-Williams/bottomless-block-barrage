@@ -1,19 +1,16 @@
 #include "game_scene.hpp"
 #include <ctime>
 
-#include "title_scene.hpp"
+#include "mode_select_scene.hpp"
 #include "endless_config_scene.hpp"
 
 #include "game_common.hpp"
 #include "panel.hpp"
-
-#include "menu_background_gfx.h"
 #include "panels_gfx.hpp"
-#include "border_gfx.h"
-#include "selector_gfx.h"
-#include "debug_text.h"
 
 #include <util/font.hpp>
+
+GameScene::Config GameScene::DEFAULT_CONFIG;
 
 void GameScene::initialize()
 {
@@ -54,9 +51,7 @@ void GameScene::init_sprites()
         pdscr = default_set;
     else
         pdscr = panel_sets[config.panel_gfx];
-    int width = pdscr.panel_size * 7 + (pdscr.include_unmatchable ? pdscr.panel_size : 0);
-    int height = pdscr.panel_size * Panel::GRAPHICS_SIZE;
-    panels.create(pdscr.gfx, width, height);
+    panels.create(pdscr.gfx);
 
     switch (config.difficulty)
     {
@@ -71,34 +66,18 @@ void GameScene::init_sprites()
             break;
     }
 
-    selector.create(selector_gfx, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT);
-    border.create(border_gfx, BORDER_GFX_WIDTH, BORDER_GFX_HEIGHT);
-    debug.create(debug_text, DEBUG_TEXT_WIDTH, DEBUG_TEXT_HEIGHT);
+    selector.create("romfs:/graphics/game/selector.png");
+    border.create("romfs:/graphics/borders/red.png");
+    debug.create("romfs:/graphics/game/debug_text.png");
 
     frames.reset();
 }
 
 void GameScene::init_menu()
 {
-    game_over.create("Game Over\nSave Replay?", 0, 0);
-    game_over.set_hidden(true);
-    game_over.centerx(TOP_SCREEN_WIDTH);
-
-    try_again.create("Try Again?", 0, 0);
-    try_again.set_hidden(true);
-    try_again.centerx(TOP_SCREEN_WIDTH);
-
-    save_replay_command.create(0, 0, 48, 16, 2, {"Yes", "No"});
-    save_replay_command.set_hidden(true);
-    save_replay_command.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
-
-    try_again_command.create(0, 0, 48, 16, 2, {"Yes", "No"});
-    try_again_command.set_hidden(true);
-    try_again_command.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
-
-    background_top.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
+    background_top.create("romfs:/graphics/backgrounds/demo.png",
                           0, 0, Background::Repeating | Background::TopScreen);
-    background_bottom.create(menu_background_gfx, MENU_BACKGROUND_GFX_WIDTH, MENU_BACKGROUND_GFX_HEIGHT,
+    background_bottom.create("romfs:/graphics/backgrounds/demo.png",
                              0, 0, Background::Repeating | Background::BottomScreen);
 }
 
@@ -114,20 +93,19 @@ void GameScene::update()
         update_windows();
 
         if (is_gameover())
-        {
-            game_over.set_hidden(false);
-            try_again.set_hidden(true);
-            save_replay_command.set_hidden(false);
-            save_replay_command.set_active(true);
-        }
+            update_on_gameover();
     }
     else
     {
         update_gameover();
     }
 
+    //if (panel_table.is_warning())
+    //    music = "romfs:/audio/ta/ta-05.spc";
+
     last_frame = osGetTime();
     frame++;
+    Scene::update();
 }
 
 bool GameScene::is_gameover() const
@@ -152,46 +130,13 @@ void GameScene::update_input()
     if (trigger & KEY_A)
         panel_table.swap(selector_y, selector_x);
     if (trigger & KEY_START)
-        current_scene = new TitleScene();
+        current_scene = new ModeSelectScene();
 }
 
 void GameScene::update_gameover()
 {
     background_bottom.update();
     background_top.update();
-    save_replay_command.update();
-    try_again_command.update();
-    u32 trigger = hidKeysDown();
-
-    if (save_replay_command.is_active())
-    {
-        if (trigger & KEY_A)
-        {
-            if (save_replay_command.selection() == 0)
-                recorder.save();
-
-            save_replay_command.set_active(false);
-            save_replay_command.set_hidden(true);
-            try_again_command.set_active(true);
-            try_again_command.set_hidden(false);
-            game_over.set_hidden(true);
-            try_again.set_hidden(false);
-        }
-    }
-    else if (try_again_command.is_active())
-    {
-        if (trigger & KEY_A)
-        {
-            if (try_again_command.selection() == 0)
-            {
-                GameScene::Config save_config = config;
-                save_config.level = level;
-                current_scene = new EndlessConfigScene(save_config);
-            }
-            else
-                current_scene = new TitleScene();
-        }
-    }
 }
 
 void GameScene::update_match()
@@ -282,14 +227,6 @@ void GameScene::draw_bottom()
         draw_game_bottom();
 }
 
-void GameScene::draw_gameover_top()
-{
-    game_over.draw();
-    try_again.draw();
-    save_replay_command.draw();
-    try_again_command.draw();
-}
-
 void GameScene::draw_game_bottom()
 {
     draw_panels();
@@ -374,7 +311,7 @@ void GameScene::draw_selector()
 
     int x = startx + selector_x * panel_size;
     int y = starty + (selector_y + 1) * panel_size - offset;
-    selector.draw(x, y, 0, frames.selector * SELECTOR_GFX_HEIGHT / 2, SELECTOR_GFX_WIDTH, SELECTOR_GFX_HEIGHT / 2);
+    selector.draw(x, y, 0, frames.selector * selector.height() / 2, selector.width(), selector.height() / 2);
 }
 
 void GameScene::draw_board()

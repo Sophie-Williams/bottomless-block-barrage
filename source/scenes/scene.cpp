@@ -14,3 +14,7 @@ void Scene::draw()
         draw_bottom();
     sf2d_end_frame();
 }
+
+void Scene::update()
+{
+}

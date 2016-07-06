@@ -1,4 +1,5 @@
 #include "file_helper.hpp"
+#include <algorithm>
 
 extern "C"
 {
@@ -18,7 +19,7 @@ std::string get_extension(const std::string& filename, std::string::size_type& i
     return extension;
 }
 
-std::vector<std::string> dir_entries(const std::string& path)
+std::vector<std::string> dir_entries(const std::string& path, bool sort)
 {
     std::vector<std::string> ret;
     DIR* d = opendir(path.c_str());
@@ -34,12 +35,15 @@ std::vector<std::string> dir_entries(const std::string& path)
     }
     closedir(d);
 
+    if (sort)
+        std::sort(ret.begin(), ret.end());
+
     return ret;
 }
 
-std::vector<std::string> dir_filenames(const std::string& path, const std::string& ext, bool include_ext)
+std::vector<std::string> dir_filenames(const std::string& path, const std::string& ext, bool include_ext, bool sort)
 {
-    std::vector<std::string> entries = dir_entries(path);
+    std::vector<std::string> entries = dir_entries(path, sort);
     std::vector<std::string> ret;
     std::string::size_type idx;
     for (const auto& entry : entries)

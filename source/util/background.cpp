@@ -1,15 +1,19 @@
 #include "background.hpp"
-#include "scenes/scene.hpp" // FOR Screen Sizes
+#include "scenes/scene.hpp" // for screen sizes
 
-Background::Background(const void* src_buffer, int sw, int sh, int sx, int sy, unsigned int style) :
-    Widget(0, 0, sw, sh, style), texture(src_buffer, sw, sh), speed_x(sx), speed_y(sy)
+Background::Background(const std::string& path, int sx, int sy, unsigned int style) :
+    Widget(0, 0, 0, 0, style), texture(path), speed_x(sx), speed_y(sy)
 {
+    width = texture.width();
+    height = texture.height();
 }
 
-void Background::create(const void* src_buffer, int sw, int sh, int sx, int sy, unsigned int style)
+void Background::create(const std::string& path, int sx, int sy, unsigned int style)
 {
-    Widget::create(0, 0, sw, sh, style);
-    texture.create(src_buffer, sw, sh);
+    Widget::create(0, 0, 0, 0, style);
+    texture.create(path);
+    width = texture.width();
+    height = texture.height();
     speed_x = sx;
     speed_y = sy;
 }

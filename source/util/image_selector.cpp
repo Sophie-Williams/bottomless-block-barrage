@@ -49,9 +49,9 @@ void ImageSelector::draw()
         sf2d_draw_rectangle(x, y, width, height, color.color());
 }
 
-void ImageSelector::add(const std::string& group, const void* src_buffer, int pitch, const void* client_data)
+void ImageSelector::add(const std::string& group, const std::string& path, const void* client_data)
 {
     if (images.find(group) == images.end())
         keys.push_back(group);
-    images[group].emplace_back(src_buffer, pitch == -1 ? width : pitch, height, client_data);
+    images[group].emplace_back(path, client_data);
 }

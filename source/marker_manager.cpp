@@ -1,15 +1,16 @@
 #include "marker_manager.hpp"
-#include "markers_gfx.h"
 #include <vector>
 
-MarkerManager::MarkerManager(PanelSpeedSettings* s) : settings(s), markers(markers_gfx, MARKERS_GFX_WIDTH, MARKERS_GFX_HEIGHT)
+const std::string marker_gfx = "romfs:/graphics/game/markers.png";
+
+MarkerManager::MarkerManager(PanelSpeedSettings* s) : settings(s), markers(marker_gfx)
 {
 }
 
 void MarkerManager::create(PanelSpeedSettings* s)
 {
     settings = s;
-    markers.create(markers_gfx, MARKERS_GFX_WIDTH, MARKERS_GFX_HEIGHT);
+    markers.create(marker_gfx);
 }
 
 void MarkerManager::add(int x, int y, Marker::Type type, int value)

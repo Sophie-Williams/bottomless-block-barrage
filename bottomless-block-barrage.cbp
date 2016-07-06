@@ -154,38 +154,6 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
-		<Unit filename="graphics/border_gfx.png">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
-		<Unit filename="graphics/debug_text.png">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
-		<Unit filename="graphics/panels_gfx.png">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
-		<Unit filename="graphics/selector_gfx.png">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
 		<Unit filename="resources/AppInfo">
 			<Option target="release" />
 			<Option target="citra" />
@@ -281,6 +249,7 @@
 		</Unit>
 		<Unit filename="source/panels_gfx.cpp" />
 		<Unit filename="source/panels_gfx.hpp" />
+		<Unit filename="source/puzzle_set.hpp" />
 		<Unit filename="source/random.hpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -323,6 +292,8 @@
 		</Unit>
 		<Unit filename="source/scenes/game_scene.cpp" />
 		<Unit filename="source/scenes/game_scene.hpp" />
+		<Unit filename="source/scenes/mode_select_scene.cpp" />
+		<Unit filename="source/scenes/mode_select_scene.hpp" />
 		<Unit filename="source/scenes/puzzle_scene.cpp" />
 		<Unit filename="source/scenes/puzzle_scene.hpp" />
 		<Unit filename="source/scenes/puzzle_select_scene.cpp">
@@ -361,6 +332,10 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/scenes/score_config_scene.cpp" />
+		<Unit filename="source/scenes/score_config_scene.hpp" />
+		<Unit filename="source/scenes/score_scene.cpp" />
+		<Unit filename="source/scenes/score_scene.hpp" />
 		<Unit filename="source/scenes/title_scene.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -369,14 +344,7 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
-		<Unit filename="source/scenes/title_scene.hpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
+		<Unit filename="source/scenes/title_scene.hpp" />
 		<Unit filename="source/util/BmpFont.cpp" />
 		<Unit filename="source/util/BmpFont.h" />
 		<Unit filename="source/util/background.cpp" />
@@ -401,6 +369,8 @@
 			<Option target="spunch" />
 			<Option target="3dsxlink" />
 		</Unit>
+		<Unit filename="source/util/choice.cpp" />
+		<Unit filename="source/util/choice.hpp" />
 		<Unit filename="source/util/color_modulation.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -564,6 +534,8 @@
 			<Option target="spunch" />
 			<Option target="3dsxlink" />
 		</Unit>
+		<Unit filename="source/windows/help_window.cpp" />
+		<Unit filename="source/windows/help_window.hpp" />
 		<Unit filename="source/windows/info_window.cpp">
 			<Option target="release" />
 			<Option target="citra" />

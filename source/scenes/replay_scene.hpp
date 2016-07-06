@@ -24,6 +24,7 @@ protected:
     void update_windows();
 
     void draw_game_top();
+    void draw_game_bottom();
 private:
     InfoWindow info;
     CCCWindow ccc_stats;

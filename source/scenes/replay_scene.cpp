@@ -1,6 +1,7 @@
 #include "replay_scene.hpp"
 #include "title_scene.hpp"
 #include "game_common.hpp"
+#include "panels_gfx.hpp"
 
 void ReplayScene::init_recorder()
 {
@@ -112,4 +113,28 @@ void ReplayScene::draw_game_top()
 {
     ccc_stats.draw();
     info.draw();
+}
+
+void ReplayScene::draw_game_bottom()
+{
+    GameScene::draw_game_bottom();
+    int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 9 + 4;
+    int starty = BOTTOM_SCREEN_HEIGHT - border.height() + 9;
+    const int panel_size = PANEL_SIZE;
+    const int step = get_current_speed(level) / panel_size;
+    int offset = panel_table.rise / step;
+
+    for (int i = 0; i < panel_table.height() + 1; i++)
+    {
+        for (int j = 0; j < panel_table.width(); j++)
+        {
+            const Panel& panel = panel_table.get(i, j);
+            if (panel.value == Panel::EMPTY) continue;
+            int x = startx + j * panel_size;
+            int y = starty + (i + 1) * panel_size - offset;
+
+            debug.draw(x, y, panel.state * 5, 0, 5, 10);
+            debug.draw(x + 11, y + 6, panel.chain * 5, 0, 5, 10);
+        }
+    }
 }

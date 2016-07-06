@@ -37,7 +37,7 @@ public:
 
     void initialize();
     void update();
-
+    static Config DEFAULT_CONFIG;
 protected:
     void draw_top();
     void draw_bottom();
@@ -50,6 +50,7 @@ protected:
     virtual bool is_gameover() const;
     virtual void update_input();
     virtual void update_windows() {}
+    virtual void update_on_gameover() {}
     virtual void update_gameover();
 
     virtual void update_match();
@@ -63,7 +64,7 @@ protected:
 
     virtual void draw_game_top() {}
     virtual void draw_game_bottom();
-    virtual void draw_gameover_top();
+    virtual void draw_gameover_top() {}
     virtual void draw_gameover_bottom();
 
     void draw_selector();
@@ -96,12 +97,6 @@ protected:
 
     // Debugging
     MovesRecorder recorder;
-
-    // Game over stuff
-    Text game_over;
-    Text try_again;
-    CommandWindow save_replay_command;
-    CommandWindow try_again_command;
 
     // Nice things
     Background background_top;

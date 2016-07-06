@@ -1,15 +1,15 @@
-#ifndef ENDLESS_SCENE_HPP
-#define ENDLESS_SCENE_HPP
+#ifndef SCORE_SCENE_HPP
+#define SCORE_SCENE_HPP
 
 #include "game_scene.hpp"
 #include <windows/info_window.hpp>
 #include <windows/ccc_window.hpp>
 
-class EndlessScene : public GameScene
+class ScoreScene : public GameScene
 {
 public:
-    EndlessScene(const Config& c) : GameScene(c) {}
-    ~EndlessScene() {}
+    ScoreScene(const Config& c) : GameScene(c) {}
+    ~ScoreScene() {}
 protected:
     void init_menu();
 

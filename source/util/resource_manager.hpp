@@ -3,7 +3,7 @@
 
 #include <map>
 #include <memory>
-#include "texture.hpp"
+#include <sf2d.h>
 
 class ResourceManager
 {
@@ -13,16 +13,14 @@ class ResourceManager
             static ResourceManager singleton;
             return singleton;
         }
-        ~ResourceManager() {}
-        Texture* load_image(const void* data, int width, int height);
-        bool release_image(const void* data);
-        //Texture* load_image(const std::string& filename, bool& error);
-        //bool release_image(const std::string& filename);
+        ~ResourceManager();
+        sf2d_texture* load_image(const std::string& path);
+        bool release_image(const std::string& path);
     private:
         ResourceManager() {};                                       // Private constructor
         ResourceManager(const ResourceManager&);                    // Prevent copy-construction
         ResourceManager& operator=(const ResourceManager&);         // Prevent assignment
-        std::map<const void*, std::unique_ptr<Texture>> images;
+        std::map<std::string, sf2d_texture*> images;
 };
 
 inline ResourceManager& ResourceManager()

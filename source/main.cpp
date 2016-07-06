@@ -7,9 +7,30 @@
 
 #include <scenes/scene.hpp>
 #include <scenes/title_scene.hpp>
+#include <scenes/puzzle_select_scene.hpp>
+#include "puzzle_set.hpp"
+#include <util/file_helper.hpp>
 #include <util/sfw.hpp>
 
 Scene* current_scene = NULL;
+
+void get_official_puzzle_sets(std::map<std::string, PuzzleSet>& files)
+{
+    std::vector<std::string> sets = dir_entries("romfs:/puzzles");
+    for (const auto& set : sets)
+    {
+        PuzzleSet puzzle_set(set);
+        std::vector<std::string> stages = dir_entries("romfs:/puzzles/" + set, true);
+        for (const auto& stage : stages)
+        {
+            PuzzleStage puzzle_stage(stage);
+            puzzle_stage.levels = dir_filenames("romfs:/puzzles/" + set + "/" + stage, "bbb", false, true);
+            puzzle_set.stages.emplace(stage, puzzle_stage);
+        }
+        puzzle_set.stage_names = stages;
+        files.emplace(set, puzzle_set);
+    }
+}
 
 int main()
 {
@@ -19,6 +40,7 @@ int main()
     sf2d_set_3D(0);
     sfw_init();
 
+    get_official_puzzle_sets(PuzzleSelectScene::puzzles);
     std::unique_ptr<Scene> scene;
     current_scene = new TitleScene();
 

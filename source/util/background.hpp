@@ -3,6 +3,7 @@
 
 #include "texture.hpp"
 #include "widget.hpp"
+#include <string>
 
 /**
   * This class represents data for a background
@@ -51,8 +52,8 @@ public:
       * @param sy Vertical speed.
       * @param style Background style.
       */
-    Background(const void *src_buffer, int sw, int sh, int sx, int sy, unsigned int style);
-    void create(const void *src_buffer, int sw, int sh, int sx, int sy, unsigned int style);
+    Background(const std::string& path, int sx, int sy, unsigned int style);
+    void create(const std::string& path, int sx, int sy, unsigned int style);
     void update();
     void draw();
 

@@ -1,11 +1,11 @@
-#include "endless_scene.hpp"
+#include "score_scene.hpp"
 #include "game_common.hpp"
 
-#include "endless_config_scene.hpp"
+#include "score_config_scene.hpp"
 #include "mode_select_scene.hpp"
 #include <ctime>
 
-void EndlessScene::init_menu()
+void ScoreScene::init_menu()
 {
     GameScene::init_menu();
 
@@ -29,7 +29,7 @@ void EndlessScene::init_menu()
     info.set_difficulty(config.difficulty);
 }
 
-void EndlessScene::update_windows()
+void ScoreScene::update_windows()
 {
     GameScene::update_windows();
     u32 held = hidKeysHeld();
@@ -39,19 +39,19 @@ void EndlessScene::update_windows()
     ccc_stats.set_matchinfo(current_match);
 }
 
-void EndlessScene::update_end_match()
+void ScoreScene::update_end_match()
 {
     GameScene::update_end_match();
     info.start_timeout_timer();
 }
 
-void EndlessScene::update_on_timeout()
+void ScoreScene::update_on_timeout()
 {
     GameScene::update_on_timeout();
     info.set_timeout(current_timeout);
 }
 
-void EndlessScene::update_on_matched()
+void ScoreScene::update_on_matched()
 {
     GameScene::update_on_matched();
     int needed = get_exp_to_level(level);
@@ -67,7 +67,7 @@ void EndlessScene::update_on_matched()
     }
 }
 
-void EndlessScene::update_on_gameover()
+void ScoreScene::update_on_gameover()
 {
     GameScene::update_on_gameover();
     game_over.set_hidden(false);
@@ -76,7 +76,7 @@ void EndlessScene::update_on_gameover()
     save_replay_command.set_active(true);
 }
 
-void EndlessScene::update_gameover()
+void ScoreScene::update_gameover()
 {
     GameScene::update_gameover();
 
@@ -107,7 +107,7 @@ void EndlessScene::update_gameover()
             {
                 GameScene::Config save_config = config;
                 save_config.level = level;
-                current_scene = new EndlessConfigScene(save_config);
+                current_scene = new ScoreConfigScene(save_config);
             }
             else
                 current_scene = new ModeSelectScene();
@@ -115,14 +115,14 @@ void EndlessScene::update_gameover()
     }
 }
 
-void EndlessScene::draw_game_top()
+void ScoreScene::draw_game_top()
 {
     GameScene::draw_game_top();
     ccc_stats.draw();
     info.draw();
 }
 
-void EndlessScene::draw_gameover_top()
+void ScoreScene::draw_gameover_top()
 {
     game_over.draw();
     try_again.draw();

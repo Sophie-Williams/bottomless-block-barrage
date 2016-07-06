@@ -496,7 +496,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
     if (in_clink)
         return info;
 
-    if (stopped)
+    if (stopped && !is_puzzle())
     {
         if (fast_rise)
         {

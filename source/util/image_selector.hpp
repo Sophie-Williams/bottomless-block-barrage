@@ -11,7 +11,7 @@ class ImageSelector : public Widget
 public:
     struct ImageSelectorPayload
     {
-        ImageSelectorPayload(const void* src_buffer, int pitch, int height, const void* data) : texture(src_buffer, pitch, height), payload(data) {}
+        ImageSelectorPayload(const std::string& path, const void* data) : texture(path), payload(data) {}
         Texture texture;
         const void* payload;
     };
@@ -20,7 +20,7 @@ public:
     void create(int x, int y, int width, int height);
     void update();
     void draw();
-    void add(const std::string& group, const void* src_buffer, int pitch = -1, const void* client_data = nullptr);
+    void add(const std::string& group, const std::string& path, const void* client_data = nullptr);
     int selection() const {return index;}
     int sub_selection() const {return sub_index;}
     const void* client_data() const {return images.at(keys[index])[sub_index].payload;}

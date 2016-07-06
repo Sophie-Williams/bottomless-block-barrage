@@ -13,7 +13,7 @@ endif
 
 include $(DEVKITARM)/3ds_rules
 
-# ip address of 3ds for spunch target.
+# ip address of 3ds for spunch/3dsxlink targets.
 IP3DS := 192.168.1.123
 
 #---------------------------------------------------------------------------------
@@ -26,8 +26,6 @@ DATA := data
 ROMFS := romfs
 SOURCES := source
 INCLUDES := $(SOURCES) include
-GRAPHICS := graphics
-
 #---------------------------------------------------------------------------------
 # Resource Setup
 #---------------------------------------------------------------------------------
@@ -52,7 +50,7 @@ endif
 ASFLAGS := -g $(ARCH)
 LDFLAGS = -specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS := -lsf2d -lctru -lm
+LIBS := -lsfil -lpng16 -lz -lsf2d -lctru -lm
 LIBDIRS := $(PORTLIBS) $(CTRULIB) ./lib
 
 #---------------------------------------------------------------------------------
@@ -69,10 +67,8 @@ CPPFILES := $(foreach dir,$(SOURCES),$(notdir $(call recurse,f,$(dir),*.cpp)))
 SFILES := $(foreach dir,$(SOURCES),$(notdir $(call recurse,f,$(dir),*.s)))
 PICAFILES := $(foreach dir,$(SOURCES),$(notdir $(call recurse,f,$(dir),*.pica)))
 BINFILES := $(foreach dir,$(DATA),$(notdir $(call recurse,f,$(dir),*.*)))
-PNGFILES	:= $(foreach dir,$(GRAPHICS),$(notdir $(call recurse,f,$(dir),*.png)))
-BMPFILES	:= $(foreach dir,$(GRAPHICS),$(notdir $(call recurse,f,$(dir),*.bmp)))
 
-export OFILES := $(PNGFILES:.png=.o) $(BMPFILES:.bmp=.o) $(addsuffix .o,$(BINFILES)) $(PICAFILES:.pica=.shbin.o) $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+export OFILES := $(addsuffix .o,$(BINFILES)) $(PICAFILES:.pica=.shbin.o) $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
 export INCLUDE := $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) $(foreach dir,$(LIBDIRS),-I$(dir)/include) -I$(CURDIR)/$(BUILD)
 export LIBPATHS := $(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
@@ -84,8 +80,7 @@ endif
 
 export DEPSDIR := $(CURDIR)/$(BUILD)
 export VPATH := $(foreach dir,$(SOURCES),$(CURDIR)/$(dir) $(call recurse,d,$(CURDIR)/$(dir),*))\
-								$(foreach dir,$(DATA),$(CURDIR)/$(dir) $(call recurse,d,$(CURDIR)/$(dir),*))\
-								$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir) $(call recurse,d,$(CURDIR)/$(dir),*))
+								$(foreach dir,$(DATA),$(CURDIR)/$(dir) $(call recurse,d,$(CURDIR)/$(dir),*))
 
 export TOPDIR := $(CURDIR)
 OUTPUT_DIR := $(TOPDIR)/$(OUTPUT)
@@ -96,28 +91,28 @@ OUTPUT_DIR := $(TOPDIR)/$(OUTPUT)
 # Initial Targets
 #---------------------------------------------------------------------------------
 all: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 3dsx: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 citra: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 cia: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 3ds: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 elf: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 spunch: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 3dsxlink: $(BUILD) $(OUTPUT_DIR)
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+	make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
@@ -223,8 +218,8 @@ cia : $(OUTPUT_FILE).cia
 
 elf : $(OUTPUT_FILE).elf
 
-citra : $(OUTPUT_FILE).elf
-	citra $(OUTPUT_FILE).elf
+citra : $(OUTPUT_FILE).3dsx
+	citra-qt $(OUTPUT_FILE).3dsx
 
 spunch : $(OUTPUT_FILE).cia
 	java -jar ../sockfile-2.0.jar $(IP3DS) $(OUTPUT_FILE).cia
@@ -248,19 +243,6 @@ spunch : $(OUTPUT_FILE).cia
 	@echo "extern const u8" `(echo $(CURBIN) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo $(CURBIN) | tr . _)`.h
 	@echo "extern const u8" `(echo $(CURBIN) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"[];" >> `(echo $(CURBIN) | tr . _)`.h
 	@echo "extern const u32" `(echo $(CURBIN) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo $(CURBIN) | tr . _)`.h
-
-#---------------------------------------------------------------------------------
-%.c: %.png
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@nin10kit -mode=rgba8 -output_dir=../build $(basename $<) $<
-
-#---------------------------------------------------------------------------------
-%.c: %.bmp
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	@nin10kit -mode=rgba8 -output_dir=../build $(basename $<) $<
-
 
 -include $(DEPENDS)
 

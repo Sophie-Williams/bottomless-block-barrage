@@ -34,6 +34,7 @@ void ReplaySelectScene::initialize()
 
 void ReplaySelectScene::update()
 {
+    Scene::update();
     replays.update();
 
     u32 trigger = hidKeysHeld();
