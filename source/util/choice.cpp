@@ -17,9 +17,9 @@ void Choice::update()
 {
     if (!is_active()) return;
     u32 trigger = hidKeysDown();
-    if (trigger & KEY_LEFT)
+    if (trigger & KEY_RIGHT)
         index = (index + 1) % choices.size();
-    else if (trigger & KEY_RIGHT)
+    else if (trigger & KEY_LEFT)
         index = (index - 1 + choices.size()) % choices.size();
 }
 
@@ -32,5 +32,6 @@ void Choice::draw()
 void Choice::set_choices(const std::vector<std::string>& c)
 {
     choices = c;
-    index = 0;
+    if (index > choices.size())
+        index = 0;
 }

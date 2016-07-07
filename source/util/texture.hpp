@@ -23,7 +23,7 @@ public:
     unsigned int height() const {return valid() ? texture->height : 0;}
 
 private:
-    sf2d_texture* texture;
+    sf2d_texture* texture = nullptr;
     bool owned = false;
 };
 

@@ -36,7 +36,6 @@ void EndlessScene::update_windows()
     if (held & KEY_R)
         info.clear_timeout();
     info.update();
-    ccc_stats.set_matchinfo(current_match);
 }
 
 void EndlessScene::update_end_match()
@@ -105,7 +104,7 @@ void EndlessScene::update_gameover()
         {
             if (try_again_command.selection() == 0)
             {
-                GameScene::Config save_config = config;
+                GameScene::GameConfig save_config = config;
                 save_config.level = level;
                 current_scene = new EndlessConfigScene(save_config);
             }
@@ -118,7 +117,6 @@ void EndlessScene::update_gameover()
 void EndlessScene::draw_game_top()
 {
     GameScene::draw_game_top();
-    ccc_stats.draw();
     info.draw();
 }
 
@@ -126,4 +124,6 @@ void EndlessScene::draw_gameover_top()
 {
     game_over.draw();
     try_again.draw();
+    save_replay_command.draw();
+    try_again_command.draw();
 }

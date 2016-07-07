@@ -7,15 +7,15 @@
 #include "game_common.hpp"
 #include "puzzle_set.hpp"
 
-PuzzleScene::PuzzleScene(const PuzzleConfig& config) : GameScene(GameScene::DEFAULT_CONFIG), puzzle_config(config),
-    status_window(puzzle_config.level_name)
+PuzzleScene::PuzzleScene(const GameConfig& config) : GameScene(config),
+    status_window(config.level_name)
 {
 
 }
 
 void PuzzleScene::init_panel_table()
 {
-     panel_table.create(puzzle_config.filename, easy_speed_settings);
+     panel_table.create(config.puzzle_filename, easy_speed_settings);
      snapshots.push_back(panel_table);
 }
 
@@ -83,14 +83,14 @@ void PuzzleScene::update_gameover()
     {
         if (panel_table.is_gameover())
         {
-            current_scene = new PuzzleScene(puzzle_config);
+            current_scene = new PuzzleScene(config);
         }
         else if (panel_table.is_win_puzzle())
         {
-            PuzzleConfig next;
-            std::string set_name = puzzle_config.set_name;
-            unsigned int level = puzzle_config.level_id + 1;
-            unsigned int stage = puzzle_config.stage_id;
+            GameConfig next;
+            std::string set_name = config.set_name;
+            unsigned int level = config.level_id + 1;
+            unsigned int stage = config.stage_id;
 
             const std::vector<std::string>& stages = PuzzleSelectScene::puzzles[set_name].stage_names;
             const std::string stage_name = stages[stage];
@@ -111,7 +111,7 @@ void PuzzleScene::update_gameover()
             next.level_id = level;
             next.stage_id = stage;
             next.level_name = PuzzleSelectScene::puzzles[set_name].stages[stages[stage]].levels[level];
-            next.filename = construct_puzzle_filename(set_name, stages[stage], next.level_name);
+            next.puzzle_filename = construct_puzzle_filename(set_name, stages[stage], next.level_name);
             current_scene = new PuzzleScene(next);
         }
     }

@@ -42,7 +42,7 @@ void ReplaySelectScene::update()
     {
         std::string choice = replays.choice();
         choice = "/bbb-moves/" + choice;
-        ReplayScene::Config config;
+        ReplayScene::GameConfig config;
         config.replay_filename = choice;
         current_scene = new ReplayScene(config);
     }

@@ -4,22 +4,31 @@
 #include "score_config_scene.hpp"
 #include "mode_select_scene.hpp"
 #include <ctime>
+#include <sstream>
+
+void ScoreScene::init_panel_table()
+{
+    GameScene::init_panel_table();
+    switch (config.time_mode)
+    {
+        case TIME:
+            time = config.value * 1000;
+            break;
+        case MOVES:
+            panel_table.moves = config.value;
+            break;
+        default:
+            break;
+    }
+}
 
 void ScoreScene::init_menu()
 {
     GameScene::init_menu();
 
-    game_over.create("Game Over\nSave Replay?", 0, 0);
+    game_over.create("", 0, 0);
     game_over.set_hidden(true);
     game_over.centerx(TOP_SCREEN_WIDTH);
-
-    try_again.create("Try Again?", 0, 0);
-    try_again.set_hidden(true);
-    try_again.centerx(TOP_SCREEN_WIDTH);
-
-    save_replay_command.create(0, 0, 48, 16, 2, {"Yes", "No"});
-    save_replay_command.set_hidden(true);
-    save_replay_command.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
 
     try_again_command.create(0, 0, 48, 16, 2, {"Yes", "No"});
     try_again_command.set_hidden(true);
@@ -27,16 +36,42 @@ void ScoreScene::init_menu()
 
     info.set_level(config.level);
     info.set_difficulty(config.difficulty);
+    info.set_mode(config.time_mode);
+}
+
+bool ScoreScene::is_gameover() const
+{
+    bool base_game_over = false;
+    switch(config.time_mode)
+    {
+        case TIME:
+            base_game_over = time <= 0;
+            break;
+        case LINES:
+            base_game_over = panel_table.lines > config.value;
+            break;
+        case MOVES:
+            base_game_over = panel_table.moves <= 0;
+            break;
+    }
+    return base_game_over || panel_table.is_gameover();
 }
 
 void ScoreScene::update_windows()
 {
     GameScene::update_windows();
+    time -= (int)(osGetTime() - last_frame);
+    if (config.time_mode == TIME)
+        info.set_value(time);
+    else if (config.time_mode == LINES)
+        info.set_value(config.value - panel_table.lines);
+    else if (config.time_mode == MOVES)
+        info.set_value(panel_table.moves);
+
     u32 held = hidKeysHeld();
     if (held & KEY_R)
         info.clear_timeout();
     info.update();
-    ccc_stats.set_matchinfo(current_match);
 }
 
 void ScoreScene::update_end_match()
@@ -70,60 +105,45 @@ void ScoreScene::update_on_matched()
 void ScoreScene::update_on_gameover()
 {
     GameScene::update_on_gameover();
+
+    std::stringstream results;
+    results << "Game Over\nFinal Score " << score << "\nPlay Again?";
+    game_over.create(results.str(), 0, 0);
+    game_over.centerx(TOP_SCREEN_WIDTH);
+
     game_over.set_hidden(false);
-    try_again.set_hidden(true);
-    save_replay_command.set_hidden(false);
-    save_replay_command.set_active(true);
+    try_again_command.set_hidden(false);
+    try_again_command.set_active(true);
 }
 
 void ScoreScene::update_gameover()
 {
     GameScene::update_gameover();
 
-    save_replay_command.update();
-    try_again_command.update();
     u32 trigger = hidKeysDown();
 
-    if (save_replay_command.is_active())
-    {
-        if (trigger & KEY_A)
-        {
-            if (save_replay_command.selection() == 0)
-                recorder.save();
+    try_again_command.update();
 
-            save_replay_command.set_active(false);
-            save_replay_command.set_hidden(true);
-            try_again_command.set_active(true);
-            try_again_command.set_hidden(false);
-            game_over.set_hidden(true);
-            try_again.set_hidden(false);
-        }
-    }
-    else if (try_again_command.is_active())
+    if (trigger & KEY_A)
     {
-        if (trigger & KEY_A)
+        if (try_again_command.selection() == 0)
         {
-            if (try_again_command.selection() == 0)
-            {
-                GameScene::Config save_config = config;
-                save_config.level = level;
-                current_scene = new ScoreConfigScene(save_config);
-            }
-            else
-                current_scene = new ModeSelectScene();
+            GameScene::GameConfig save_config = config;
+            current_scene = new ScoreConfigScene(save_config);
         }
+        else
+            current_scene = new ModeSelectScene();
     }
 }
 
 void ScoreScene::draw_game_top()
 {
     GameScene::draw_game_top();
-    ccc_stats.draw();
     info.draw();
 }
 
 void ScoreScene::draw_gameover_top()
 {
     game_over.draw();
-    try_again.draw();
+    try_again_command.draw();
 }

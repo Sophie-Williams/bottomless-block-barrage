@@ -132,6 +132,8 @@ public:
     int clink;
     /** Chain link */
     int chain;
+    /** Lines raised */
+    int lines;
 
 private:
     bool next_horizontal_error(int j);

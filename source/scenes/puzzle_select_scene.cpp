@@ -90,8 +90,8 @@ void PuzzleSelectScene::update_level_select()
     u32 trigger = hidKeysDown();
     if (trigger & KEY_A || trigger & KEY_START)
     {
-        PuzzleScene::PuzzleConfig config;
-        config.filename = construct_puzzle_filename(set_choices.choice(), stage_choices.choice(), level_choices.choice());
+        PuzzleScene::GameConfig config;
+        config.puzzle_filename = construct_puzzle_filename(set_choices.choice(), stage_choices.choice(), level_choices.choice());
         config.set_name = set_choices.choice();
         config.stage_id = stage_choices.selection();
         config.level_id = level_choices.selection();

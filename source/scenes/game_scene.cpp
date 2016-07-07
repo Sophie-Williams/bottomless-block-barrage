@@ -10,8 +10,6 @@
 
 #include <util/font.hpp>
 
-GameScene::Config GameScene::DEFAULT_CONFIG;
-
 void GameScene::initialize()
 {
     init_recorder();
@@ -248,7 +246,7 @@ void GameScene::draw_panels()
     int offset = panel_table.rise / step;
 
     /// TODO clean up this section of code.
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised()))
+    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || is_gameover() || panel_table.is_rised()))
         offset = panel_size;
 
     for (int i = 0; i < panel_table.height(); i++)
@@ -258,7 +256,7 @@ void GameScene::draw_panels()
             const Panel& panel = panel_table.get(i, j);
             int status = panel.frame(frames.panel);
             if (panel.value == Panel::EMPTY || status == -1) continue;
-            if (panel_table.is_gameover()) status = Panel::LOST;
+            if (is_gameover()) status = Panel::LOST;
 
             int x = startx + j * panel_size;
             int y = starty + (i + 1) * panel_size - offset;
@@ -274,7 +272,7 @@ void GameScene::draw_panels()
     {
         const int i = panel_table.height();
         const Panel& panel = panel_table.get(i, j);
-        int status = (panel_table.is_gameover() ? Panel::LOST : Panel::PENDING);
+        int status = (is_gameover() ? Panel::LOST : Panel::PENDING);
 
         int x = j * panel_size + startx;
         int y = (i + 1) * panel_size - offset + starty;
@@ -306,7 +304,7 @@ void GameScene::draw_selector()
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
 
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || panel_table.is_gameover() || panel_table.is_rised()))
+    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || is_gameover() || panel_table.is_rised()))
         offset = panel_size;
 
     int x = startx + selector_x * panel_size;

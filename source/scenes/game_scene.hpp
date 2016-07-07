@@ -19,25 +19,44 @@ enum Difficulty
     HARD = 2,
 };
 
+enum TimingMode
+{
+    TIME = 0,
+    LINES = 1,
+    MOVES = 2,
+};
+
 class GameScene : public Scene
 {
 public:
-    struct Config
+    struct GameConfig
     {
-        // Either replay_filename is set or difficulty/level
+        // Score Mode Only
+        TimingMode time_mode = TIME;
+        int value = 120;
+
+        // Puzzle Mode Only
+        std::string puzzle_filename;
+        std::string level_name;
+        // For getting next puzzle.
+        std::string set_name;
+        int stage_id;
+        int level_id;
+
+        // Replay Mode
+        std::string replay_filename;
+
+        // All modes
         Difficulty difficulty = EASY;
         int level = 1;
         std::string panel_gfx = "";
-
-        std::string replay_filename;
     };
 
-    GameScene(const Config& c) : config(c), level(c.level) {}
+    GameScene(const GameConfig& c) : config(c), level(c.level) {}
     virtual ~GameScene() {}
 
     void initialize();
     void update();
-    static Config DEFAULT_CONFIG;
 protected:
     void draw_top();
     void draw_bottom();
@@ -72,7 +91,7 @@ protected:
     void draw_panels();
 
     // Configuration
-    Config config;
+    GameConfig config;
 
     // Images
     Texture panels;

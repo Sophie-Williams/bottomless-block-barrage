@@ -11,16 +11,7 @@
 class PuzzleScene : public GameScene
 {
 public:
-    struct PuzzleConfig
-    {
-        std::string filename;
-        std::string level_name;
-        // For getting next puzzle.
-        std::string set_name;
-        int stage_id;
-        int level_id;
-    };
-    PuzzleScene(const PuzzleConfig& config);
+    PuzzleScene(const GameConfig& config);
     ~PuzzleScene() {}
 
     void init_panel_table();
@@ -37,7 +28,6 @@ public:
     void draw_gameover_top();
 private:
     std::deque<PanelTable> snapshots;
-    PuzzleConfig puzzle_config;
     TimeWindow time_window;
     PuzzleStatusWindow status_window;
     Text result_text;

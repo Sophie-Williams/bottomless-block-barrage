@@ -3,12 +3,11 @@
 
 #include "game_scene.hpp"
 #include <windows/info_window.hpp>
-#include <windows/ccc_window.hpp>
 
 class EndlessScene : public GameScene
 {
 public:
-    EndlessScene(const Config& c) : GameScene(c) {}
+    EndlessScene(const GameConfig& c) : GameScene(c) {}
     ~EndlessScene() {}
 protected:
     void init_menu();
@@ -25,7 +24,6 @@ protected:
     void draw_gameover_top();
 private:
     InfoWindow info;
-    CCCWindow ccc_stats;
 
     Text game_over;
     Text try_again;

@@ -8,7 +8,7 @@
 class ReplayScene : public GameScene
 {
 public:
-    ReplayScene(const Config& c) : GameScene(c) {}
+    ReplayScene(const GameConfig& c) : GameScene(c) {}
     ~ReplayScene() {}
 protected:
     void init_recorder();

@@ -12,6 +12,7 @@ public:
     void update();
     void draw();
     int selection() const {return index;}
+    void set_selection(int i) {index = i;}
     void set_choices(const std::vector<std::string>& c);
 private:
     std::vector<std::string> choices;

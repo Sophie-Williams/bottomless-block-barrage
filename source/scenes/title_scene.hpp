@@ -2,6 +2,7 @@
 #define TITLE_SCENE_HPP
 
 #include "scene.hpp"
+#include <util/button.hpp>
 #include <util/texture.hpp>
 #include <util/text.hpp>
 
@@ -15,7 +16,7 @@ protected:
     void draw_bottom();
 private:
     Texture background;
-    Texture press_start;
+    Button press_start;
     Text version;
 };
 

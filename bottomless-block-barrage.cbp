@@ -369,6 +369,8 @@
 			<Option target="spunch" />
 			<Option target="3dsxlink" />
 		</Unit>
+		<Unit filename="source/util/button.cpp" />
+		<Unit filename="source/util/button.hpp" />
 		<Unit filename="source/util/choice.cpp" />
 		<Unit filename="source/util/choice.hpp" />
 		<Unit filename="source/util/color_modulation.cpp">
@@ -514,26 +516,6 @@
 			<Option target="elf" />
 		</Unit>
 		<Unit filename="source/version.hpp" />
-		<Unit filename="source/windows/ccc_window.cpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-			<Option target="spunch" />
-			<Option target="3dsxlink" />
-		</Unit>
-		<Unit filename="source/windows/ccc_window.hpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-			<Option target="spunch" />
-			<Option target="3dsxlink" />
-		</Unit>
 		<Unit filename="source/windows/help_window.cpp" />
 		<Unit filename="source/windows/help_window.hpp" />
 		<Unit filename="source/windows/info_window.cpp">
@@ -558,6 +540,8 @@
 		</Unit>
 		<Unit filename="source/windows/puzzle_status_window.cpp" />
 		<Unit filename="source/windows/puzzle_status_window.hpp" />
+		<Unit filename="source/windows/score_info_window.cpp" />
+		<Unit filename="source/windows/score_info_window.hpp" />
 		<Unit filename="source/windows/time_window.cpp" />
 		<Unit filename="source/windows/time_window.hpp" />
 		<Unit filename="testing/panel_table_test.cpp" />

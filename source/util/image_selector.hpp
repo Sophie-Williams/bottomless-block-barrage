@@ -23,6 +23,8 @@ public:
     void add(const std::string& group, const std::string& path, const void* client_data = nullptr);
     int selection() const {return index;}
     int sub_selection() const {return sub_index;}
+    void set_selection(int i) {index = i;}
+    void set_sub_selection(int i) {sub_index = i;}
     const void* client_data() const {return images.at(keys[index])[sub_index].payload;}
 private:
     std::vector<std::string> keys;

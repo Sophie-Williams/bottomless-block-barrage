@@ -17,7 +17,7 @@
 
 PanelTable::PanelTable(int height, int width, int num_colors, const PanelSpeedSettings& ssettings) :
      panels(width * (height + 1)), settings(ssettings), rows(height), columns(width), colors(num_colors), state(RISING),
-     type(RISES), clink(0), chain(0)
+     type(RISES), clink(0), chain(0), lines(0)
 {
     generate();
 }
@@ -74,6 +74,7 @@ void PanelTable::create(const std::string& filename, const PanelSpeedSettings& s
     cooloff = 0;
     clink = 0;
     chain = 0;
+    lines = 0;
 
     panels.resize(columns * rows);
     for (unsigned int i = 0; i < panels.size(); i++)
@@ -91,6 +92,7 @@ void PanelTable::generate()
     cooloff = 0;
     clink = 0;
     chain = 0;
+    lines = 0;
 
     for (int i = 0; i < rows; i++)
     {
@@ -244,8 +246,7 @@ void PanelTable::swap(int i, int j)
     left.swap(right.value, true);
     right.swap(left.value, false);
 
-    if (is_puzzle())
-        moves -= 1;
+    moves -= 1;
 }
 
 MatchInfo PanelTable::update_matches(void)
@@ -416,6 +417,7 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
         need_generate_next = true;
         // Need to do this here if we stop at this exact frame blocks will rise a lot.
         state = RISING;
+        lines++;
     }
 
     // Iterate in reverse so that falls work correctly.

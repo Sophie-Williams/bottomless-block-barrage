@@ -2,16 +2,19 @@
 #define SCORE_SCENE_HPP
 
 #include "game_scene.hpp"
-#include <windows/info_window.hpp>
-#include <windows/ccc_window.hpp>
+#include <3ds.h>
+#include <windows/score_info_window.hpp>
 
 class ScoreScene : public GameScene
 {
 public:
-    ScoreScene(const Config& c) : GameScene(c) {}
+    ScoreScene(const GameConfig& c) : GameScene(c) {}
     ~ScoreScene() {}
 protected:
     void init_menu();
+    void init_panel_table();
+
+    bool is_gameover() const;
 
     void update_end_match();
     void update_on_timeout();
@@ -24,13 +27,11 @@ protected:
     void draw_game_top();
     void draw_gameover_top();
 private:
-    InfoWindow info;
-    CCCWindow ccc_stats;
+    ScoreInfoWindow info;
 
     Text game_over;
-    Text try_again;
-    CommandWindow save_replay_command;
     CommandWindow try_again_command;
+    int time;
 };
 
 #endif

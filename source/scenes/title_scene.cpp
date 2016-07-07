@@ -7,7 +7,9 @@
 void TitleScene::initialize()
 {
     background.create("romfs:/graphics/menu/title_screen.png");
-    press_start.create("romfs:/graphics/menu/press_start.png");
+    press_start.create("romfs:/graphics/menu/press_start.png", 0, 0);
+    press_start.set_active(true);
+    press_start.center(BOTTOM_SCREEN_WIDTH, BOTTOM_SCREEN_HEIGHT);
     version.create(version_str, 0, 0);
     version.set_x(BOTTOM_SCREEN_WIDTH - version.get_width());
 }
@@ -34,7 +36,6 @@ void TitleScene::draw_top()
 
 void TitleScene::draw_bottom()
 {
-    press_start.draw((BOTTOM_SCREEN_WIDTH - press_start.width()) / 2,
-                     (BOTTOM_SCREEN_HEIGHT - press_start.height()) / 2);
+    press_start.draw();
     version.draw();
 }
