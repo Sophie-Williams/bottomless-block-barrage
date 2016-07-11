@@ -29,8 +29,8 @@ New Gameplay features
 ## Compiling
 ### Prerequisites
 * Compiling cia and 3ds targets requires having [makerom](https://github.com/profi200/Project_CTR) and [bannertool](https://github.com/Steveice10/bannertool) in your $PATH
-* [sf2dlib](https://github.com/xerpi/sf2dlib) is required along with devkitPro and [ctrulib](https://github.com/smealum/ctrulib)
-* Lastly [nin10kit](https://github.com/TricksterGuy/nin10kit) is required to be installed and in your $PATH
+* [sf2dlib](https://github.com/xerpi/sf2dlib) is required along with [sfillib](https://github.com/xerpi/sfillib) with [portlibs](https://github.com/xerpi/3ds_portlibs)
+* devkitPro and [ctrulib](https://github.com/smealum/ctrulib)
 
 1) Once all of the above is in order simply type make and you will get .elf for citra, .3dsx for homebrew launcher, .cia for emunand, and .3ds for gateway/sky3ds.
 
