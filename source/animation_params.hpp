@@ -7,7 +7,7 @@ struct AnimationParams
 {
     AnimationParams() : panel(0), selector(0), panel_counter(0), selector_counter(0) {}
     void reset() {panel = selector = panel_counter = selector_counter = 0;}
-    void update(int state, bool is_danger);
+    void update(int state, int& danger_panel);
     unsigned int panel;
     unsigned int selector;
     unsigned int panel_counter;

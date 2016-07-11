@@ -42,7 +42,7 @@ void ReplayScene::update_input()
 void ReplayScene::update_windows()
 {
     GameScene::update_windows();
-    if (held & KEY_R)
+    if (held & KEY_R || held & KEY_L)
         info.clear_timeout();
     info.update();
     ccc_stats.set_matchinfo(current_match);
@@ -105,7 +105,7 @@ void ReplayScene::update_match()
         last_match = current_match;
     }
 
-    frames.update(panel_table.get_state(), panel_table.is_warning());
+    frames.update(panel_table.get_state(), danger_panel);
     markers.update();
 }
 

@@ -104,7 +104,7 @@ public:
     void swap(Type swap_to, bool is_left);
     void fall(bool already_falling, bool is_chain = false);
     void match(int index, int total);
-    int frame(int def) const;
+    int frame(int def, int danger_panel, bool danger) const;
 
     static Type random(int colors);
 

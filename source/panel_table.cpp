@@ -298,6 +298,14 @@ bool PanelTable::is_danger() const
     return false;
 }
 
+std::vector<bool> PanelTable::is_danger_columns() const
+{
+    std::vector<bool> danger;
+    for (int j = 0; j < columns; j++)
+        danger.push_back(!empty(0, j));
+    return danger;
+}
+
 bool PanelTable::is_warning() const
 {
     for (int j = 0; j < columns; j++)

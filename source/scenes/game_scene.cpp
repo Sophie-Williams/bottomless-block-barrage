@@ -125,7 +125,7 @@ void GameScene::update_input()
         selector_y = std::max(std::min(selector_y - 1, panel_table.rows - 1), 0);
     if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
         selector_y = std::max(std::min(selector_y + 1, panel_table.rows - 1), 0);
-    if (trigger & KEY_A)
+    if (trigger & KEY_A || trigger & KEY_B)
         panel_table.swap(selector_y, selector_x);
     if (trigger & KEY_START)
         current_scene = new ModeSelectScene();
@@ -166,7 +166,7 @@ void GameScene::update_match()
         last_match = current_match;
     }
 
-    frames.update(panel_table.get_state(), panel_table.is_warning());
+    frames.update(panel_table.get_state(), danger_panel);
     markers.update();
 }
 
@@ -249,12 +249,14 @@ void GameScene::draw_panels()
     if (!panel_table.is_puzzle() && (panel_table.is_clogged() || is_gameover() || panel_table.is_rised()))
         offset = panel_size;
 
+    std::vector<bool> column_danger = panel_table.is_danger_columns();
+
     for (int i = 0; i < panel_table.height(); i++)
     {
         for (int j = 0; j < panel_table.width(); j++)
         {
             const Panel& panel = panel_table.get(i, j);
-            int status = panel.frame(frames.panel);
+            int status = panel.frame(frames.panel, danger_panel, column_danger[j]);
             if (panel.value == Panel::EMPTY || status == -1) continue;
             if (is_gameover()) status = Panel::LOST;
 

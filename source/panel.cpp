@@ -97,13 +97,13 @@ void Panel::match(int index, int total)
     countdown = settings->pending_match;
 }
 
-int Panel::frame(int def) const
+int Panel::frame(int def, int danger_panel, bool danger) const
 {
     static const std::vector<int> panel_fell_frames = {3, 2, 1};
     int frame = def;
 
     if (is_pending_match())
-        frame = BLINK;
+        frame = countdown % 2 ? BLINK : NORMAL;
     else if (is_matched())
         frame = MATCH;
     else if (is_removed())
@@ -112,6 +112,9 @@ int Panel::frame(int def) const
         frame = NORMAL;
     else if (is_fell_idle())
         frame = panel_fell_frames[(FALL_ANIMATION_FRAMES - countdown) / FALL_ANIMATION_DELAY];
+    else if (danger)
+        frame = danger_panel;
+
     return frame;
 }
 

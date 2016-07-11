@@ -33,7 +33,7 @@ void EndlessScene::update_windows()
 {
     GameScene::update_windows();
     u32 held = hidKeysHeld();
-    if (held & KEY_R)
+    if (held & KEY_R || held & KEY_L)
         info.clear_timeout();
     info.update();
 }
@@ -54,10 +54,12 @@ void EndlessScene::update_on_matched()
 {
     GameScene::update_on_matched();
     int needed = get_exp_to_level(level);
+    if (level == 100) needed = experience;
     info.set_score(score);
     info.pause_timeout_timer();
     info.set_level(level);
     info.set_experience(experience, needed);
+
     if (current_match.is_timeout())
     {
         int timeout = calculate_timeout(current_match.combo, current_match.chain + 1,

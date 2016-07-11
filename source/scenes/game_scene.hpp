@@ -113,6 +113,7 @@ protected:
     // Animation
     AnimationParams frames;
     MarkerManager markers;
+    int danger_panel;
 
     // Debugging
     MovesRecorder recorder;

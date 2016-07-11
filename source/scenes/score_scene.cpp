@@ -69,7 +69,7 @@ void ScoreScene::update_windows()
         info.set_value(panel_table.moves);
 
     u32 held = hidKeysHeld();
-    if (held & KEY_R)
+    if (held & KEY_R || held & KEY_L)
         info.clear_timeout();
     info.update();
 }

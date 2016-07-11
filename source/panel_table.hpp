@@ -82,6 +82,7 @@ public:
 
     bool is_warning() const;
     bool is_danger() const;
+    std::vector<bool> is_danger_columns() const;
     bool all_idle() const;
 
     int width() const {return columns;}
