@@ -8,12 +8,27 @@
 #include <sstream>
 
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 0
+#define VERSION_MINOR 1
 
-#define MAX_PUZZLE_ROWS 11
+#define MAX_PUZZLE_ROWS 12
 #define MAX_PUZZLE_COLUMNS 6
 #define MAX_PUZZLE_MOVES 1000000
 
+void load_version_1_0(const BasicPuzzle& puzzle, PanelTable& table)
+{
+    // Version 1.0 had 11x6 board for puzzle mode with 6 extra padding bytes which contain junk.
+    table.type = puzzle.type;
+    table.rows = 12;
+    table.columns = puzzle.columns;
+    table.moves = puzzle.moves;
+
+    table.panels.resize(table.columns * table.rows);
+    for (unsigned int i = 0; i < table.panels.size(); i++)
+    {
+        table.panels[i].value = (int)i < table.columns ? Panel::EMPTY : (Panel::Type) puzzle.panels[i - table.columns];
+        table.panels[i].settings = &table.settings;
+    }
+}
 
 PanelTable::PanelTable(int height, int width, int num_colors, const PanelSpeedSettings& ssettings) :
      panels(width * (height + 1)), settings(ssettings), rows(height), columns(width), colors(num_colors), state(RISING),
@@ -41,6 +56,12 @@ void PanelTable::create(int height, int width, int num_colors, const PanelSpeedS
 void PanelTable::create(const std::string& filename, const PanelSpeedSettings& ssettings)
 {
     settings = ssettings;
+    rise = 0;
+    cooloff = 0;
+    clink = 0;
+    chain = 0;
+    lines = 0;
+    state = PUZZLE;
 
     BasicPuzzle puzzle;
     FILE* file = fopen(filename.c_str(), "rb");
@@ -49,32 +70,31 @@ void PanelTable::create(const std::string& filename, const PanelSpeedSettings& s
     fread(&puzzle, sizeof(BasicPuzzle), 1, file);
     fclose(file);
 
-    const char* magic = puzzle.magic;
+    char* magic = puzzle.magic;
     if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
         return;
 
-    const char* version = puzzle.version;
+    char* version = puzzle.version;
     if (version[0] > VERSION_MAJOR || (version[0] == VERSION_MAJOR && version[1] > VERSION_MINOR))
         return;
 
     if (puzzle.type != PUZZLE)
         return;
 
-    if (puzzle.rows != MAX_PUZZLE_ROWS || puzzle.columns != MAX_PUZZLE_COLUMNS || puzzle.starting != MAX_PUZZLE_ROWS ||
+    if (puzzle.rows > MAX_PUZZLE_ROWS || puzzle.columns > MAX_PUZZLE_COLUMNS || puzzle.starting > MAX_PUZZLE_ROWS ||
         puzzle.moves > MAX_PUZZLE_MOVES)
         return;
 
-    state = PUZZLE;
+    if (version[0] == 1 && version[1] == 0)
+    {
+        load_version_1_0(puzzle, *this);
+        return;
+    }
+
     type = puzzle.type;
     rows = puzzle.rows;
     columns = puzzle.columns;
     moves = puzzle.moves;
-
-    rise = 0;
-    cooloff = 0;
-    clink = 0;
-    chain = 0;
-    lines = 0;
 
     panels.resize(columns * rows);
     for (unsigned int i = 0; i < panels.size(); i++)

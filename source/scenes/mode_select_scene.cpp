@@ -42,7 +42,6 @@ void ModeSelectScene::update()
     menu_background_bottom.update();
 
     u32 trigger = hidKeysDown();
-    u32 held = hidKeysHeld();
 
     /// TODO implement events so hacks like this aren't necessary
     if (mode != command_window.selection())

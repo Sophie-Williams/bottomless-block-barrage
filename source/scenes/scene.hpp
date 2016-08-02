@@ -6,6 +6,7 @@
 #include <util/font.hpp>
 #include <util/hid_helper.hpp>
 #include <util/text.hpp>
+#include <audio.hpp>
 
 #define TOP_SCREEN_WIDTH 400
 #define TOP_SCREEN_HEIGHT 240
@@ -22,6 +23,7 @@ public:
     virtual void initialize() {}
     virtual void update();
     void draw();
+    virtual std::string music() {return get_track("Select.brstm");}
 protected:
     virtual void draw_top() {}
     virtual void draw_top_left() {draw_top();}

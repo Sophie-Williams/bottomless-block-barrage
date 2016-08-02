@@ -11,8 +11,7 @@ struct BasicPuzzle
     int columns;
     int starting;
     int moves;
-    char panels[66];
-    char pad2[6];
+    char panels[72];
 };
 
 #endif

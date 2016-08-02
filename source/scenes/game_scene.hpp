@@ -57,6 +57,7 @@ public:
 
     void initialize();
     void update();
+    std::string music() {return scene_music;}
 protected:
     void draw_top();
     void draw_bottom();
@@ -109,6 +110,7 @@ protected:
     int level = 0;
     int experience = 0;
     int current_timeout = 0;
+    std::string scene_music;
 
     // Animation
     AnimationParams frames;

@@ -17,6 +17,7 @@ void GameScene::initialize()
     init_panel_table();
     init_sprites();
     init_menu();
+    scene_music = get_track("Demo.brstm");
 }
 
 void GameScene::init_recorder()
@@ -98,8 +99,8 @@ void GameScene::update()
         update_gameover();
     }
 
-    //if (panel_table.is_warning())
-    //    music = "romfs:/audio/ta/ta-05.spc";
+    if (panel_table.is_warning())
+        scene_music = get_track("Demo_Critical.brstm");
 
     last_frame = osGetTime();
     frame++;
@@ -144,7 +145,7 @@ void GameScene::update_match()
     int max_wait = get_current_speed(level);
 
     if (panel_table.is_rised())
-        selector_y = std::max(std::min(selector_y - 1, 10), 0);
+        selector_y = std::max(std::min(selector_y - 1, panel_table.rows - 1), 0);
 
     current_match = panel_table.update(current_frame - last_frame, max_wait, held & KEY_R);
     if (current_match.empty() && !last_match.empty())
@@ -246,7 +247,7 @@ void GameScene::draw_panels()
     int offset = panel_table.rise / step;
 
     /// TODO clean up this section of code.
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || is_gameover() || panel_table.is_rised()))
+    if (panel_table.is_puzzle() || panel_table.is_clogged() || is_gameover() || panel_table.is_rised())
         offset = panel_size;
 
     std::vector<bool> column_danger = panel_table.is_danger_columns();
@@ -306,7 +307,7 @@ void GameScene::draw_selector()
     const int step = get_current_speed(level) / panel_size;
     int offset = panel_table.rise / step;
 
-    if (!panel_table.is_puzzle() && (panel_table.is_clogged() || is_gameover() || panel_table.is_rised()))
+    if (panel_table.is_puzzle() || panel_table.is_clogged() || is_gameover() || panel_table.is_rised())
         offset = panel_size;
 
     int x = startx + selector_x * panel_size;

@@ -25,11 +25,11 @@ public:
     enum Type
     {
         EMPTY = 0,
-        GREEN = 1,
-        PURPLE = 2,
-        RED = 3,
+        RED = 1,
+        GREEN = 2,
+        CYAN = 3,
         YELLOW = 4,
-        CYAN = 5,
+        PURPLE = 5,
         BLUE = 6,
         SILVER = 7,
         SPECIAL = 8,

@@ -11,6 +11,11 @@
 #include "puzzle_set.hpp"
 #include <util/file_helper.hpp>
 #include <util/sfw.hpp>
+/*#include <vgmstream_player.h>
+extern "C"
+{
+    #include <vgmstream.h>
+}*/
 
 Scene* current_scene = NULL;
 
@@ -39,7 +44,9 @@ int main()
     sf2d_set_clear_color(RGBA8(0x0, 0x0, 0x0, 0xFF));
     sf2d_set_3D(0);
     sfw_init();
+	//ndspInit();
 
+    std::string current_music = "";
     get_official_puzzle_sets(PuzzleSelectScene::puzzles);
     std::unique_ptr<Scene> scene;
     current_scene = new TitleScene();
@@ -58,9 +65,16 @@ int main()
         scene->update();
         scene->draw();
 
+        /*if (scene->music() != current_music)
+        {
+            current_music = scene->music();
+            vgmstream_play(current_music, 0);
+        }*/
         sf2d_swapbuffers();
     }
 
+    //vgmstream_stop();
+    //ndspExit();
     sfw_exit();
     sf2d_fini();
     romfsExit();

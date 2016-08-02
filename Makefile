@@ -50,8 +50,10 @@ endif
 ASFLAGS := -g $(ARCH)
 LDFLAGS = -specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
+#LIBS := -lvgmstream_player -lvgmstream -lvorbisfile -lvorbisenc -lvorbis -logg  -lmpg123  -lsfil -lpng16 -lz -lsf2d -lcitro3d -lctru -lm
 LIBS := -lsfil -lpng16 -lz -lsf2d -lctru -lm
-LIBDIRS := $(PORTLIBS) $(CTRULIB) ./lib
+#LIBDIRS := $(PORTLIBS) $(CTRULIB) $(CURDIR)/portlibs
+LIBDIRS := $(PORTLIBS) $(CTRULIB)
 
 #---------------------------------------------------------------------------------
 ifneq ($(BUILD),$(notdir $(CURDIR)))
