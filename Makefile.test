@@ -15,4 +15,4 @@ testing/replay_traces.o : testing/replay_traces.cpp testing/trace_state.hpp
 testing/trace_state.o : testing/trace_state.cpp testing/trace_state.hpp
 
 clean :
-	rm -rf testing/panel_table_test.o source/panel_table.o source/panel.o testing/replay
+	rm -rf testing/panel_table_test.o source/panel_table.o source/panel.o testing/panel_table_test testing/replay testing/replay_traces.o testing/trace_state.o
