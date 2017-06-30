@@ -4,9 +4,15 @@ CPPFLAGS := -Wall -Isource -std=c++11 -fpermissive
 panel_table_test : testing/panel_table_test.o source/panel_table.o source/panel.o
 	g++ $^ $(CPPFLAGS) -o $@ $(LIBS)
 
+replay : testing/replay_traces.o testing/trace_state.o
+	g++ $^ $(CPPFLAGS) -o $@
+
 testing/panel_table_test.o : testing/panel_table_test.cpp source/panel_table.hpp source/panel.hpp source/random.hpp
 source/panel_table.o : source/panel_table.cpp source/panel_table.hpp source/panel.hpp source/random.hpp
 source/panel.o : source/panel.cpp source/panel.hpp source/random.hpp
 
+testing/replay_traces.o : testing/replay_traces.cpp testing/trace_state.hpp
+testing/trace_state.o : testing/trace_state.cpp testing/trace_state.hpp
+
 clean :
-	rm -rf testing/panel_table_test.o source/panel_table.o source/panel.o
+	rm -rf testing/panel_table_test.o source/panel_table.o source/panel.o testing/replay
