@@ -63,7 +63,8 @@ TraceManager read_trace_file(const std::string& filename)
             std::vector<std::string> tokens;
             split(line, ' ', tokens);
             selector_x = atoi(tokens[1].c_str());
-            selector_y = atoi(tokens[2].c_str());
+            // off by 3
+            selector_y = atoi(tokens[2].c_str()) - 3;
             continue;
         }
 
