@@ -44,6 +44,7 @@ public:
         printf("\n\n");
 
         last_input = trace.input;
+        table.update(frame, 10000, false);
         frame++;
     }
     void Run()
