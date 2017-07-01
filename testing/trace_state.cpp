@@ -11,19 +11,20 @@ void split(const std::string& s, char delimiter, std::vector<std::string>& token
         tokens.push_back(item);
 }
 
-TraceManager::TraceManager(std::list<TraceState>& _traces) : traces(_traces)
+TraceManager::TraceManager(std::list<TraceState>& trace_list, uint32_t frame) : traces(trace_list), max_frame(frame)
 {
     for (const auto& trace : traces)
         traces_by_frame[trace.frame] = trace;
 }
 
-const TraceState& TraceManager::GetState(uint32_t frame) const
+TraceAndStatus TraceManager::GetState(uint32_t frame) const
 {
     if (traces_by_frame.find(frame) != traces_by_frame.end())
-        return traces_by_frame.at(frame);
+        return TraceAndStatus(traces_by_frame.at(frame), frame >= max_frame);
     std::map<uint32_t, TraceState>::const_iterator it = traces_by_frame.lower_bound(frame);
     it--;
-    return it->second;
+
+    return TraceAndStatus(it->second, frame >= max_frame);
 }
 
 TraceManager read_trace_file(const std::string& filename)
@@ -105,5 +106,5 @@ TraceManager read_trace_file(const std::string& filename)
         traces.emplace_back(state);
     }
 
-    return TraceManager(traces);
+    return TraceManager(traces, frame);
 }

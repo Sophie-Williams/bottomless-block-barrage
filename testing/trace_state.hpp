@@ -24,16 +24,24 @@ struct TraceState
     std::vector<uint32_t> panels;
 };
 
+struct TraceAndStatus
+{
+    TraceAndStatus(const TraceState state, bool finished) : trace(state), status(finished) {}
+    TraceState trace;
+    bool status;
+};
+
 class TraceManager
 {
 public:
-    TraceManager(std::list<TraceState>& traces);
-    const TraceState& GetState(uint32_t frame) const;
+    TraceManager(std::list<TraceState>& traces, uint32_t max_frame);
+    TraceAndStatus GetState(uint32_t frame) const;
     const TraceState& GetInitialState() const {return traces.front();}
     const std::list<TraceState>& GetTraces() const {return traces;}
 private:
     std::map<uint32_t, TraceState> traces_by_frame;
     std::list<TraceState> traces;
+    uint32_t max_frame;
 };
 
 TraceManager read_trace_file(const std::string& filename);
