@@ -19,6 +19,8 @@ struct TraceState
     uint8_t value;
     uint8_t x;
     uint8_t y;
+    uint8_t selector_x;
+    uint8_t selector_y;
     std::vector<uint32_t> panels;
 };
 
@@ -27,6 +29,7 @@ class TraceManager
 public:
     TraceManager(std::list<TraceState>& traces);
     const TraceState& GetState(uint32_t frame) const;
+    const TraceState& GetInitialState() const {return traces.front();}
     const std::list<TraceState>& GetTraces() const {return traces;}
 private:
     std::map<uint32_t, TraceState> traces_by_frame;

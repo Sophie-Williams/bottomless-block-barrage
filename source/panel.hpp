@@ -40,7 +40,7 @@ public:
         INVALID = 0,
         /** Doing nothing */
         IDLE = 1,
-        /* Pending swap states, the difference is the priority when drawing in these states */
+        /** Pending swap states, the difference is the priority when drawing in these states */
         LEFT_SWAP = 2, // swap_to
         RIGHT_SWAP = 3,
         /** Panel has been swapped */

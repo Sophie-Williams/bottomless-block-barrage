@@ -32,6 +32,7 @@ TraceManager read_trace_file(const std::string& filename)
     std::string line;
     uint32_t frame = -1;
     uint16_t input;
+    uint8_t selector_x, selector_y;
     std::ifstream file(filename.c_str());
 
     while (!file.eof()) {
@@ -54,6 +55,14 @@ TraceManager read_trace_file(const std::string& filename)
             uint8_t hi = strtol(tokens[1].c_str(), nullptr, 16);
             uint8_t lo = strtol(tokens[2].c_str(), nullptr, 16);
             input = hi << 8 | lo;
+            continue;
+        }
+        else if (line.find("selector") != std::string::npos)
+        {
+            std::vector<std::string> tokens;
+            split(line, ' ', tokens);
+            selector_x = atoi(tokens[1].c_str());
+            selector_y = atoi(tokens[2].c_str());
             continue;
         }
 
@@ -87,6 +96,8 @@ TraceManager read_trace_file(const std::string& filename)
         state.panels = std::move(panels);
         state.y = y;
         state.x = x;
+        state.selector_x = selector_x;
+        state.selector_y = selector_y;
 
         std::getline(file, line);
         std::getline(file, line);
