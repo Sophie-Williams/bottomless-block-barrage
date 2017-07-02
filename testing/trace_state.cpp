@@ -1,4 +1,5 @@
 #include "trace_state.hpp"
+#include <cassert>
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
@@ -11,25 +12,39 @@ void split(const std::string& s, char delimiter, std::vector<std::string>& token
         tokens.push_back(item);
 }
 
-TraceManager::TraceManager(std::list<TraceState>& trace_list, uint32_t frame) : traces(trace_list), max_frame(frame)
+TraceManager::TraceManager(const std::list<TraceState>& trace_list, const std::vector<TraceInput>& inputs_by_frame, uint32_t frame) :
+    traces(trace_list), inputs(inputs_by_frame), max_frame(frame)
 {
     for (const auto& trace : traces)
         traces_by_frame[trace.frame] = trace;
 }
 
-TraceAndStatus TraceManager::GetState(uint32_t frame) const
+const TraceState* TraceManager::GetState(uint32_t frame) const
 {
+    if (frame > max_frame)
+        return nullptr;
+
     if (traces_by_frame.find(frame) != traces_by_frame.end())
-        return TraceAndStatus(traces_by_frame.at(frame), frame >= max_frame);
+        return &traces_by_frame.at(frame);
+
     std::map<uint32_t, TraceState>::const_iterator it = traces_by_frame.lower_bound(frame);
     it--;
 
-    return TraceAndStatus(it->second, frame >= max_frame);
+    return &it->second;
+}
+
+const TraceInput* TraceManager::GetInput(uint32_t frame) const
+{
+    if (frame > max_frame)
+        return nullptr;
+
+    return &inputs[frame];
 }
 
 TraceManager read_trace_file(const std::string& filename)
 {
     std::list<TraceState> traces;
+    std::vector<TraceInput> inputs;
     std::string line;
     uint32_t frame = -1;
     uint16_t input;
@@ -44,28 +59,32 @@ TraceManager read_trace_file(const std::string& filename)
         uint8_t x, y;
         std::getline(file, line);
         if (file.eof()) break;
+
         if (line == "frame start")
         {
             frame++;
-            continue;
-        }
-        else if (line.find("input") != std::string::npos)
-        {
-            std::vector<std::string> tokens;
-            split(line, ' ', tokens);
-            uint8_t hi = strtol(tokens[1].c_str(), nullptr, 16);
-            uint8_t lo = strtol(tokens[2].c_str(), nullptr, 16);
-            input = hi << 8 | lo;
-            continue;
-        }
-        else if (line.find("selector") != std::string::npos)
-        {
-            std::vector<std::string> tokens;
-            split(line, ' ', tokens);
-            // off by 1
-            selector_x = atoi(tokens[1].c_str()) - 1;
-            // off by 3
-            selector_y = atoi(tokens[2].c_str()) - 3;
+            std::string strinput;
+            std::getline(file, strinput);
+            assert(strinput.find("input") != std::string::npos);
+            {
+                std::vector<std::string> tokens;
+                split(strinput, ' ', tokens);
+                uint8_t hi = strtol(tokens[1].c_str(), nullptr, 16);
+                uint8_t lo = strtol(tokens[2].c_str(), nullptr, 16);
+                input = hi << 8 | lo;
+            }
+            std::string selector;
+            std::getline(file, selector);
+            assert(selector.find("selector") != std::string::npos);
+            {
+                std::vector<std::string> tokens;
+                split(selector, ' ', tokens);
+                // off by 1
+                selector_x = atoi(tokens[1].c_str()) - 1;
+                // off by 3
+                selector_y = atoi(tokens[2].c_str()) - 3;
+            }
+            inputs.emplace_back(frame, input);
             continue;
         }
 
@@ -95,7 +114,6 @@ TraceManager read_trace_file(const std::string& filename)
         state.address = address;
         state.value = value;
         state.frame = frame;
-        state.input = input;
         state.panels = std::move(panels);
         state.y = y;
         state.x = x;
@@ -108,5 +126,5 @@ TraceManager read_trace_file(const std::string& filename)
         traces.emplace_back(state);
     }
 
-    return TraceManager(traces, frame);
+    return TraceManager(traces, inputs, frame);
 }

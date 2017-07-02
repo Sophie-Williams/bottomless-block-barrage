@@ -14,7 +14,6 @@ constexpr uint16_t PANEL_END = 0x107A;
 struct TraceState
 {
     uint32_t frame;
-    uint16_t input;
     uint16_t address;
     uint8_t value;
     uint8_t x;
@@ -24,23 +23,42 @@ struct TraceState
     std::vector<uint32_t> panels;
 };
 
-struct TraceAndStatus
+struct TraceInput
 {
-    TraceAndStatus(const TraceState state, bool finished) : trace(state), status(finished) {}
-    TraceState trace;
-    bool status;
+    TraceInput(uint32_t _frame, uint16_t _input) : frame(_frame), input(_input) {}
+
+    bool button_a() const {return input & 0x80;}
+    bool button_b() const {return input & 0x8000;}
+    bool button_x() const {return input & 0x40;}
+    bool button_y() const {return input & 0x4000;}
+    bool button_l() const {return input & 0x10;}
+    bool button_r() const {return input & 0x20;}
+
+    bool button_start() const {return input & 0x1000;}
+    bool button_select() const {return input & 0x2000;}
+
+    bool button_left() const {return input & 0x100;}
+    bool button_right() const {return input & 0x200;}
+    bool button_up() const {return input & 0x800;}
+    bool button_down() const {return input & 0x400;}
+    uint16_t value() const {return input;}
+
+    uint32_t frame;
+    uint16_t input;
 };
 
 class TraceManager
 {
 public:
-    TraceManager(std::list<TraceState>& traces, uint32_t max_frame);
-    TraceAndStatus GetState(uint32_t frame) const;
+    TraceManager(const std::list<TraceState>& traces, const std::vector<TraceInput>& inputs, uint32_t max_frame);
+    const TraceState* GetState(uint32_t frame) const;
+    const TraceInput* GetInput(uint32_t frame) const;
     const TraceState& GetInitialState() const {return traces.front();}
     const std::list<TraceState>& GetTraces() const {return traces;}
 private:
     std::map<uint32_t, TraceState> traces_by_frame;
     std::list<TraceState> traces;
+    std::vector<TraceInput> inputs;
     uint32_t max_frame;
 };
 
