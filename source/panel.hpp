@@ -3,7 +3,7 @@
 
 #include "random.hpp"
 
-#define FALL_ANIMATION_FRAMES 12
+#define FALL_ANIMATION_FRAMES 11
 #define FALL_ANIMATION_DELAY 4
 
 struct PanelSpeedSettings

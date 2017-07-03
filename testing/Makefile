@@ -13,7 +13,7 @@ replay_test : replay_test.o replay_simulation.o trace_state.o panel_table.o pane
 	g++ $^ $(CPPFLAGS) -o $@ $(LIBS)
 
 panel_table_test.o : panel_table_test.cpp $(SOURCE)/panel_table.hpp $(SOURCE)/panel.hpp $(SOURCE)/random.hpp
-replay.o : replay.cpp trace_state.hpp replay_simulation.hpp
+replay.o : replay.cpp trace_state.hpp replay_simulation.hpp $(SOURCE)/panel_table.hpp $(SOURCE)/panel.hpp
 replay_test.o : replay_test.cpp trace_state.hpp replay_simulation.hpp
 replay_simulation.o : replay_simulation.cpp replay_simulation.hpp trace_state.hpp $(SOURCE)/panel_table.hpp $(SOURCE)/panel.hpp $(SOURCE)/random.hpp
 trace_state.o : trace_state.cpp trace_state.hpp
