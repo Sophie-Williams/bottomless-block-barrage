@@ -58,11 +58,15 @@ bool RunAndVerifyTrace(const std::string& trace_path)
 
     while (!simulation.Finished())
     {
+        const auto& state = simulation.GetTraceState();
+        const auto& input = simulation.GetInput();
+        uint32_t frame = simulation.GetFrame();
+
         simulation.Step();
-        bool ok = VerifyState(simulation.GetTraceState(), simulation.GetPanelTable());
+        bool ok = VerifyState(state, simulation.GetPanelTable());
         if (!ok)
         {
-            PrintDiff(simulation.GetTraceState(), simulation.GetPanelTable(), simulation.GetInput(), simulation.GetFrame());
+            PrintDiff(state, simulation.GetPanelTable(), input, frame);
             return false;
         }
     }
