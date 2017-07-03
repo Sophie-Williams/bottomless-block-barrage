@@ -2,7 +2,7 @@
 #include "replay_simulation.hpp"
 #include <string>
 
-PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 45, 25, 9, FALL_ANIMATION_FRAMES, false};
+PanelSpeedSettings easy_speed_settings   = {4, 12, 1, 45, 25, 9, FALL_ANIMATION_FRAMES, false};
 
 int main(int argc, char** argv)
 {

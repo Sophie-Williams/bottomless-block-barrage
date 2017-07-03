@@ -69,7 +69,7 @@ void ReplaySimulation::Print()
         for (unsigned int j = 0; j < 6; j++)
         {
             const auto& panel = table.get(i, j);
-            printf("%04x%04x ", panel.state, panel.value);
+            printf("%04x%02x%02x ", panel.countdown, panel.state, panel.value);
         }
 
         printf("\n");
