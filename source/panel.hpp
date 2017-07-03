@@ -114,7 +114,8 @@ public:
     unsigned int modifiers = 0;
     // State information
     int state = IDLE;
-    Type swap_to = EMPTY;
+    // Old Panel to display when swapping.
+    Type old_panel = EMPTY;
     int countdown = 0;
     int match_time = 0;
     int remove_time = 0;

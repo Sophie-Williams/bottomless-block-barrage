@@ -13,8 +13,7 @@ void Panel::update()
         countdown -= 1;
         if (countdown <= 0)
         {
-            value = swap_to;
-            swap_to = Type::EMPTY;
+            old_panel = Type::EMPTY;
             state = State::SWAPPED;
         }
     }
@@ -77,7 +76,8 @@ void Panel::update()
 
 void Panel::swap(Panel::Type swap_panel, bool is_left)
 {
-    swap_to = swap_panel;
+    old_panel = value;
+    value = swap_panel;
     state = is_left ? State::LEFT_SWAP : State::RIGHT_SWAP;
     countdown = settings->swap;
 }

@@ -263,8 +263,11 @@ void PanelTable::swap(int i, int j)
     if (left.value == right.value || !left.swappable() || !right.swappable() || (is_puzzle() && moves <= 0))
         return;
 
-    left.swap(right.value, true);
-    right.swap(left.value, false);
+    Panel::Type l = left.value;
+    Panel::Type r = right.value;
+
+    left.swap(r, true);
+    right.swap(l, false);
 
     moves -= 1;
 }
