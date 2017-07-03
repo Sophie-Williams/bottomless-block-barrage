@@ -55,6 +55,7 @@ public:
     const TraceInput* GetInput(uint32_t frame) const;
     const TraceState& GetInitialState() const {return traces.front();}
     const std::list<TraceState>& GetTraces() const {return traces;}
+    uint32_t GetFinalFrame() const {return max_frame;}
 private:
     std::map<uint32_t, TraceState> traces_by_frame;
     std::list<TraceState> traces;

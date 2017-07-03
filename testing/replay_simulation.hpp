@@ -13,6 +13,12 @@ public:
     void Step();
     void Run(bool debug = false);
     void Print();
+    const TraceState* GetTraceState() const {return traces.GetState(frame);}
+    const TraceInput* GetInput() const {return traces.GetInput(frame);}
+    const PanelTable& GetPanelTable() const {return table;}
+    bool Finished() const {return frame > traces.GetFinalFrame();}
+    uint32_t GetFrame() const {return frame;}
+
 private:
     PanelTable table;
     TraceManager traces;
