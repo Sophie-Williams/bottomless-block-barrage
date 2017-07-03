@@ -54,8 +54,12 @@ void Panel::update()
         countdown -= 1;
         if (countdown <= 0)
         {
-            state = State::REMOVED;
             countdown = remove_time - match_time;
+            // last panel in removed will immediately transition to end match since remove_time == match_time.
+            if (countdown == 0)
+                value = Type::EMPTY;
+            state = countdown == 0 ? State::END_MATCH : State::REMOVED;
+
         }
     }
     else if (is_removed())

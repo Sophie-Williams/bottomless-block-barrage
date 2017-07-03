@@ -57,7 +57,8 @@ void PrintDiff(const TraceState* state_ptr, const PanelTable& table, const Trace
 
 bool RunAndVerifyTrace(const std::string& trace_path)
 {
-    ReplaySimulation simulation(read_trace_file(trace_path));
+    PanelSpeedSettings easy_speed_settings = {4, 6, 4, 45, 25, 9, FALL_ANIMATION_FRAMES, false};
+    ReplaySimulation simulation(read_trace_file(trace_path), easy_speed_settings);
 
     while (!simulation.Finished())
     {
@@ -79,7 +80,7 @@ bool RunAndVerifyTrace(const std::string& trace_path)
 BOOST_AUTO_TEST_CASE(TestTraces)
 {
     //BOOST_REQUIRE(RunAndVerifyTrace("traces/swap.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/rise.trace"));
+    //BOOST_REQUIRE(RunAndVerifyTrace("traces/rise.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/match3.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/swapfall.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/matchfall.trace"));

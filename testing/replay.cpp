@@ -2,12 +2,14 @@
 #include "replay_simulation.hpp"
 #include <string>
 
+PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 45, 25, 9, FALL_ANIMATION_FRAMES, false};
+
 int main(int argc, char** argv)
 {
     std::string trace = argv[1];
 
     TraceManager manager = read_trace_file(trace);
-    ReplaySimulation simulation(manager);
+    ReplaySimulation simulation(manager, easy_speed_settings);
 
     simulation.Run(true);
 

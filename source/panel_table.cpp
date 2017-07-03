@@ -302,7 +302,7 @@ MatchInfo PanelTable::update_matches(void)
         auto& panel = get(pt.y, pt.x);
         match_info.fall_match |= (panel.is_fall_end() && panel.chain);
         match_info.swap_match &= !(panel.is_fall_end() && panel.chain);
-        panel.match(index, remove.size());
+        panel.match(index, remove.size() - 1);
         index--;
         match_info.x = pt.x;
         match_info.y = pt.y;

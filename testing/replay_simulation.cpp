@@ -1,16 +1,14 @@
 #include "replay_simulation.hpp"
 
-PanelSpeedSettings easy_speed_settings   = {4, 6, 4, 66, 33, 11, FALL_ANIMATION_FRAMES, false};
-
 void copy_trace_to_table(const TraceState& trace, PanelTable& table)
 {
     for (unsigned int i = 0; i < table.panels.size(); i++)
         table.panels[i].value = (Panel::Type) (trace.panels[i] & 0xFF);
 }
 
-ReplaySimulation::ReplaySimulation(const TraceManager& trace_manager) : traces(trace_manager), last_input(0, 0)
+ReplaySimulation::ReplaySimulation(const TraceManager& trace_manager, const PanelSpeedSettings& settings) : traces(trace_manager), last_input(0, 0)
 {
-    table.create(12, 6, 6, easy_speed_settings);
+    table.create(12, 6, 6, settings);
     copy_trace_to_table(traces.GetInitialState(), table);
 }
 

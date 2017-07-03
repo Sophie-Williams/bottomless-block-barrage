@@ -9,7 +9,7 @@
 class ReplaySimulation
 {
 public:
-    ReplaySimulation(const TraceManager& trace_manager);
+    ReplaySimulation(const TraceManager& trace_manager, const PanelSpeedSettings& settings);
     void Step();
     void Run(bool debug = false);
     void Print();
