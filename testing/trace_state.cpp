@@ -12,6 +12,21 @@ void split(const std::string& s, char delimiter, std::vector<std::string>& token
         tokens.push_back(item);
 }
 
+void apply_changes(TraceState& state)
+{
+    uint32_t& val = state.panels[state.y * 6 + state.x];
+    int bit = 0;
+    if (state.address >= STATE_START && state.address <= STATE_END)
+        bit = (state.address & 1) + 2;
+    else if (state.address >= PANEL_START && state.address <= PANEL_END)
+        bit = state.address & 1;
+
+    uint32_t value = state.value << (8 * bit);
+    uint32_t mask = 0xff << (8 * bit);
+
+    val = (val & ~mask) | value;
+}
+
 TraceManager::TraceManager(const std::list<TraceState>& trace_list, const std::vector<TraceInput>& inputs_by_frame, uint32_t frame) :
     traces(trace_list), inputs(inputs_by_frame), max_frame(frame)
 {
@@ -123,7 +138,12 @@ TraceManager read_trace_file(const std::string& filename)
         std::getline(file, line);
         std::getline(file, line);
 
-        traces.emplace_back(state);
+        // Push initial state
+        if (traces.empty())
+            traces.push_back(state);
+
+        apply_changes(state);
+        traces.push_back(state);
     }
 
     return TraceManager(traces, inputs, frame);
