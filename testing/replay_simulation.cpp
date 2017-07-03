@@ -45,14 +45,14 @@ void ReplaySimulation::Run(bool debug)
 
 void ReplaySimulation::Print()
 {
-    const auto& trace_ptr = traces.GetState(frame);
-    const auto& input_ptr = traces.GetInput(frame);
+    const auto& trace_ptr = traces.GetState(frame-1);
+    const auto& input_ptr = traces.GetInput(frame-1);
     if (trace_ptr == nullptr || input_ptr == nullptr) return;
 
     const auto& trace = *trace_ptr;
     const auto& input = *input_ptr;
 
-    printf("frame: %d\ninput: %x\naddress: %04x (%d %d) = %02x\nselector: (%d %d)\n", frame, input.value(), trace.address, trace.y, trace.x, trace.value, trace.selector_y, trace.selector_x);
+    printf("frame: %d\ninput: %x\naddress: %04x (%d %d) = %02x\nselector: (%d %d)\n", frame - 1, input.value(), trace.address, trace.y, trace.x, trace.value, trace.selector_y, trace.selector_x);
     for (unsigned int i = 0; i < 13; i++)
     {
         for (unsigned int j = 0; j < 6; j++)
