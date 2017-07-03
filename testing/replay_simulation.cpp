@@ -28,7 +28,7 @@ void ReplaySimulation::Step()
 
 
     last_input = input;
-    table.update(frame, 10000, false);
+    table.update(1, 10000, false);
     frame++;
 }
 

@@ -147,6 +147,7 @@ void GameScene::update_match()
     if (panel_table.is_rised())
         selector_y = std::max(std::min(selector_y - 1, panel_table.rows - 1), 0);
 
+    //TODO FIX
     current_match = panel_table.update(current_frame - last_frame, max_wait, held & KEY_R);
     if (current_match.empty() && !last_match.empty())
     {
