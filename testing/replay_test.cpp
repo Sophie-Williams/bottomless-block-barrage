@@ -67,7 +67,6 @@ bool RunAndVerifyTrace(const std::string& trace_path)
 
         simulation.Step();
         bool ok = VerifyState(state, simulation.GetPanelTable());
-        PrintDiff(state, simulation.GetPanelTable(), input, frame);
         if (!ok)
         {
             PrintDiff(state, simulation.GetPanelTable(), input, frame);
