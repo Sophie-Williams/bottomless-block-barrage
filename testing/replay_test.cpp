@@ -69,7 +69,16 @@ bool RunAndVerifyTrace(const std::string& trace_path)
     return true;
 }
 
-BOOST_AUTO_TEST_CASE(TestSwap)
+BOOST_AUTO_TEST_CASE(TestTraces)
 {
     BOOST_REQUIRE(RunAndVerifyTrace("traces/swap.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/rise.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/match3.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/swapfall.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/matchfall.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/skillchain_slip.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/skillchain_triangle.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/rapidswap.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/test1.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/tumori1.trace"));
 }
