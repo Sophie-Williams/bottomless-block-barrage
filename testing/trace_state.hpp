@@ -1,5 +1,5 @@
 #ifndef TRACE_STATE_HPP
-#define TRACE_STATE_HP
+#define TRACE_STATE_HPP
 
 #include <list>
 #include <map>
