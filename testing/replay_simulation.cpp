@@ -26,9 +26,17 @@ void ReplaySimulation::Step()
     if (input.button_a() && !last_input.button_a())
         table.swap(trace.selector_y, trace.selector_x);
 
+    if (table_has_risen)
+    {
+        for (int i = 0; i < 6; i++)
+            table.panels[12 * 6 + i].value = (Panel::Type) (trace.panels[12 * 6 + i] & 0xF);
+    }
+
 
     last_input = input;
-    table.update(1, 10000, false);
+    table_has_risen = table.is_rised();
+    table.update(1, 941, false);
+
     frame++;
 }
 

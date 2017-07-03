@@ -55,6 +55,7 @@ int calculate_timeout(int combo, int chain, int difficulty, bool in_danger)
     return std::min(20, std::max(combo_time, chain_time)) * 1000;
 }
 
+/** TODO fix these values.  Seems 941 frames on easy is the right value for level 1*/
 const std::map<int, int> speed_table
 {
     {1,   18000},

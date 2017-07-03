@@ -24,6 +24,7 @@ private:
     TraceManager traces;
     TraceInput last_input;
     uint32_t frame = 0;
+    bool table_has_risen = false;
 };
 
 #endif
