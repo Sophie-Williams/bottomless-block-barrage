@@ -81,7 +81,7 @@ public:
     bool special() const {return value == SPECIAL;}
 
     bool fallable() const {return is_idle() || is_fall_end();}
-    bool swappable() const {return is_idle() || is_falling() || is_fall_end();}
+    bool swappable() const {return is_idle() || is_falling() || is_fall_end() || is_swapped();}
     bool matchable() const {return is_idle() || is_swapped() || is_fall_end();}
 
     bool is_idle() const {return state == IDLE || state == IDLE_FELL;}
