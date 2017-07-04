@@ -2,6 +2,7 @@ LIBS = -lboost_unit_test_framework
 SOURCE := ../source
 CPPFLAGS := -Wall -I$(SOURCE) -std=c++11 -fpermissive -g
 
+all : panel_table_test replay replay_test
 
 panel_table_test : panel_table_test.o panel_table.o panel.o
 	g++ $^ $(CPPFLAGS) -o $@ $(LIBS)
