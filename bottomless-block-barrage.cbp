@@ -145,7 +145,6 @@
 			<Option target="elf" />
 		</Unit>
 		<Unit filename="Makefile" />
-		<Unit filename="Makefile.test" />
 		<Unit filename="README.md">
 			<Option target="release" />
 			<Option target="citra" />
@@ -545,6 +544,24 @@
 		<Unit filename="source/windows/time_window.cpp" />
 		<Unit filename="source/windows/time_window.hpp" />
 		<Unit filename="testing/panel_table_test.cpp" />
+		<Unit filename="testing/replay.cpp">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="testing/replay_simulation.cpp">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="testing/replay_simulation.hpp">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="testing/replay_test.cpp">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="testing/trace_state.cpp">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="testing/trace_state.hpp">
+			<Option target="test" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

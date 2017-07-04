@@ -490,9 +490,10 @@ MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
             // Swap the P over the empty space and it is matched.
             else if ((panel.is_idle() || panel.is_swapped()) && !panel.empty() && y < rows - 1)
             {
-                if (below.is_falling_process() || below.empty())
+                // Can fall if the panel below you is falling or the panel below you is empty and (idle | swapped | match_end)
+                if (below.is_falling_process() || (below.empty() && (below.is_idle() || below.is_swapped() || below.is_match_end())))
                 {
-                    panel.fall(panel.is_idle() && !below.is_match_end(), below.is_match_end() || below.chain);
+                    panel.fall(panel.is_falling_process(), below.is_match_end() || below.chain);
                 }
             }
 
