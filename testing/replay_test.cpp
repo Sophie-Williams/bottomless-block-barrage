@@ -82,6 +82,7 @@ BOOST_AUTO_TEST_CASE(TestTraces)
     BOOST_REQUIRE(RunAndVerifyTrace("traces/swap.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/rise.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/swapfall.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/swapfall2.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/match3.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/matchfall.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/match10.trace"));
