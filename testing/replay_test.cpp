@@ -84,6 +84,7 @@ BOOST_AUTO_TEST_CASE(TestTraces)
     BOOST_REQUIRE(RunAndVerifyTrace("traces/swapfall.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/match3.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/matchfall.trace"));
+    BOOST_REQUIRE(RunAndVerifyTrace("traces/match10.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/skillchain_slip.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/skillchain_triangle.trace"));
     BOOST_REQUIRE(RunAndVerifyTrace("traces/rapidswap.trace"));
