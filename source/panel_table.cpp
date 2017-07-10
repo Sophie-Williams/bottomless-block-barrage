@@ -118,16 +118,6 @@ std::vector<bool> PanelTable::danger_columns() const
     return danger;
 }
 
-bool PanelTable::panels_idle() const
-{
-    for (const auto& panel : panels)
-    {
-        if (!panel.is_idle())
-            return false;
-    }
-    return true;
-}
-
 void PanelTable::swap(int i, int j)
 {
     Panel& left = panels[i * columns + j];
@@ -239,7 +229,7 @@ MatchInfo PanelTable::update(int speed)
     else if (is_clogged() && all_idle)
     {
         // For endless mode
-        if (type == ENDLESS && panels_idle())
+        if (type == ENDLESS)
             state = GAMEOVER;
 
         if (!danger())

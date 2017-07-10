@@ -119,9 +119,6 @@ public:
     /// Returns a boolean for each column if they are very close to the top.
     std::vector<bool> danger_columns() const;
 
-    /// Are all panels in the IDLE state.
-    bool panels_idle() const;
-
     /// Swaps the panel at i, j with i + 1, j
     void swap(int i, int j);
 
