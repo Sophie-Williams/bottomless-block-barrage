@@ -1,8 +1,6 @@
 #ifndef PANEL_HPP
 #define PANEL_HPP
 
-#include "random.hpp"
-
 #define FALL_ANIMATION_FRAMES 11
 #define FALL_ANIMATION_DELAY 4
 
@@ -15,8 +13,6 @@ struct PanelSpeedSettings
     int first_removed;
     int subsequent_removed;
     int idle_fell;
-    // If true in danger go to clogged state, otherwise gameover immediately.
-    bool allow_clogged_state;
 };
 
 class Panel
@@ -61,6 +57,8 @@ public:
         REMOVED = 11,
         /** Dummy state to go back to idle */
         END_MATCH = 12,
+        /** State for next set of panels, can't be match swap or fall */
+        BOTTOM = 13,
     };
 
     enum FrameGraphic
@@ -76,13 +74,14 @@ public:
         LOST = 7,
         GRAPHICS_SIZE = 8,
     };
-    bool empty() const {return value == EMPTY;}
-    bool normal() const {return !empty() && !special();}
-    bool special() const {return value == SPECIAL;}
 
-    bool fallable() const {return is_idle() || is_fall_end();}
-    bool swappable() const {return is_idle() || is_falling() || is_fall_end() || is_swapped();}
-    bool matchable() const {return is_idle() || is_swapped() || is_fall_end();}
+    bool empty() const {return type == EMPTY;}
+    bool special() const {return type == SPECIAL;}
+    bool normal() const {return type != EMPTY && type != SPECIAL;}
+
+    Type get_value() const {return type;}
+    State get_state() const {return state;}
+    int get_countdown() const {return countdown;}
 
     bool is_idle() const {return state == IDLE || state == IDLE_FELL;}
     bool is_fell_idle() const {return state == IDLE_FELL;}
@@ -99,27 +98,43 @@ public:
     bool is_removed() const {return state == REMOVED;}
     bool is_match_end() const {return state == END_MATCH;}
     bool is_match_process() const {return is_pending_match() || is_matched() || is_removed() || is_match_end();}
+    bool is_bottom() const {return state == BOTTOM;}
 
-    void update();
-    void swap(Type swap_to, bool is_left);
-    void fall(bool already_falling, bool is_chain = false);
-    void match(int index, int total);
-    int frame(int def, int danger_panel, bool danger) const;
+    /// Can the panel be matched
+    bool can_match() const;
+    /// Can the panel be swapped.
+    bool can_swap() const;
 
-    static Type random(int colors);
+    /// Start matching panels returns number of panels matched
+    int match(int index, int total);
+    /// Swaps panel with the one to its right.
+    void swap();
+    /// Rises the panel up one
+    void rise();
 
+    /// Updates the panel, true is returned to trigger a find matches
+    bool update();
+
+
+private:
+    /// Mesh panels owned by PanelTable
+    Panel* up = nullptr;
+    Panel* down = nullptr;
+    Panel* left = nullptr;
+    Panel* right = nullptr;
     // Owned by panel_table
-    const PanelSpeedSettings* settings;
-    Type value = EMPTY;
-    unsigned int modifiers = 0;
-    // State information
-    int state = IDLE;
-    // Old Panel to display when swapping.
-    Type old_panel = EMPTY;
-    int countdown = 0;
+    const PanelSpeedSettings* settings = nullptr;
+
+    State state = IDLE;
+    Type type = EMPTY;
+    /// Old type when swapping
+    Type old = EMPTY;
+    bool chain = false;
     int match_time = 0;
     int remove_time = 0;
-    bool chain = false;
+    int countdown = 0;
+
+    friend class PanelTable;
 };
 
 #endif

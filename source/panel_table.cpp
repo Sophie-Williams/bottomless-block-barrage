@@ -1,278 +1,275 @@
 #include "panel_table.hpp"
-#include "random.hpp"
-#include <cstdlib>
-#include <ctime>
-#include <cstdio>
-#include <fstream>
-#include <list>
-#include <sstream>
 
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 1
-
-#define MAX_PUZZLE_ROWS 12
-#define MAX_PUZZLE_COLUMNS 6
-#define MAX_PUZZLE_MOVES 1000000
-
-void load_version_1_0(const BasicPuzzle& puzzle, PanelTable& table)
+PanelTable::PanelTable(const Options& opts) : source(opts.source), settings(opts.settings), panels(opts.columns * opts.rows), next(opts.columns), columns(opts.columns), rows(opts.rows), moves(opts.moves),
+    type(opts.type)
 {
-    // Version 1.0 had 11x6 board for puzzle mode with 6 extra padding bytes which contain junk.
-    table.type = puzzle.type;
-    table.rows = 12;
-    table.columns = puzzle.columns;
-    table.moves = puzzle.moves;
+    if (type == ENDLESS)
+        state = RISING;
+    if (type == MOVES)
+        state = PUZZLE;
 
-    table.panels.resize(table.columns * table.rows);
-    for (unsigned int i = 0; i < table.panels.size(); i++)
-    {
-        table.panels[i].value = (int)i < table.columns ? Panel::EMPTY : (Panel::Type) puzzle.panels[i - table.columns];
-        table.panels[i].settings = &table.settings;
-    }
-}
-
-PanelTable::PanelTable(int height, int width, int num_colors, const PanelSpeedSettings& ssettings) :
-     panels(width * (height + 1)), settings(ssettings), rows(height), columns(width), colors(num_colors), state(RISING),
-     type(RISES), clink(0), chain(0), lines(0)
-{
+    init();
     generate();
 }
 
-PanelTable::PanelTable(const std::string& filename, const PanelSpeedSettings& ssettings)
+void PanelTable::clear()
 {
-    create(filename, ssettings);
+    for (auto& panel : panels)
+        panel.type = Panel::Type::EMPTY;
+
+    for (auto& panel : next)
+        panel.type = Panel::Type::EMPTY;
 }
 
-void PanelTable::create(int height, int width, int num_colors, const PanelSpeedSettings& ssettings)
+void PanelTable::init()
 {
-    panels.resize(width * (height + 1));
-    settings = ssettings;
-    rows = height;
-    columns = width;
-    colors = num_colors;
-
-    generate();
-}
-
-void PanelTable::create(const std::string& filename, const PanelSpeedSettings& ssettings)
-{
-    settings = ssettings;
-    rise = 0;
-    cooloff = 0;
-    clink = 0;
-    chain = 0;
-    lines = 0;
-    state = PUZZLE;
-
-    BasicPuzzle puzzle;
-    FILE* file = fopen(filename.c_str(), "rb");
-    if (!file)
-        return;
-    fread(&puzzle, sizeof(BasicPuzzle), 1, file);
-    fclose(file);
-
-    char* magic = puzzle.magic;
-    if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
-        return;
-
-    char* version = puzzle.version;
-    if (version[0] > VERSION_MAJOR || (version[0] == VERSION_MAJOR && version[1] > VERSION_MINOR))
-        return;
-
-    if (puzzle.type != PUZZLE)
-        return;
-
-    if (puzzle.rows > MAX_PUZZLE_ROWS || puzzle.columns > MAX_PUZZLE_COLUMNS || puzzle.starting > MAX_PUZZLE_ROWS ||
-        puzzle.moves > MAX_PUZZLE_MOVES)
-        return;
-
-    if (version[0] == 1 && version[1] == 0)
+    // Handle plumbing things together
+    for (auto& panel : next)
     {
-        load_version_1_0(puzzle, *this);
-        return;
+        panel.settings = &settings;
+        panel.state = Panel::State::BOTTOM;
     }
 
-    type = puzzle.type;
-    rows = puzzle.rows;
-    columns = puzzle.columns;
-    moves = puzzle.moves;
-
-    panels.resize(columns * rows);
-    for (unsigned int i = 0; i < panels.size(); i++)
+    for (int i = 0; i < rows; i++)
     {
-        panels[i].value = (Panel::Type) puzzle.panels[i];
-        panels[i].settings = &settings;
+        for (int j = 0; j < columns; j++)
+        {
+            int id = j + i * columns;
+            auto& panel = panels[id];
+            panel.settings = &settings;
+            panel.up    = i == 0           ? nullptr  : &panels[id - columns];
+            panel.down  = i == rows - 1    ? &next[j] : &panels[id + columns];
+            panel.left  = j == 0           ? nullptr  : &panels[id - 1];
+            panel.right = j == columns - 1 ? nullptr  : &panels[id + 1];
+        }
     }
 }
 
 void PanelTable::generate()
 {
-    state = RISING;
-    type = RISES;
-    rise = 0;
-    cooloff = 0;
-    clink = 0;
-    chain = 0;
-    lines = 0;
+    clear();
 
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            panels[i * columns + j].value = Panel::Type::EMPTY;
-        }
-    }
-
-    std::vector<int> values(columns, 0);
-
-    while(1)
-    {
-        int total = columns * 5;
-        for (int i = 0; i < columns - 1; i++)
-        {
-            int value = randomInt(rows - 3);
-            values[i] = value;
-            total -= value;
-        }
-        if (total >= 0 && total <= rows - 3)
-        {
-            values[columns - 1] = total;
-            break;
-        }
-    }
-
-    for (int j = 0; j < columns; j++)
-    {
-        int value = values[j];
-        for (int i = 0; i < value; i++)
-        {
-            set(rows - 1 - i, j, Panel::random(colors));
-        }
-    }
-
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            while (vertical(i, j))
-                set(i + 1, j, Panel::random(colors));
-            while (horizontal(i, j) || (i >= 2 && vertical(i - 2, j + 1)) || (i >= 1 && vertical(i - 1, j + 1)))
-                set(i, j + 1, Panel::random(colors));
-        }
-    }
-
+    // Generate initial board.
+    std::vector<Panel::Type> values = source->board();
     for (unsigned int i = 0; i < panels.size(); i++)
+        panels[i].type = values[i];
+
+    // Correction for 3 in a row/column.
+    for (int i = 0; i < rows; i++)
     {
-        panels[i].settings = &settings;
+        for (int j = 0; j < columns; j++)
+        {
+            int id = i * columns + j;
+            while (vertical(i, j))
+                panels[id + columns].type = source->panel();
+            while (horizontal(i, j) || (i >= 2 && vertical(i - 2, j + 1)) || (i >= 1 && vertical(i - 1, j + 1)))
+                panels[id + 1].type = source->panel();
+        }
     }
 
-    generate_next();
+    if (state == RISING)
+        generate_next();
 }
 
 void PanelTable::generate_next()
 {
-    for (int j = 0; j < columns; j++)
-        set(rows, j, Panel::random(colors));
+    const auto& next_panels = source->line();
+    for (int i = 0; i < columns; i++)
+    {
+        next[i].type = next_panels[i];
+    }
 
     for (int j = 0; j < columns; j++)
     {
         while(next_vertical_error(j) || (j >= 2 && next_horizontal_error(j - 2)) || (j >= 1 && next_horizontal_error(j - 1)))
-            set(rows, j, Panel::random(colors));
+            next[j].type = source->panel();
         while (next_horizontal_error(j) && j + 2 < columns)
-            set(rows, j + 2, Panel::random(colors));
+            next[j + 1].type = source->panel();
     }
 }
 
-bool PanelTable::next_vertical_error(int j)
+bool PanelTable::warning() const
 {
-    if (!matchable(rows - 2, j) || !matchable(rows - 1, j))
-        return false;
-
-    Panel::Type k, l, m;
-    k = value(rows, j);
-    m = value(rows - 1, j);
-    l = value(rows - 2, j);
-
-    return k == l && k == m;
+    for (int j = 0; j < columns; j++)
+    {
+        // Row 1
+        if (!top(j)->down->empty())
+            return true;
+    }
+    return false;
 }
 
-bool PanelTable::next_horizontal_error(int j)
+bool PanelTable::danger() const
 {
-    if (j > columns - 3)
-        return false;
-
-    Panel::Type k, l, m;
-    m = value(rows, j);
-    k = value(rows, j + 1);
-    l = value(rows, j + 2);
-
-    return m == k && m == l;
+    for (int j = 0; j < columns; j++)
+    {
+        // row 0
+        if (!top(j)->empty())
+            return true;
+    }
+    return false;
 }
 
-bool PanelTable::vertical(int i, int j)
+std::vector<bool> PanelTable::danger_columns() const
 {
-    if (i > rows - 3)
-        return false;
-
-    if (empty(i, j) || special(i, j))
-        return false;
-
-    if (!matchable(i, j) || !matchable(i + 1, j) || !matchable(i + 2, j))
-        return false;
-
-    Panel::Type k, l, m;
-    k = value(i, j);
-    l = value(i + 1, j);
-    m = value(i + 2, j);
-
-    return k == l && k == m;
+    std::vector<bool> danger(columns, false);
+    for (int j = 0; j < columns; j++)
+        danger[j] = !top(j)->empty();
+    return danger;
 }
 
-bool PanelTable::horizontal(int i, int j)
+bool PanelTable::panels_idle() const
 {
-    if (j > columns - 3)
-        return false;
-
-    if (empty(i, j) || special(i, j))
-        return false;
-
-    if (!matchable(i, j) || !matchable(i, j + 1) || !matchable(i, j + 2))
-        return false;
-
-    Panel::Type k, l, m;
-    k = value(i, j);
-    l = value(i, j + 1);
-    m = value(i, j + 2);
-
-    return k == l && k == m;
-}
-
-
-bool PanelTable::can_swap(int i, int j) const
-{
-    const Panel& left = get(i, j);
-    const Panel& right = get(i, j + 1);
-
-    return !(left.value == right.value || !left.swappable() || !right.swappable() || (is_puzzle() && moves <= 0));
+    for (const auto& panel : panels)
+    {
+        if (!panel.is_idle())
+            return false;
+    }
+    return true;
 }
 
 void PanelTable::swap(int i, int j)
 {
-    Panel& left = get(i, j);
-    Panel& right = get(i, j + 1);
+    Panel& left = panels[i * columns + j];
 
-    if (left.value == right.value || !left.swappable() || !right.swappable() || (is_puzzle() && moves <= 0))
+    if (!left.can_swap() || (type == MOVES && moves <= 0))
         return;
 
-    Panel::Type l = left.value;
-    Panel::Type r = right.value;
+    left.swap();
 
-    left.swap(r, true);
-    right.swap(l, false);
-
-    moves -= 1;
+    if (type == MOVES)
+        moves -= 1;
 }
 
-MatchInfo PanelTable::update_matches(void)
+void PanelTable::timeout(int timeout)
+{
+    cooloff = timeout;
+    stopped = true;
+}
+
+MatchInfo PanelTable::update(int speed)
+{
+    bool need_update_matches = false;
+    bool need_generate_next = false;
+    bool all_idle = true;
+    bool in_clink = false;
+    bool in_chain = false;
+
+    if (is_rised())
+    {
+        for (int j = 0; j < columns; j++)
+            top(j)->rise();
+
+        need_update_matches = true;
+        need_generate_next = true;
+        // Need to do this here if we stop at this exact frame blocks will rise a lot.
+        state = RISING;
+        lines++;
+    }
+
+    // Iterate in reverse so that falls work correctly.
+    for (unsigned int i = 0; i < panels.size(); i++)
+    {
+        auto& panel = panels[panels.size() - 1 - i];
+        in_chain |= panel.chain;
+        need_update_matches |= panel.update();
+        in_clink |= panel.is_match_process();
+        all_idle &= panel.is_idle();
+    }
+
+    if (!in_clink)
+        clink = 0;
+    if (!(in_clink || in_chain))
+        chain = 0;
+
+    MatchInfo info;
+    if (need_update_matches)
+        info = update_matches();
+    if (need_generate_next)
+        generate_next();
+
+    if (info.fall_match)
+        chain++;
+    if (info.swap_match)
+        clink++;
+
+    info.clink = clink <= 1 ? 0 : clink - 1;
+    info.chain = chain == 0 ? 0 : chain + 1;
+
+    // Board is stopped while matches are being removed.
+    if (in_clink)
+        return info;
+
+    if (is_puzzle())
+    {
+        bool win = true;
+        bool idle = true;
+        for (const auto& panel : panels)
+        {
+            win = win && panel.empty();
+            idle = idle && panel.is_idle();
+        }
+        if ((moves == 0 || win) && idle)
+            state = win ? WIN : GAMEOVER;
+    }
+    else if (is_rising() && all_idle)
+    {
+        rise_counter += speed;
+
+        if (state == FAST_RISING)
+            rise_counter = 0x1000;
+
+        if (rise_counter >= 0x1000)
+        {
+            rise++;
+            rise_counter -= 0x1000;
+        }
+
+        if (rise >= 16)
+        {
+            rise = 0;
+            if (danger())
+                // This state could immediately transition to Game over if !allow_clogged_state
+                state = CLOGGED;
+            else
+                state = RISED;
+        }
+    }
+    /*else if (is_rised())*/ // Handled above.
+    else if (is_clogged() && all_idle)
+    {
+        // For endless mode
+        if (type == ENDLESS && panels_idle())
+            state = GAMEOVER;
+
+        if (!danger())
+        {
+            state = RISED;
+        }
+        else
+        {
+            rise_counter += speed;
+
+            if (state == FAST_RISING)
+                rise_counter = 0x1000;
+
+            if (rise_counter >= 0x1000)
+            {
+                rise++;
+                rise_counter -= 0x1000;
+            }
+
+            if (rise >= 16)
+            {
+                    state = GAMEOVER;
+            }
+        }
+    }
+
+    return info;
+}
+
+MatchInfo PanelTable::update_matches()
 {
     MatchInfo match_info;
     std::set<Point> remove;
@@ -311,46 +308,62 @@ MatchInfo PanelTable::update_matches(void)
     return match_info;
 }
 
-bool PanelTable::is_danger() const
+bool PanelTable::next_vertical_error(int j)
 {
-    for (int j = 0; j < columns; j++)
-    {
-        if (!empty(0, j))
-            return true;
-    }
-    return false;
+    if (!matchable(rows - 2, j) || !matchable(rows - 1, j))
+        return false;
+
+    Panel::Type k, l, m;
+    k = next[j].type;
+    m = value(rows - 1, j);
+    l = value(rows - 2, j);
+
+    return k == l && k == m;
 }
 
-std::vector<bool> PanelTable::is_danger_columns() const
+bool PanelTable::next_horizontal_error(int j)
 {
-    std::vector<bool> danger;
-    for (int j = 0; j < columns; j++)
-        danger.push_back(!empty(0, j));
-    return danger;
+    if (j > columns - 3)
+        return false;
+
+    Panel::Type k, l, m;
+    m = next[j].type;
+    k = next[j + 1].type;
+    l = next[j + 2].type;
+
+    return m == k && m == l;
 }
 
-bool PanelTable::is_warning() const
+bool PanelTable::vertical(int i, int j)
 {
-    for (int j = 0; j < columns; j++)
-    {
-        if (!empty(1, j))
-            return true;
-    }
-    return false;
+    if (i > rows - 3)
+        return false;
+
+    if (!matchable(i, j) || !matchable(i + 1, j) || !matchable(i + 2, j))
+        return false;
+
+    Panel::Type k, l, m;
+    k = value(i, j);
+    l = value(i + 1, j);
+    m = value(i + 2, j);
+
+    return k == l && k == m;
 }
 
-
-bool PanelTable::all_idle() const
+bool PanelTable::horizontal(int i, int j)
 {
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
-            if (!get(i, j).is_idle())
-                return false;
-        }
-    }
-    return true;
+    if (j > columns - 3)
+        return false;
+
+    if (!matchable(i, j) || !matchable(i, j + 1) || !matchable(i, j + 2))
+        return false;
+
+    Panel::Type k, l, m;
+    k = value(i, j);
+    l = value(i, j + 1);
+    m = value(i, j + 2);
+
+    return k == l && k == m;
 }
 
 std::set<Point> PanelTable::check_horizontal_combo(int i, int j)
@@ -428,201 +441,3 @@ std::set<Point> PanelTable::check_vertical_combo(int i, int j)
     return remove;
 }
 
-MatchInfo PanelTable::update(long time, int max_wait, bool fast_rise)
-{
-    bool need_update_matches = false;
-    bool need_generate_next = false;
-    bool in_clink = false;
-    bool in_chain = false;
-
-    if (is_rised() && (type & RISES))
-    {
-        for (int i = 1; i < rows + 1; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                panels[(i - 1) * columns + j] = panels[i * columns + j];
-            }
-        }
-        need_update_matches = true;
-        need_generate_next = true;
-        // Need to do this here if we stop at this exact frame blocks will rise a lot.
-        state = RISING;
-        lines++;
-    }
-
-    // Iterate in reverse so that falls work correctly.
-    for (int y = rows - 1; y >= 0; y--)
-    {
-        for (int x = 0; x < columns; x++)
-        {
-            auto& panel = get(y, x);
-            bool panel_in_chain = panel.chain;
-            //if (panel.empty() && panel.is_idle()) continue;
-
-            auto& below = get(y + 1, x);
-            panel.update();
-
-            if (panel.is_fall_end())
-            {
-                Panel& below = get(y + 1, x);
-                // If below panel is not blocking and non empty panel
-                if (y + 1 < rows && below.empty() && below.is_idle() && !panel.empty())
-                {
-                    below.value = panel.value;
-                    panel.value = Panel::Type::EMPTY;
-                    below.fall(true, panel.chain);
-                    panel.state = Panel::State::IDLE;
-                    panel.chain = false;
-                }
-                // Slip case: Below panel is in fall process
-                else if (y + 1 < rows && !below.empty() && below.is_falling_process() && !panel.empty())
-                {
-                    panel.state = below.state;
-                    panel.countdown = below.countdown;
-                }
-                else
-                    need_update_matches = true;
-            }
-            // Need to do this if it is swapped to prevent this scenario
-            // PP P
-            // BB B
-            // Swap the P over the empty space and it is matched.
-            else if ((panel.is_idle() || panel.is_swapped()) && !panel.empty() && y < rows - 1)
-            {
-                // Can fall if the panel below you is falling or the panel below you is empty and (idle | swapped | match_end)
-                if (below.is_falling_process() || (below.empty() && (below.is_idle() || below.is_swapped() || below.is_match_end())))
-                {
-                    panel.fall(panel.is_falling_process(), below.is_match_end() || below.chain);
-                }
-            }
-
-            if (panel.is_swapped())
-                need_update_matches = true;
-
-            in_clink |= panel.is_match_process();
-            in_chain |= panel_in_chain;
-        }
-    }
-
-    if (!in_clink)
-    {
-        clink = 0;
-    }
-    if (!(in_clink || in_chain))
-    {
-        chain = 0;
-    }
-
-    MatchInfo info;
-    if (need_update_matches)
-        info = update_matches();
-    if (need_generate_next)
-        generate_next();
-
-    if (info.fall_match)
-        chain++;
-    if (info.swap_match)
-        clink++;
-
-    info.clink = clink <= 1 ? 0 : clink - 1;
-    info.chain = chain == 0 ? 0 : chain + 1;
-
-    // Board is stopped while matches are being removed.
-    if (in_clink)
-        return info;
-
-    if (stopped && !is_puzzle())
-    {
-        if (fast_rise)
-        {
-            stopped = false;
-            cooloff = 0;
-        }
-
-        cooloff -= time;
-        if (cooloff <= 0)
-        {
-            stopped = false;
-            cooloff = 0;
-        }
-    }
-    else if (is_puzzle() && !(is_gameover() || is_win_puzzle()))
-    {
-        bool win = true;
-        bool idle = true;
-        for (unsigned int i = 0; i < panels.size(); i++)
-        {
-            win = win && panels[i].value == Panel::Type::EMPTY;
-            idle = idle && panels[i].state == Panel::State::IDLE;
-        }
-        if (moves == 0 && idle)
-            state = win ? WIN_PUZZLE : GAMEOVER;
-    }
-    else if (is_rising())
-    {
-        if (fast_rise) state = FAST_RISING;
-
-        rise += state == FAST_RISING ? (max_wait / 9) : time;
-
-        if ((int) rise >= max_wait)
-        {
-            rise = 0;
-            if (is_danger())
-                // This state could immediately transition to Game over if !allow_clogged_state
-                state = CLOGGED;
-            else
-                state = RISED;
-        }
-    }
-    /*else if (is_rised())*/ // Handled above.
-    else if (is_clogged())
-    {
-        // For endless mode
-        if (!settings.allow_clogged_state && all_idle())
-        {
-            state = GAMEOVER;
-        }
-
-        if (!is_danger())
-        {
-            state = RISED;
-        }
-        else
-        {
-            rise += time;
-            if (((int) rise >= max_wait || fast_rise) && all_idle())
-                state = GAMEOVER;
-        }
-    }
-
-    return info;
-}
-
-void PanelTable::set_timeout(int timeout)
-{
-    cooloff = timeout;
-    stopped = true;
-}
-
-std::string PanelTable::str() const
-{
-    std::stringstream oss;
-    for (unsigned int i = 0; i < panels.size(); i++)
-    {
-        oss << (int)panels[i].value << "(" << panels[i].state << "|" << panels[i].chain << ") ";
-        if (i % columns == (unsigned int)columns - 1) oss << "\n";
-    }
-    oss << "\n";
-    return oss.str();
-}
-
-std::string MatchInfo::str() const
-{
-    std::stringstream oss;
-    oss << "Combo: " << combo << "\n"
-        << "C-Link: " << clink << "\n"
-        << "Chain: " << chain << "\n"
-        << "Swapped? " << swap_match << " Fall? " << fall_match << "\n";
-    return oss.str();
-}

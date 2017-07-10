@@ -55,56 +55,89 @@ int calculate_timeout(int combo, int chain, int difficulty, bool in_danger)
     return std::min(20, std::max(combo_time, chain_time)) * 1000;
 }
 
-/** TODO fix these values.  Seems 941 frames on easy is the right value for level 1*/
+// Per speed level this is the value to add to a counter on each frame.
+// Once the counter is >= 0x1000 another counter represented the panels rise amount in pixels (hence called rise-counter)
+// is incremented and 0x1000 is subtracted from the counter.
+// Once the rise amount is 16 a rise happens and the rise-counter is reset to 0.
 const std::map<int, int> speed_table
 {
-    {1,   18000},
-    {10,  9000},
-    {20,  6000},
-    {30,  4000},
-    {40,  3000},
-    {50,  2000},
-    {60,  1800},
-    {70,  1600},
-    {80,  1400},
-    {90,  1200},
-    {100, 1000},
-};
+    {1, 0x0047},
+    {2, 0x0044},
+    {3, 0x0050},
+    {4, 0x0055},
+    {5, 0x0059},
+    {6, 0x0061},
+    {7, 0x0068},
+    {8, 0x0070},
+    {9, 0x0077},
+    {10, 0x0084},
+    {11, 0x0090},
+    {12, 0x009a},
+    {13, 0x00af},
+    {14, 0x00bb},
+    {15, 0x00c8},
+    {16, 0x00d6},
+    {17, 0x00e4},
+    {18, 0x00f3},
+    {19, 0x0104},
+    {20, 0x0115},
+    {21, 0x0128},
+    {22, 0x013c},
+    {23, 0x0151},
+    {24, 0x0168},
+    {25, 0x0181},
+    {26, 0x019c},
+    {27, 0x01b7},
+    {28, 0x01d7},
+    {29, 0x01fc},
+    {30, 0x0226},
+    {31, 0x0253},
+    {32, 0x0288},
+    {33, 0x02c0},
+    {34, 0x02fa},
+    {35, 0x0333},
+    {36, 0x0381},
+    {37, 0x03d2},
+    {38, 0x0410},
+    {39, 0x0469},
+    {40, 0x04bd},
+    {41, 0x051e},
+    {42, 0x0572},
+    {43, 0x05f4},
+    {44, 0x0666},
+    {45, 0x06eb},
+    {46, 0x0750},
+    {47, 0x07c1},
+    {48, 0x0842},
+    {49, 0x08d3},
+    {50, 0x0924},
+    {51, 0x097b},
+    {52, 0x09d8},
+    {53, 0x0a3d},
+    {54, 0x0aaa},
+    {55, 0x0b21},
+    {56, 0x0ba2},
+    {57, 0x0c30},
+    {58, 0x0ccc},
+    {59, 0x0d79},
+    {60, 0x0e38},
+    {61, 0x0f0f},
+    {62, 0x1000},
+}
 
+// Number of Panels to match for next level
 const std::map<int, int> level_table
 {
-    {0, 4},
-    {10, 6},
-    {20, 8},
-    {30, 10},
-    {40, 11},
-    {50, 12},
-    {60, 13},
-    {70, 14},
-    {80, 15},
-    {90, 16},
-    {100, -1}
+    {1, 9},
+    {2, 12},
+    {7, 14},
+    {9, 16},
+    {11, 24},
+    {16, 22},
+    {17, 20},
+    {18, 18},
+    {19, 16},
+    {21, 36},
+    {31, 39},
+    {40, 45},
 };
-
-int get_current_speed(int level)
-{
-    const auto& it = speed_table.find(level);
-    if (it != speed_table.end())
-        return it->second;
-
-    int min = level - level % 10;
-    int max = min + 10;
-    if (min == 0) min = 1;
-
-    int minv = speed_table.at(min);
-    int maxv = speed_table.at(max);
-
-    int diff = (maxv - minv) / 10;
-    return minv + (level % 10) * diff;
-}
-
-int get_exp_to_level(int level)
-{
-    return level_table.at(level - level % 10);
-}
-

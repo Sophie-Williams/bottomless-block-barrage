@@ -2,8 +2,10 @@
 #define PANEL_TABLE_HPP
 
 #include "panel.hpp"
-#include "basic_puzzle.hpp"
+#include "panel_source.hpp"
+
 #include <list>
+#include <memory>
 #include <set>
 #include <string>
 #include <vector>
@@ -48,95 +50,101 @@ class PanelTable
 public:
     enum Type
     {
-        PUZZLE = 0,
-        RISES = 1,
-        NLINES = 2,
+        /// This type never rises.  The game is over when moves is 0 or all panels clear.
+        MOVES = 0,
+        /// This type will rise.  The game is over immediately when the panels have reached the top.
+        ENDLESS = 1,
+        /// This type will rise.  The game is over when the panels have reached the top after a delay.
+        VERSUS = 2,
+        /// This type will rise.  The game is over when a number of lines are fully cleared.
+        NLINES = 3,
     };
     enum State
     {
         INVALID = 0,
-        RISING = 1,
-        FAST_RISING = 2,
-        RISED = 3,
-        CLOGGED = 4,
-        GAMEOVER = 5,
-        WIN_PUZZLE = 6,
+        /// Puzzle mode panels will not rise.
+        PUZZLE = 1,
+        /// Panel Table is slowly rising.
+        RISING = 2,
+        /// Panel Table is being raised quickly (holding L/R).
+        FAST_RISING = 3,
+        /// Panel Table has risen by 1 blocks.  A new line of panels are generated here.
+        RISED = 4,
+        /// State for game over delay in Versus mode.
+        CLOGGED = 5,
+        /// Puzzle has been won. Or N lines have been cleared
+        WIN = 6,
+        /// Game over.
+        GAMEOVER = 7,
     };
 
-    PanelTable() : state(RISING), type(RISES), clink(0), chain(0) {}
-    PanelTable(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
-    PanelTable(const std::string& filename, const PanelSpeedSettings& ssettings);
+    struct Options
+    {
+        PanelSource* source;
+        PanelSpeedSettings settings;
+        Type type;
+        int columns;
+        int rows;
+        int moves;
+    };
+    /// Create a new Panel Table
+    PanelTable(const Options& opts);
 
-    void create(int rows, int columns, int num_colors, const PanelSpeedSettings& settings);
-    void create(const std::string& filename, const PanelSpeedSettings& ssettings);
-
-    bool is_puzzle() const {return type == PUZZLE;}
-
+    bool is_puzzle() const {return state == PUZZLE;}
     bool is_rising() const {return state == RISING || state == FAST_RISING;}
     bool is_rised() const {return state == RISED;}
-    bool is_stopped() const {return stopped;}
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
-    bool is_win_puzzle() const {return state == WIN_PUZZLE;}
-    int get_state() {return state;}
+    bool is_win() const {return state == WIN;}
 
-    bool is_warning() const;
-    bool is_danger() const;
-    std::vector<bool> is_danger_columns() const;
-    bool all_idle() const;
-
-    int width() const {return columns;}
-    int height() const {return rows;}
+    const std::vector<Panel>& get_panels() const {return panels;}
+    std::vector<Panel>& get_panels() {return panels;}
+    const std::vector<Panel>& get_next() const {return next;}
+    std::vector<Panel>& get_next() {return next;}
     Panel& get(int i, int j) {return panels[i * columns + j];}
     const Panel& get(int i, int j) const {return panels[i * columns + j];}
-    void set(int i, int j, Panel::Type value) {panels[i * columns + j].value = value;}
-    Panel::Type value(int i, int j) const {return get(i, j).value;}
-
+    Panel::Type value(int i, int j) const {return get(i, j).get_value();}
     bool empty(int i, int j) const {return get(i, j).empty();}
     bool special(int i, int j) const {return get(i, j).special();}
-    bool matchable(int i, int j) const {return get(i, j).matchable();}
+    bool matchable(int i, int j) const {return get(i, j).can_match();}
     bool normal(int i, int j) const {return get(i, j).normal();}
-    bool fallable(int i, int j) const {return get(i, j).fallable();}
-    bool swappable(int i, int j) const {return get(i, j).swappable();}
-    bool can_swap(int i, int j) const;
 
-    void generate();
-    void generate_next();
+    void clear();
+    /// Are the panels high
+    bool warning() const;
+
+    /// Have the panels reached the top row.
+    bool danger() const;
+
+    /// Returns a boolean for each column if they are very close to the top.
+    std::vector<bool> danger_columns() const;
+
+    /// Are all panels in the IDLE state.
+    bool panels_idle() const;
+
+    /// Swaps the panel at i, j with i + 1, j
     void swap(int i, int j);
-    MatchInfo update(long speed, int max_wait, bool fast_rise);
-    void set_timeout(int timeout);
 
-    MatchInfo update_matches(void);
-    std::string str() const;
+    /// Stops the board from rising
+    void timeout(int timeout);
 
-    friend class TestFall;
-    friend class TestStackDown;
-    friend class TestUpdateMatches;
+    /// Quick rise the panels
+    void quick_rise() {state = FAST_RISING;}
 
-    std::vector<Panel> panels;
-    PanelSpeedSettings settings;
-    int rows;
-    int columns;
-    int colors;
-    int moves;
-
-    int state;
-    /** Game board type */
-    int type;
-    /** Rise amount */
-    int rise;
-    /** Are we currently stopped */
-    bool stopped = false;
-    /** Hold long we are stopped */
-    int cooloff;
-    /** Clink link */
-    int clink;
-    /** Chain link */
-    int chain;
-    /** Lines raised */
-    int lines;
+    /// Updates the game board.  Speed is the amount to increase rise_counter by.
+    MatchInfo update(int speed);
 
 private:
+    void init();
+    void generate();
+    void generate_next();
+    MatchInfo update_matches();
+
+    Panel* top(int column) {return &panels[column];}
+    const Panel* top(int column) const {return &panels[column];}
+    Panel* bottom(int column) {return &panels[(rows - 1) * columns + column];}
+    const Panel* bottom(int column) const {return &panels[(rows - 1) * columns + column];}
+
     bool next_horizontal_error(int j);
     bool next_vertical_error(int j);
 
@@ -145,6 +153,39 @@ private:
 
     std::set<Point> check_horizontal_combo(int i, int j);
     std::set<Point> check_vertical_combo(int i, int j);
+
+    /** Source where panels are generated */
+    std::unique_ptr<PanelSource> source;
+    /** Speed setttings controlling panel speed */
+    PanelSpeedSettings settings;
+    /** The panels as a 1d vector */
+    std::vector<Panel> panels;
+    /** The next set of panels */
+    std::vector<Panel> next;
+    /** Number of columns */
+    int columns;
+    /** Number of rows */
+    int rows;
+    /** Number of moves left */
+    int moves = 0;
+    /** State of the board */
+    State state = RISING;
+    /** Game board type */
+    Type type = ENDLESS;
+    /** Counter to increase rise when this reaches 0x1000 rise is incremented */
+    int rise_counter = 0;
+    /** Rise amount when this reaches 16 the panels are risen and a new line is generated */
+    int rise = 0;
+    /** Are we currently stopped */
+    bool stopped = false;
+    /** Hold long we are stopped */
+    int cooloff = 0;
+    /** Clink counter */
+    int clink = 0;
+    /** Chain counter */
+    int chain = 0;
+    /** Lines raised */
+    int lines = 0;
 };
 
 #endif

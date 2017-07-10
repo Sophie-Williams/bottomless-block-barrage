@@ -1,15 +1,65 @@
 #include "replay_simulation.hpp"
 
-void copy_trace_to_table(const TraceState& trace, PanelTable& table)
+std::vector<Panel::Type> get_next_panels(const TraceManager& trace_manager)
 {
-    for (unsigned int i = 0; i < table.panels.size(); i++)
-        table.panels[i].value = (Panel::Type) (trace.panels[i] & 0xFF);
+    std::vector<Panel::Type> next;
+
+    bool table_has_risen = false;
+    const TraceState& state = trace_manager.GetInitialState();
+    for (int j = 0; j < 6; j++)
+        next.push_back((Panel::Type)(state.panels[72 + j] & 0xFF));
+
+
+    for (uint32_t i = 0; i < trace_manager.GetFinalFrame(); i++)
+    {
+        const TraceState* state_ptr = trace_manager.GetState(i);
+        if (state_ptr == nullptr) continue;
+
+        const auto& state = *state_ptr;
+        if (table_has_risen)
+        {
+            for (int j = 0; j < 6; j++)
+                next.push_back((Panel::Type)(state.panels[72 + j] & 0xFF));
+            table_has_risen = false;
+        }
+        if (state.panels[72] == 0xFF00FF)
+            table_has_risen = true;
+    }
+    return next;
+}
+
+ReplayPanelSource::ReplayPanelSource(const TraceState& initial, const std::vector<Panel::Type>& _next) : PanelSource(12, 6), table(72, Panel::Type::EMPTY), next(_next), index(0)
+{
+    for (unsigned int i = 0; i < 72; i++)
+        table[i] = (Panel::Type) (initial.panels[i] & 0xFF);
+}
+
+std::vector<Panel::Type> ReplayPanelSource::line()
+{
+    std::vector<Panel::Type> line(columns, Panel::Type::EMPTY);
+    if (index > (int)next.size())
+        return line;
+
+    for (int i = 0; i < columns; i++)
+    {
+        line[i] = next[index + i];
+    }
+
+    index += columns;
+
+    return line;
 }
 
 ReplaySimulation::ReplaySimulation(const TraceManager& trace_manager, const PanelSpeedSettings& settings) : traces(trace_manager), last_input(0, 0)
 {
-    table.create(12, 6, 6, settings);
-    copy_trace_to_table(traces.GetInitialState(), table);
+    ReplayPanelSource* source = new ReplayPanelSource(trace_manager.GetInitialState(), get_next_panels(trace_manager));
+    PanelTable::Options opts;
+    opts.source = source;
+    opts.columns = 6;
+    opts.rows = 12;
+    opts.settings = settings;
+    opts.type = PanelTable::Type::ENDLESS;
+    table.reset(new PanelTable(opts));
 }
 
 void ReplaySimulation::Step()
@@ -22,19 +72,11 @@ void ReplaySimulation::Step()
     const auto& input = *input_ptr;
 
     if (input.button_a() && !last_input.button_a())
-        table.swap(trace.selector_y, trace.selector_x);
+        table->swap(trace.selector_y, trace.selector_x);
 
-    if (table_has_risen)
-    {
-        for (int i = 0; i < 6; i++)
-            table.panels[12 * 6 + i].value = (Panel::Type) (trace.panels[12 * 6 + i] & 0xF);
-    }
-
+    table->update(0x47);
 
     last_input = input;
-    table_has_risen = table.is_rised();
-    table.update(1, 941, false);
-
     frame++;
 }
 
@@ -68,8 +110,13 @@ void ReplaySimulation::Print()
         printf("\t\t");
         for (unsigned int j = 0; j < 6; j++)
         {
-            const auto& panel = table.get(i, j);
-            printf("%04x%02x%02x ", panel.countdown, panel.state, panel.value);
+            Panel panel;
+            if (i < 12)
+                panel = table->get(i, j);
+            else
+                panel = table->get_next()[j];
+
+            printf("%04x%02x%02x ", panel.get_countdown(), panel.get_state(), panel.get_value());
         }
 
         printf("\n");

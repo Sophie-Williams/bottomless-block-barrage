@@ -12,12 +12,19 @@ bool VerifyState(const TraceState* state_ptr, const PanelTable& table)
 {
     BOOST_REQUIRE(state_ptr != nullptr);
     const TraceState& state = *state_ptr;
+    const auto& panels = table.get_panels();
+    const auto& next = table.get_next();
     for (unsigned int i = 0; i < state.panels.size(); i++)
     {
         // Risen panel
         if (state.panels[i] == 0x00FF00FF)
             continue;
-        if ((state.panels[i] & 0xF) != (int)table.panels[i].value)
+        Panel panel;
+        if (i < 72)
+            panel = panels[i];
+        else
+            panel = next[i - 72];
+        if ((state.panels[i] & 0xF) != (int)panel.get_value())
             return false;
     }
     return true;
@@ -35,16 +42,26 @@ void PrintDiff(const TraceState* state_ptr, const PanelTable& table, const Trace
     {
         for (unsigned int j = 0; j < 6; j++)
         {
-            const auto& panel = table.get(i, j);
-            bool failed = panel.value != (trace.panels[j + i * 6] & 0xF);
+            Panel panel;
+            if (i < 12)
+                panel = table.get(i, j);
+            else
+                panel = table.get_next()[j];
+            bool failed = panel.get_value() != (trace.panels[j + i * 6] & 0xF);
             printf("%s%08x%s ", failed ? RED : "", trace.panels[j + i * 6], failed ? OFF : "");
         }
         printf("\t");
+
         for (unsigned int j = 0; j < 6; j++)
         {
-            const auto& panel = table.get(i, j);
-            bool failed = panel.value != (trace.panels[j + i * 6] & 0xF);
-            printf("%s%04x%02x%02x%s ", failed ? RED : "", panel.countdown, panel.state, panel.value, failed ? OFF : "");
+            Panel panel;
+            if (i < 12)
+                panel = table.get(i, j);
+            else
+                panel = table.get_next()[j];
+
+            bool failed = panel.get_value() != (trace.panels[j + i * 6] & 0xF);
+            printf("%s%04x%02x%02x%s ", failed ? RED : "", panel.get_countdown(), panel.get_state(), panel.get_value(), failed ? OFF : "");
             if (failed) missed++;
         }
 
@@ -57,7 +74,7 @@ void PrintDiff(const TraceState* state_ptr, const PanelTable& table, const Trace
 
 bool RunAndVerifyTrace(const std::string& trace_path)
 {
-    PanelSpeedSettings easy_speed_settings = {4, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES, false};
+    PanelSpeedSettings easy_speed_settings = {4, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES};
     ReplaySimulation simulation(read_trace_file(trace_path), easy_speed_settings);
 
     while (!simulation.Finished())
