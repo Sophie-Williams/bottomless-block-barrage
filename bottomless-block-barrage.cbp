@@ -230,6 +230,26 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
+		<Unit filename="source/panel_source.cpp">
+			<Option target="release" />
+			<Option target="citra" />
+			<Option target="3dsx" />
+			<Option target="cia" />
+			<Option target="3ds" />
+			<Option target="elf" />
+			<Option target="3dsxlink" />
+			<Option target="spunch" />
+		</Unit>
+		<Unit filename="source/panel_source.hpp">
+			<Option target="release" />
+			<Option target="citra" />
+			<Option target="3dsx" />
+			<Option target="cia" />
+			<Option target="3ds" />
+			<Option target="elf" />
+			<Option target="3dsxlink" />
+			<Option target="spunch" />
+		</Unit>
 		<Unit filename="source/panel_table.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -249,14 +269,6 @@
 		<Unit filename="source/panels_gfx.cpp" />
 		<Unit filename="source/panels_gfx.hpp" />
 		<Unit filename="source/puzzle_set.hpp" />
-		<Unit filename="source/random.hpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
 		<Unit filename="source/scenes/endless_config_scene.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -543,6 +555,9 @@
 		<Unit filename="source/windows/score_info_window.hpp" />
 		<Unit filename="source/windows/time_window.cpp" />
 		<Unit filename="source/windows/time_window.hpp" />
+		<Unit filename="testing/Makefile">
+			<Option target="test" />
+		</Unit>
 		<Unit filename="testing/panel_table_test.cpp" />
 		<Unit filename="testing/replay.cpp">
 			<Option target="test" />
