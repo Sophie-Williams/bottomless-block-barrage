@@ -204,8 +204,6 @@ MatchInfo PanelTable::update(int speed)
     }
     else if (is_rising() && all_idle)
     {
-        rise_counter += speed;
-
         if (state == FAST_RISING)
             rise_counter = 0x1000;
 
@@ -214,6 +212,8 @@ MatchInfo PanelTable::update(int speed)
             rise++;
             rise_counter -= 0x1000;
         }
+
+        rise_counter += speed;
 
         if (rise >= 16)
         {
@@ -238,8 +238,6 @@ MatchInfo PanelTable::update(int speed)
         }
         else
         {
-            rise_counter += speed;
-
             if (state == FAST_RISING)
                 rise_counter = 0x1000;
 
@@ -248,6 +246,8 @@ MatchInfo PanelTable::update(int speed)
                 rise++;
                 rise_counter -= 0x1000;
             }
+
+            rise_counter += speed;
 
             if (rise >= 16)
             {
