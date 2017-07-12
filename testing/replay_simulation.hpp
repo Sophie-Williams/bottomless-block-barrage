@@ -62,7 +62,7 @@ class FrameReplaySimulation : public ReplaySimulation
 public:
     FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings);
     void Print() override;
-    bool Finished() const override {return frame > frames.GetFinalFrame();}
+    bool Finished() const override {return frame >= frames.GetFinalFrame();}
     const FrameState& GetState() const {return frames.GetState(frame);}
     const PanelTable& GetPanelTable() const {return *table;}
 protected:
