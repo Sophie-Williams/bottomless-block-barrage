@@ -212,8 +212,11 @@ MatchInfo PanelTable::update(int speed)
             rise++;
             rise_counter -= 0x1000;
         }
+        else
+        {
+            rise_counter += speed;
+        }
 
-        rise_counter += speed;
 
         if (rise >= 16)
         {
@@ -246,8 +249,10 @@ MatchInfo PanelTable::update(int speed)
                 rise++;
                 rise_counter -= 0x1000;
             }
-
-            rise_counter += speed;
+            else
+            {
+                rise_counter += speed;
+            }
 
             if (rise >= 16)
             {
