@@ -1,5 +1,7 @@
 #include "trace_state.hpp"
 #include "replay_simulation.hpp"
+#include <cassert>
+#include <memory>
 #include <string>
 
 PanelSpeedSettings easy_speed_settings   = {4, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES};
@@ -8,11 +10,19 @@ int main(int argc, char** argv)
 {
     std::string trace = argv[1];
 
-    TraceManager manager = read_trace_file(trace);
-    TraceReplaySimulation simulation(manager, easy_speed_settings);
-
-    simulation.Run(true);
-
+    std::unique_ptr<ReplaySimulation> simulation;
+    if (trace.find(".trace") != std::string::npos)
+    {
+        TraceManager manager = read_trace_file(trace);
+        simulation.reset(new TraceReplaySimulation(manager, easy_speed_settings));
+    }
+    else if (trace.find(".frames") != std::string::npos)
+    {
+        FrameStateManager manager = read_frames_file(trace);
+        simulation.reset(new FrameReplaySimulation(manager, easy_speed_settings));
+    }
+    assert(simulation != nullptr);
+    simulation->Run(true);
 }
 
 /*
