@@ -71,6 +71,8 @@ private:
     std::unique_ptr<PanelTable> table;
     FrameStateManager frames;
     TraceInput last_input;
+    int x;
+    int y;
 };
 
 #endif

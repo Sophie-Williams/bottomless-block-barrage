@@ -166,9 +166,10 @@ void TraceReplaySimulation::Print()
     printf("\n\n");
 }
 
-FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings): table(nullptr), frames(frame_manager), last_input(0, 0)
+FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings): table(nullptr), frames(frame_manager), last_input(0, 0), x(0), y(0)
 {
-    ReplayPanelSource* source = new ReplayPanelSource(get_panels(frames.GetInitialState()), get_next_panels(frames));
+    const FrameState& initial = frames.GetInitialState();
+    ReplayPanelSource* source = new ReplayPanelSource(get_panels(initial), get_next_panels(frames));
     PanelTable::Options opts;
     opts.source = source;
     opts.columns = 6;
@@ -176,6 +177,9 @@ FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_mana
     opts.settings = settings;
     opts.type = PanelTable::Type::ENDLESS;
     table.reset(new PanelTable(opts));
+
+    x = initial.x;
+    y = initial.y;
 }
 
 void FrameReplaySimulation::Print()
@@ -183,7 +187,7 @@ void FrameReplaySimulation::Print()
     const auto& state = frames.GetState(frame);
     printf("frame: %d\n", frame);
     printf("input: %x\n", state.input.value());
-    printf("selector: %d %d\n", state.y, state.x);
+    printf("selector: %d %d vs %d %d\n", state.y, state.x, y, x);
     printf("score: %d\n", state.score);
     printf("level: %d\n", state.level);
     printf("next: %d\n", state.next);
@@ -223,9 +227,33 @@ void FrameReplaySimulation::DoStep()
     const auto& input = state.input;
 
     if (input.button_a() && !last_input.button_a())
-        table->swap(state.y, state.x);
+        table->swap(y, x);
+
+    if (input.button_b() && !last_input.button_b())
+        table->swap(y, x);
+
+    if (input.button_r() && !last_input.button_r())
+        table->quick_rise();
+
+    if (input.button_l() && !last_input.button_l())
+        table->quick_rise();
+
+    if (input.button_left() && !last_input.button_left())
+        x = std::max(0, x - 1);
+
+    if (input.button_right() && !last_input.button_right())
+        x = std::min(4, x + 1);
+
+    if (input.button_up() && !last_input.button_up())
+        y = std::max(0, y - 1);
+
+    if (input.button_down() && !last_input.button_down())
+        y = std::min(11, y + 1);
 
     table->update(0x47);
+
+    if (table->is_rised())
+        y = std::max(0, y - 1);
 
     last_input = input;
 }

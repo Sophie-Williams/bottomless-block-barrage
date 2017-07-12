@@ -155,6 +155,7 @@ MatchInfo PanelTable::update(int speed)
         need_skip_update = true;
         // Need to do this here if we stop at this exact frame blocks will rise a lot.
         state = GENERATE_NEXT;
+        rise = 0;
         lines++;
     }
 
