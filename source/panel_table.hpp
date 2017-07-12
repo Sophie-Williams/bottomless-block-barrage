@@ -131,6 +131,10 @@ public:
     /// Updates the game board.  Speed is the amount to increase rise_counter by.
     MatchInfo update(int speed);
 
+    int get_rise_counter() const {return rise_counter;}
+    int get_rise() const {return rise;}
+    int get_cooloff() const {return cooloff;}
+    int get_chain() const {return chain;}
 private:
     void init();
     void generate();

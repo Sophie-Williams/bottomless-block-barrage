@@ -64,6 +64,7 @@ public:
     void Print() override;
     bool Finished() const override {return frame > frames.GetFinalFrame();}
     const FrameState& GetState() const {return frames.GetState(frame);}
+    const PanelTable& GetPanelTable() const {return *table;}
 protected:
     void DoStep() override;
 private:
