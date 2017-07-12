@@ -140,7 +140,7 @@ void PanelTable::timeout(int timeout)
 MatchInfo PanelTable::update(int speed)
 {
     bool need_update_matches = false;
-    bool need_generate_next = false;
+    bool need_skip_update = false;
     bool all_idle = true;
     bool in_clink = false;
     bool in_chain = false;
@@ -151,9 +151,10 @@ MatchInfo PanelTable::update(int speed)
             top(j)->rise();
 
         need_update_matches = true;
-        need_generate_next = true;
+        // We already performed the update!
+        need_skip_update = true;
         // Need to do this here if we stop at this exact frame blocks will rise a lot.
-        state = RISING;
+        state = GENERATE_NEXT;
         lines++;
     }
 
@@ -175,8 +176,6 @@ MatchInfo PanelTable::update(int speed)
     MatchInfo info;
     if (need_update_matches)
         info = update_matches();
-    if (need_generate_next)
-        generate_next();
 
     if (info.fall_match)
         chain++;
@@ -187,7 +186,7 @@ MatchInfo PanelTable::update(int speed)
     info.chain = chain == 0 ? 0 : chain + 1;
 
     // Board is stopped while matches are being removed.
-    if (in_clink)
+    if (in_clink || need_skip_update)
         return info;
 
     if (is_puzzle())
@@ -204,40 +203,9 @@ MatchInfo PanelTable::update(int speed)
     }
     else if (is_rising() && all_idle)
     {
-        if (state == FAST_RISING)
-            rise_counter = 0x1000;
-
-        if (rise_counter >= 0x1000)
-        {
-            rise++;
-            rise_counter -= 0x1000;
-        }
-        else
-        {
-            rise_counter += speed;
-        }
-
-
-        if (rise >= 16)
+        if (rise == 16)
         {
             rise = 0;
-            if (danger())
-                // This state could immediately transition to Game over if !allow_clogged_state
-                state = CLOGGED;
-            else
-                state = RISED;
-        }
-    }
-    /*else if (is_rised())*/ // Handled above.
-    else if (is_clogged() && all_idle)
-    {
-        // For endless mode
-        if (type == ENDLESS)
-            state = GAMEOVER;
-
-        if (!danger())
-        {
-            state = RISED;
         }
         else
         {
@@ -253,10 +221,51 @@ MatchInfo PanelTable::update(int speed)
             {
                 rise_counter += speed;
             }
+        }
 
+        if (rise >= 16)
+        {
+            if (danger())
+                // This state could immediately transition to Game over if !allow_clogged_state
+                state = CLOGGED;
+            else
+                state = RISED;
+        }
+    }
+    /*else if (is_rised())*/ // Handled above.
+    else if (is_generate_next())
+    {
+        generate_next();
+        state = RISING;
+    }
+    else if (is_clogged() && all_idle)
+    {
+        // For endless mode
+        if (type == ENDLESS)
+            state = GAMEOVER;
+
+        if (!danger())
+        {
+            state = RISED;
+        }
+        else
+        {
             if (rise >= 16)
             {
-                    state = GAMEOVER;
+                state = GAMEOVER;
+            }
+
+            if (state == FAST_RISING)
+                rise_counter = 0x1000;
+
+            if (rise_counter >= 0x1000)
+            {
+                rise++;
+                rise_counter -= 0x1000;
+            }
+            else
+            {
+                rise_counter += speed;
             }
         }
     }

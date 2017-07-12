@@ -70,12 +70,14 @@ public:
         FAST_RISING = 3,
         /// Panel Table has risen by 1 blocks.  A new line of panels are generated here.
         RISED = 4,
+        /// Dummy state to generate next blocks
+        GENERATE_NEXT = 5,
         /// State for game over delay in Versus mode.
-        CLOGGED = 5,
+        CLOGGED = 6,
         /// Puzzle has been won. Or N lines have been cleared
-        WIN = 6,
+        WIN = 7,
         /// Game over.
-        GAMEOVER = 7,
+        GAMEOVER = 8,
     };
 
     struct Options
@@ -93,6 +95,7 @@ public:
     bool is_puzzle() const {return state == PUZZLE;}
     bool is_rising() const {return state == RISING || state == FAST_RISING;}
     bool is_rised() const {return state == RISED;}
+    bool is_generate_next() const {return state == GENERATE_NEXT;}
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
     bool is_win() const {return state == WIN;}
