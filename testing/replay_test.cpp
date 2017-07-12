@@ -75,7 +75,7 @@ void PrintDiff(const TraceState* state_ptr, const PanelTable& table, const Trace
 bool RunAndVerifyTrace(const std::string& trace_path)
 {
     PanelSpeedSettings easy_speed_settings = {4, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES};
-    ReplaySimulation simulation(read_trace_file(trace_path), easy_speed_settings);
+    TraceReplaySimulation simulation(read_trace_file(trace_path), easy_speed_settings);
 
     while (!simulation.Finished())
     {

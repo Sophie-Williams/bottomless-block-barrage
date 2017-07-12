@@ -558,6 +558,12 @@
 		<Unit filename="testing/Makefile">
 			<Option target="test" />
 		</Unit>
+		<Unit filename="testing/frame_state.cpp">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="testing/frame_state.hpp">
+			<Option target="test" />
+		</Unit>
 		<Unit filename="testing/panel_table_test.cpp" />
 		<Unit filename="testing/replay.cpp">
 			<Option target="test" />

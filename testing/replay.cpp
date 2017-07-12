@@ -9,7 +9,7 @@ int main(int argc, char** argv)
     std::string trace = argv[1];
 
     TraceManager manager = read_trace_file(trace);
-    ReplaySimulation simulation(manager, easy_speed_settings);
+    TraceReplaySimulation simulation(manager, easy_speed_settings);
 
     simulation.Run(true);
 

@@ -11,6 +11,7 @@ constexpr uint16_t STATE_END = 0xE7A;
 constexpr uint16_t PANEL_START = 0xFAE;
 constexpr uint16_t PANEL_END = 0x107A;
 
+// Old style trace files which has each memory op logged.
 struct TraceState
 {
     uint32_t frame;
@@ -25,6 +26,7 @@ struct TraceState
 
 struct TraceInput
 {
+    TraceInput() : frame(0), input(0) {}
     TraceInput(uint32_t _frame, uint16_t _input) : frame(_frame), input(_input) {}
 
     bool button_a() const {return input & 0x80;}
