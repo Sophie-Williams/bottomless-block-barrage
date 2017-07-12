@@ -99,8 +99,8 @@ void ReplaySimulation::Run(bool debug)
 {
     while (!Finished())
     {
-        Step();
         if (debug) Print();
+        Step();
     }
 }
 
@@ -180,18 +180,18 @@ FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_mana
 
 void FrameReplaySimulation::Print()
 {
-    const auto& state = frames.GetState(frame-1);
-    printf("frame: %d\n", frame - 1);
+    const auto& state = frames.GetState(frame);
+    printf("frame: %d\n", frame);
     printf("input: %x\n", state.input.value());
     printf("selector: %d %d\n", state.y, state.x);
     printf("score: %d\n", state.score);
     printf("level: %d\n", state.level);
     printf("next: %d\n", state.next);
     printf("combo: %d\n", state.combo);
-    printf("chain: %d\n", state.chain);
-    printf("timeout: %d\n", state.timeout);
-    printf("rise counter: %x\n", state.rise_counter);
-    printf("rise: %d\n", state.rise);
+    printf("chain: %d vs %d\n", state.chain, table->get_chain());
+    printf("timeout: %d vs %d\n", state.timeout, table->get_cooloff());
+    printf("rise counter: %x vs %x\n", state.rise_counter, table->get_rise_counter());
+    printf("rise: %d vs %d\n", state.rise, table->get_rise());
     printf("speed: %x\n", state.rise_speed);
 
     for (unsigned int i = 0; i < 13; i++)
