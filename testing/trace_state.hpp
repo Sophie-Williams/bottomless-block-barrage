@@ -39,8 +39,8 @@ struct TraceInput
     bool button_start() const {return input & 0x1000;}
     bool button_select() const {return input & 0x2000;}
 
-    bool button_left() const {return input & 0x100;}
-    bool button_right() const {return input & 0x200;}
+    bool button_left() const {return input & 0x200;}
+    bool button_right() const {return input & 0x100;}
     bool button_up() const {return input & 0x800;}
     bool button_down() const {return input & 0x400;}
     uint16_t value() const {return input;}

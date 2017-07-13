@@ -93,7 +93,8 @@ public:
     PanelTable(const Options& opts);
 
     bool is_puzzle() const {return state == PUZZLE;}
-    bool is_rising() const {return state == RISING || state == FAST_RISING;}
+    bool is_rising() const {return state == RISING;}
+    bool is_fast_rising() const {return state == FAST_RISING;}
     bool is_rised() const {return state == RISED;}
     bool is_generate_next() const {return state == GENERATE_NEXT;}
     bool is_clogged() const {return state == CLOGGED;}
@@ -126,7 +127,7 @@ public:
     void swap(int i, int j);
 
     /// Stops the board from rising
-    void timeout(int timeout);
+    void freeze(int timeout);
 
     /// Quick rise the panels
     void quick_rise() {state = FAST_RISING;}
@@ -136,7 +137,7 @@ public:
 
     int get_rise_counter() const {return rise_counter;}
     int get_rise() const {return rise;}
-    int get_cooloff() const {return cooloff;}
+    int get_timeout() const {return timeout;}
     int get_chain() const {return chain;}
 private:
     void init();
@@ -183,7 +184,7 @@ private:
     /** Are we currently stopped */
     bool stopped = false;
     /** Hold long we are stopped */
-    int cooloff = 0;
+    int timeout = 0;
     /** Clink counter */
     int clink = 0;
     /** Chain counter */

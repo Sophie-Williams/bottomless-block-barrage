@@ -166,6 +166,28 @@ void TraceReplaySimulation::Print()
     printf("\n\n");
 }
 
+int calculate_timeout(int combo, int chain, int difficulty, bool in_danger)
+{
+    int combo_time;
+    int chain_time;
+    if (!in_danger)
+    {
+        combo_time = combo / 2 + difficulty - 2;
+        chain_time = difficulty + chain + 1;
+    }
+    else
+    {
+        combo_time = (combo + 10) * difficulty / 5 + 1;
+        chain_time = difficulty * (1 + chain) + 1;
+    }
+    if (combo <= 3)
+        combo_time = 0;
+    if (chain <= 1)
+        chain_time = 0;
+
+    return std::min(20, std::max(combo_time, chain_time));
+}
+
 FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings): table(nullptr), frames(frame_manager), last_input(0, 0), x(0), y(0)
 {
     const FrameState& initial = frames.GetInitialState();
@@ -191,9 +213,9 @@ void FrameReplaySimulation::Print()
     printf("score: %d\n", state.score);
     printf("level: %d\n", state.level);
     printf("next: %d\n", state.next);
-    printf("combo: %d\n", state.combo);
-    printf("chain: %d vs %d\n", state.chain, table->get_chain());
-    printf("timeout: %d vs %d\n", state.timeout, table->get_cooloff());
+    printf("combo: %d vs %d\n", state.combo, info.combo);
+    printf("chain: %d vs %d\n", state.chain, info.chain);
+    printf("timeout: %d vs %d\n", state.timeout, table->get_timeout());
     printf("rise counter: %x vs %x\n", state.rise_counter, table->get_rise_counter());
     printf("rise: %d vs %d\n", state.rise, table->get_rise());
     printf("speed: %x\n", state.rise_speed);
@@ -226,12 +248,6 @@ void FrameReplaySimulation::DoStep()
     const auto& state = frames.GetState(frame);
     const auto& input = state.input;
 
-    if (input.button_a() && !last_input.button_a())
-        table->swap(y, x);
-
-    if (input.button_b() && !last_input.button_b())
-        table->swap(y, x);
-
     if (input.button_r() && !last_input.button_r())
         table->quick_rise();
 
@@ -250,10 +266,26 @@ void FrameReplaySimulation::DoStep()
     if (input.button_down() && !last_input.button_down())
         y = std::min(11, y + 1);
 
-    table->update(0x47);
-
     if (table->is_rised())
         y = std::max(0, y - 1);
 
+    info = table->update(0x47);
+
+    int timeout = calculate_timeout(info.combo, info.chain, 3, table->danger());
+    table->freeze(timeout);
+
+    if (input.button_a() && !last_input.button_a())
+        table->swap(y, x);
+
+    if (input.button_b() && !last_input.button_b())
+        table->swap(y, x);
+
+
     last_input = input;
+}
+
+void FrameReplaySimulation::GetSelectorCoords(int& i, int& j) const
+{
+    i = y;
+    j = x;
 }

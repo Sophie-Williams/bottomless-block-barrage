@@ -65,12 +65,14 @@ public:
     bool Finished() const override {return frame >= frames.GetFinalFrame();}
     const FrameState& GetState() const {return frames.GetState(frame);}
     const PanelTable& GetPanelTable() const {return *table;}
+    void GetSelectorCoords(int& i, int& j) const;
 protected:
     void DoStep() override;
 private:
     std::unique_ptr<PanelTable> table;
     FrameStateManager frames;
     TraceInput last_input;
+    MatchInfo info;
     int x;
     int y;
 };

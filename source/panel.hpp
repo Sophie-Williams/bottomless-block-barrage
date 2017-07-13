@@ -99,6 +99,7 @@ public:
     bool is_match_end() const {return state == END_MATCH;}
     bool is_match_process() const {return is_pending_match() || is_matched() || is_removed() || is_match_end();}
     bool is_bottom() const {return state == BOTTOM;}
+    bool is_not_blocking_rise() const {return state == IDLE;}
 
     /// Can the panel be matched
     bool can_match() const;

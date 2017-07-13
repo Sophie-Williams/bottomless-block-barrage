@@ -2,199 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="citra" />
-	<File name="source/util/button.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="93" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/title_scene.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="979" topLine="7" />
-		</Cursor>
-	</File>
-	<File name="source/marker_manager.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2936" topLine="82" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/scene.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="303" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/color_modulation.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="757" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/windows/puzzle_status_window.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="530" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="testing/replay.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="900" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/moves_recorder.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="656" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="testing/Makefile" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1682" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/slider.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="414" topLine="5" />
-		</Cursor>
-	</File>
-	<File name="testing/replay_simulation.cpp" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2520" topLine="48" />
-		</Cursor>
-	</File>
-	<File name="source/util/text.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="237" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/image_selector.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="863" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/game_common.hpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="130" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="testing/frame_state.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="104" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/panel.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2700" topLine="51" />
-		</Cursor>
-	</File>
-	<File name="source/util/sfw.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="463" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/title_scene.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="96" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/hid_helper.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="874" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/file_helper.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="368" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/color_modulation.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="570" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="testing/replay_test.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2483" topLine="64" />
-		</Cursor>
-	</File>
-	<File name="source/util/background.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="69" topLine="37" />
-		</Cursor>
-	</File>
 	<File name="source/version.hpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="71" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/bar.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="362" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="testing/frame_state.hpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="449" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/replay_select_scene.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="904" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="source/util/texture.hpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="885" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/replay_select_scene.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="281" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/panel_source.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="188" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/font.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="105" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/replay_scene.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3222" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/score_scene.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1801" topLine="54" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/scene.hpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="112" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/basic_puzzle.hpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="226" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/panels_gfx.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="103" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/command_window.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="193" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/choice.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="826" topLine="2" />
-		</Cursor>
-	</File>
-	<File name="source/util/bar.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="424" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="source/scenes/puzzle_select_scene.hpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -202,219 +12,9 @@
 			<Cursor1 position="737" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="source/animation_params.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="94" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/background.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="411" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/score_config_scene.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="706" topLine="144" />
-		</Cursor>
-	</File>
-	<File name="source/moves_recorder.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="402" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/image_selector.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="526" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/button.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="23" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/hid_helper.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1186" topLine="36" />
-		</Cursor>
-	</File>
-	<File name="source/util/BmpFont.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2632" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="source/windows/score_info_window.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="762" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/game_scene.hpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2471" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/game_scene.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8049" topLine="267" />
-		</Cursor>
-	</File>
-	<File name="source/game_common.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1398" topLine="1" />
-		</Cursor>
-	</File>
-	<File name="source/util/choice.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="61" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="testing/panel_table_test.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="16229" topLine="423" />
-		</Cursor>
-	</File>
-	<File name="source/windows/info_window.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1242" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="source/util/command_window.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="216" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/texture.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="117" topLine="24" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/score_config_scene.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="830" topLine="13" />
-		</Cursor>
-	</File>
-	<File name="source/util/window.hpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2010" topLine="34" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/endless_scene.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="113" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/panel.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3976" topLine="92" />
-		</Cursor>
-	</File>
-	<File name="source/panels_gfx.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2864" topLine="1" />
-		</Cursor>
-	</File>
-	<File name="source/util/text.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="263" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/panel_table.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4848" topLine="131" />
-		</Cursor>
-	</File>
-	<File name="source/util/window.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2054" topLine="17" />
-		</Cursor>
-	</File>
 	<File name="source/util/resource_manager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="312" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/score_scene.hpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="688" topLine="1" />
-		</Cursor>
-	</File>
-	<File name="source/panel_table.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6022" topLine="206" />
-		</Cursor>
-	</File>
-	<File name="source/panel_source.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1341" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="source/util/font.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="955" topLine="14" />
-		</Cursor>
-	</File>
-	<File name="resources/AppInfo" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="168" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="testing/replay_simulation.hpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1467" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="source/windows/time_window.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="178" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="README.md" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="911" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/windows/score_info_window.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1806" topLine="62" />
-		</Cursor>
-	</File>
-	<File name="source/marker_manager.hpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="116" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/mode_select_scene.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1610" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="CREDITS" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="231" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="testing/trace_state.hpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1924" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="source/animation_params.hpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="320" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/replay_scene.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="459" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/scenes/puzzle_scene.hpp" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="490" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="source/util/widget.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="23" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="source/util/BmpFont.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -422,14 +22,29 @@
 			<Cursor1 position="2911" topLine="57" />
 		</Cursor>
 	</File>
-	<File name="source/scenes/puzzle_select_scene.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Makefile" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="738" topLine="86" />
+			<Cursor1 position="1983" topLine="30" />
 		</Cursor>
 	</File>
-	<File name="source/scenes/endless_config_scene.hpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/scenes/score_scene.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="755" topLine="2" />
+			<Cursor1 position="1801" topLine="54" />
+		</Cursor>
+	</File>
+	<File name="source/util/window.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2054" topLine="17" />
+		</Cursor>
+	</File>
+	<File name="source/util/button.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="93" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/background.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="411" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="source/windows/time_window.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -437,9 +52,89 @@
 			<Cursor1 position="275" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="source/main.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/util/text.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1928" topLine="50" />
+			<Cursor1 position="263" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/hid_helper.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1186" topLine="36" />
+		</Cursor>
+	</File>
+	<File name="source/util/hid_helper.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="874" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/image_selector.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="863" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/score_scene.hpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="688" topLine="1" />
+		</Cursor>
+	</File>
+	<File name="source/moves_recorder.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="402" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/score_config_scene.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="830" topLine="13" />
+		</Cursor>
+	</File>
+	<File name="source/util/widget.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1240" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="testing/replay_test.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2479" topLine="55" />
+		</Cursor>
+	</File>
+	<File name="CREDITS" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="231" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/game_scene.hpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2471" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/endless_config_scene.hpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="755" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="source/util/background.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="69" topLine="37" />
+		</Cursor>
+	</File>
+	<File name="source/panels_gfx.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2864" topLine="1" />
+		</Cursor>
+	</File>
+	<File name="source/util/texture.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="117" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="source/util/sfw.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="204" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/puzzle_scene.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2078" topLine="102" />
 		</Cursor>
 	</File>
 	<File name="source/windows/info_window.hpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -452,14 +147,49 @@
 			<Cursor1 position="243" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="source/scenes/endless_scene.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/scenes/mode_select_scene.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1015" topLine="18" />
+			<Cursor1 position="1610" topLine="27" />
 		</Cursor>
 	</File>
-	<File name="source/util/slider.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/scenes/replay_select_scene.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="642" topLine="0" />
+			<Cursor1 position="904" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="source/game_common.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1252" topLine="16" />
+		</Cursor>
+	</File>
+	<File name="source/util/button.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="23" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/title_scene.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="979" topLine="7" />
+		</Cursor>
+	</File>
+	<File name="source/animation_params.hpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="320" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/animation_params.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="94" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/image_selector.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="526" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/panels_gfx.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="103" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="source/windows/puzzle_status_window.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -467,24 +197,234 @@
 			<Cursor1 position="256" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="source/util/widget.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/scenes/score_config_scene.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1240" topLine="18" />
+			<Cursor1 position="706" topLine="144" />
 		</Cursor>
 	</File>
-	<File name="source/scenes/puzzle_scene.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/panel_source.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2078" topLine="102" />
+			<Cursor1 position="1341" topLine="27" />
 		</Cursor>
 	</File>
-	<File name="source/util/sfw.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="testing/replay_simulation.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="204" topLine="0" />
+			<Cursor1 position="8048" topLine="156" />
 		</Cursor>
 	</File>
-	<File name="Makefile" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/windows/score_info_window.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1983" topLine="30" />
+			<Cursor1 position="762" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/game_scene.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8049" topLine="168" />
+		</Cursor>
+	</File>
+	<File name="source/moves_recorder.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="656" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="source/util/choice.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="826" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="source/util/command_window.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="193" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/command_window.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="216" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/puzzle_scene.hpp" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="490" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/panel.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1564" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/file_helper.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="368" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/puzzle_select_scene.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="738" topLine="86" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/endless_config_scene.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="57" topLine="22" />
+		</Cursor>
+	</File>
+	<File name="source/util/texture.hpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="885" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/sfw.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="463" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/choice.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="61" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/panel_table.hpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2978" topLine="93" />
+		</Cursor>
+	</File>
+	<File name="testing/Makefile" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1682" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/widget.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="23" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="resources/AppInfo" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="168" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/font.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="955" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="source/util/bar.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="362" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="testing/panel_table_test.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="16229" topLine="423" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/endless_scene.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1015" topLine="21" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/replay_scene.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="459" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/BmpFont.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2632" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="source/panel.hpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3352" topLine="63" />
+		</Cursor>
+	</File>
+	<File name="source/util/window.hpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2010" topLine="34" />
+		</Cursor>
+	</File>
+	<File name="testing/trace_state.hpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1188" topLine="13" />
+		</Cursor>
+	</File>
+	<File name="testing/replay.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="161" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/replay_scene.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3222" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="README.md" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="911" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/windows/score_info_window.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1806" topLine="62" />
+		</Cursor>
+	</File>
+	<File name="source/marker_manager.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2936" topLine="82" />
+		</Cursor>
+	</File>
+	<File name="source/windows/time_window.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="178" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="testing/trace_state.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="320" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/slider.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="414" topLine="5" />
+		</Cursor>
+	</File>
+	<File name="source/windows/info_window.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1242" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="source/util/text.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="237" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="testing/replay_simulation.hpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2291" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="testing/frame_state.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="104" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="testing/frame_state.hpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="152" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/color_modulation.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="570" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/panel_source.hpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="188" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/marker_manager.hpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="116" topLine="9" />
 		</Cursor>
 	</File>
 	<File name="source/util/file_helper.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -492,14 +432,74 @@
 			<Cursor1 position="1105" topLine="22" />
 		</Cursor>
 	</File>
-	<File name="testing/trace_state.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/util/font.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="320" topLine="0" />
+			<Cursor1 position="105" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="source/scenes/endless_config_scene.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="source/scenes/scene.hpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="57" topLine="22" />
+			<Cursor1 position="112" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/windows/puzzle_status_window.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="530" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/endless_scene.hpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="113" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/replay_select_scene.hpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="281" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/panel_table.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4475" topLine="132" />
+		</Cursor>
+	</File>
+	<File name="source/main.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1928" topLine="50" />
+		</Cursor>
+	</File>
+	<File name="source/util/slider.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="642" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/bar.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="424" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/scene.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="303" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/util/color_modulation.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="757" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/game_common.hpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="130" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/scenes/title_scene.hpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="96" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="source/basic_puzzle.hpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="226" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

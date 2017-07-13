@@ -131,9 +131,9 @@ void PanelTable::swap(int i, int j)
         moves -= 1;
 }
 
-void PanelTable::timeout(int timeout)
+void PanelTable::freeze(int cooloff)
 {
-    cooloff = timeout;
+    timeout = cooloff;
     stopped = true;
 }
 
@@ -166,8 +166,12 @@ MatchInfo PanelTable::update(int speed)
         in_chain |= panel.chain;
         need_update_matches |= panel.update();
         in_clink |= panel.is_match_process();
-        all_idle &= panel.is_idle();
+        all_idle &= panel.is_not_blocking_rise();
     }
+
+    // Iterate again to compute all idle flag.  Can't do this in the above loop due to panels falling
+    for (const auto& panel : panels)
+        all_idle &= panel.is_not_blocking_rise();
 
     if (!in_clink)
         clink = 0;
@@ -204,10 +208,13 @@ MatchInfo PanelTable::update(int speed)
     }
     else if (is_rising() && all_idle)
     {
-        if (state == FAST_RISING)
-            rise_counter = 0x1000;
 
-        if (rise_counter >= 0x1000)
+        if (rise_counter == 0xfff)
+        {
+            rise_counter -= 0x1000;
+            rise_counter += speed;
+        }
+        else if (rise_counter > 0xfff)
         {
             rise++;
             rise_counter -= 0x1000;
@@ -225,6 +232,24 @@ MatchInfo PanelTable::update(int speed)
             else
                 state = RISED;
         }
+    }
+    else if (is_fast_rising() && all_idle)
+    {
+        rise_counter += speed;
+        // One frame delay
+        if (rise_counter >= 0xfff)
+            rise++;
+
+        if (rise >= 16)
+        {
+            if (danger())
+                // This state could immediately transition to Game over if !allow_clogged_state
+                state = CLOGGED;
+            else
+                state = RISED;
+        }
+
+        rise_counter = 0xfff - speed;
     }
     /*else if (is_rised())*/ // Handled above.
     else if (is_generate_next())
@@ -249,10 +274,7 @@ MatchInfo PanelTable::update(int speed)
                 state = GAMEOVER;
             }
 
-            if (state == FAST_RISING)
-                rise_counter = 0x1000;
-
-            if (rise_counter >= 0x1000)
+            if (rise_counter >= 0xfff)
             {
                 rise++;
                 rise_counter -= 0x1000;
