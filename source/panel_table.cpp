@@ -133,8 +133,10 @@ void PanelTable::swap(int i, int j)
 
 void PanelTable::freeze(int cooloff)
 {
-    timeout = cooloff;
-    stopped = true;
+    if (cooloff != 0 && cooloff > timeout) {
+        timeout = cooloff;
+        stopped = true;
+    }
 }
 
 MatchInfo PanelTable::update(int speed)
@@ -164,14 +166,13 @@ MatchInfo PanelTable::update(int speed)
     {
         auto& panel = panels[panels.size() - 1 - i];
         in_chain |= panel.chain;
-        need_update_matches |= panel.update();
         in_clink |= panel.is_match_process();
-        all_idle &= panel.is_not_blocking_rise();
+        need_update_matches |= panel.update();
     }
 
     // Iterate again to compute all idle flag.  Can't do this in the above loop due to panels falling
     for (const auto& panel : panels)
-        all_idle &= panel.is_not_blocking_rise();
+        all_idle &= panel.is_idle();
 
     if (!in_clink)
         clink = 0;
@@ -190,9 +191,19 @@ MatchInfo PanelTable::update(int speed)
     info.clink = clink <= 1 ? 0 : clink - 1;
     info.chain = chain == 0 ? 0 : chain + 1;
 
+
     // Board is stopped while matches are being removed.
     if (in_clink || need_skip_update)
         return info;
+
+    if (stopped)
+    {
+        timeout--;
+        if (timeout >= 0)
+            return info;
+        timeout = 0;
+        stopped = false;
+    }
 
     if (is_puzzle())
     {

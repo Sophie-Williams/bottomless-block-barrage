@@ -1,5 +1,57 @@
 #include "replay_simulation.hpp"
 
+int combo_timeout[31][3] = {
+ {   0,      0,     0},
+ {   0,      0,     0},
+ {   0,      0,     0},
+ {   0,      0,     0},
+ { 0x78,  0x5a,  0x3c},
+ { 0x96,  0x78,  0x5a},
+ { 0xb4,  0x96,  0x78},
+ { 0xd2,  0xb4,  0x96},
+ { 0xf0,  0xd2,  0xb4},
+ {0x10e,  0xf0,  0xd2},
+ {0x12c, 0x10e,  0xf0},
+ {0x14a, 0x12c, 0x10e},
+ {0x168, 0x14a, 0x12c},
+ {0x168, 0x168, 0x14a},
+ {0x1a4, 0x168, 0x168},
+ {0x1c2, 0x1a4, 0x168},
+ {0x1e0, 0x1c2, 0x1a4},
+ {0x1fe, 0x1e0, 0x1c2},
+ {0x21c, 0x1fe, 0x1e0},
+ {0x23a, 0x21c, 0x1fe},
+ {0x258, 0x23a, 0x21c},
+ {0x276, 0x258, 0x23a},
+ {0x294, 0x276, 0x258},
+ {0x2b2, 0x294, 0x276},
+ {0x2d0, 0x2b2, 0x294},
+ {0x2ee, 0x2d0, 0x2b2},
+ {0x30c, 0x2ee, 0x2d0},
+ {0x32a, 0x30c, 0x2ee},
+ {0x348, 0x32a, 0x30c},
+ {0x366, 0x348, 0x32a},
+ {0x384, 0x366, 0x348},
+};
+
+int chain_timeout[15][3] = {
+{    0,     0,     0},
+{    0,     0,     0},
+{0x1c2,  0xe1,  0x96},
+{0x168, 0x11d,  0xd2},
+{0x1a4, 0x159, 0x10e},
+{0x1e0, 0x195, 0x14a},
+{0x21c, 0x1d1, 0x186},
+{0x258, 0x20d, 0x1c2},
+{0x294, 0x249, 0x1fe},
+{0x2d0, 0x285, 0x23a},
+{0x30c, 0x2c1, 0x276},
+{0x348, 0x2fd, 0x2b2},
+{0x384, 0x339, 0x2ee},
+{0x3c0, 0x375, 0x32a},
+{0x3c0, 0x375, 0x32a},
+};
+
 std::vector<Panel::Type> get_panels(const TraceState& initial)
 {
     std::vector<Panel::Type> panels(72, Panel::Type::EMPTY);
@@ -166,28 +218,6 @@ void TraceReplaySimulation::Print()
     printf("\n\n");
 }
 
-int calculate_timeout(int combo, int chain, int difficulty, bool in_danger)
-{
-    int combo_time;
-    int chain_time;
-    if (!in_danger)
-    {
-        combo_time = combo / 2 + difficulty - 2;
-        chain_time = difficulty + chain + 1;
-    }
-    else
-    {
-        combo_time = (combo + 10) * difficulty / 5 + 1;
-        chain_time = difficulty * (1 + chain) + 1;
-    }
-    if (combo <= 3)
-        combo_time = 0;
-    if (chain <= 1)
-        chain_time = 0;
-
-    return std::min(20, std::max(combo_time, chain_time));
-}
-
 FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings): table(nullptr), frames(frame_manager), last_input(0, 0), x(0), y(0)
 {
     const FrameState& initial = frames.GetInitialState();
@@ -271,8 +301,9 @@ void FrameReplaySimulation::DoStep()
 
     info = table->update(0x47);
 
-    int timeout = calculate_timeout(info.combo, info.chain, 3, table->danger());
-    table->freeze(timeout);
+
+    table->freeze(combo_timeout[info.combo][0]);
+    table->freeze(chain_timeout[info.chain][0]);
 
     if (input.button_a() && !last_input.button_a())
         table->swap(y, x);

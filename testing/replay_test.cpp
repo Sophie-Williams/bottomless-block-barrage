@@ -98,6 +98,8 @@ bool VerifyState(const FrameState& state, const PanelTable& table)
 {
     const auto& panels = table.get_panels();
     const auto& next = table.get_next();
+    if (state.timeout != table.get_timeout() && state.timeout != 0 && state.timeout > table.get_timeout())
+        return false;
     if (state.rise + table.get_rise() != 16)
         return false;
     if (((state.rise_counter + table.get_rise_counter()) & 0xFFF) != 0xFFF)
@@ -133,7 +135,12 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
     printf("next: %d\n", state.next);
     printf("combo: %d\n", state.combo);
     printf("chain: %d vs %d\n", state.chain, table.get_chain());
-    printf("timeout: %d vs %d\n", state.timeout, table.get_timeout());
+    {
+        bool failed = (state.timeout != table.get_timeout() && state.timeout != 0 && state.timeout > table.get_timeout());
+        if (failed) printf("%s", RED);
+        printf("timeout: %d vs %d\n", state.timeout, table.get_timeout());
+        if (failed) printf("%s", OFF);
+    }
 
     {
         bool failed = ((state.rise_counter + table.get_rise_counter()) & 0xFFF) != 0xFFF;
