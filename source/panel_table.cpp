@@ -139,7 +139,7 @@ void PanelTable::freeze(int cooloff)
     }
 }
 
-MatchInfo PanelTable::update(int speed)
+MatchInfo PanelTable::update()
 {
     bool need_update_matches = false;
     bool need_skip_update = false;
@@ -170,10 +170,6 @@ MatchInfo PanelTable::update(int speed)
         need_update_matches |= panel.update();
     }
 
-    // Iterate again to compute all idle flag.  Can't do this in the above loop due to panels falling
-    for (const auto& panel : panels)
-        all_idle &= panel.is_idle();
-
     if (!in_clink)
         clink = 0;
     if (!(in_clink || in_chain))
@@ -191,6 +187,13 @@ MatchInfo PanelTable::update(int speed)
     info.clink = clink <= 1 ? 0 : clink - 1;
     info.chain = chain == 0 ? 0 : chain + 1;
 
+    // Iterate again to compute all idle flag.  Can't do this in the above loop due to panels falling
+    for (const auto& panel : panels)
+    {
+        all_idle &= panel.is_idle();
+        // Needed to catch newly matched panels.
+        in_clink |= panel.is_pending_match();
+    }
 
     // Board is stopped while matches are being removed.
     if (in_clink || need_skip_update)
@@ -246,21 +249,22 @@ MatchInfo PanelTable::update(int speed)
     }
     else if (is_fast_rising() && all_idle)
     {
-        rise_counter += speed;
+        //rise_counter += speed;
         // One frame delay
-        if (rise_counter >= 0xfff)
+        if (rise_counter > 0)
             rise++;
+
+        rise_counter = 0xfff - speed;
 
         if (rise >= 16)
         {
+            rise_counter -= 0x1000;
             if (danger())
                 // This state could immediately transition to Game over if !allow_clogged_state
                 state = CLOGGED;
             else
                 state = RISED;
         }
-
-        rise_counter = 0xfff - speed;
     }
     /*else if (is_rised())*/ // Handled above.
     else if (is_generate_next())

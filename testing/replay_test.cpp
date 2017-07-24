@@ -8,101 +8,20 @@
 #define RED "\033[0;31m"
 #define OFF "\033[0m"
 
-bool VerifyState(const TraceState* state_ptr, const PanelTable& table)
+bool RiseCounterCheck(uint16_t trace, uint16_t table, uint16_t speed)
 {
-    BOOST_REQUIRE(state_ptr != nullptr);
-    const TraceState& state = *state_ptr;
-    const auto& panels = table.get_panels();
-    const auto& next = table.get_next();
-    for (unsigned int i = 0; i < state.panels.size(); i++)
-    {
-        // Risen panel
-        if (state.panels[i] == 0x00FF00FF)
-            continue;
-        Panel panel;
-        if (i < 72)
-            panel = panels[i];
-        else
-            panel = next[i - 72];
-        if ((state.panels[i] & 0xF) != (int)panel.get_value())
-            return false;
-    }
-    return true;
-}
-
-void PrintDiff(const TraceState* state_ptr, const PanelTable& table, const TraceInput* input_ptr, uint32_t frame)
-{
-    BOOST_REQUIRE(state_ptr != nullptr && input_ptr != nullptr);
-    const TraceState& trace = *state_ptr;
-    const TraceInput& input = *input_ptr;
-
-    printf("Mismatch found!\nframe: %d\ninput: %x\naddress: %04x (%d %d) = %02x\nselector: (%d %d)\n", frame, input.value(), trace.address, trace.y, trace.x, trace.value, trace.selector_y, trace.selector_x);
-    int missed = 0;
-    for (unsigned int i = 0; i < 13; i++)
-    {
-        for (unsigned int j = 0; j < 6; j++)
-        {
-            Panel panel;
-            if (i < 12)
-                panel = table.get(i, j);
-            else
-                panel = table.get_next()[j];
-            bool failed = panel.get_value() != (trace.panels[j + i * 6] & 0xF);
-            printf("%s%08x%s ", failed ? RED : "", trace.panels[j + i * 6], failed ? OFF : "");
-        }
-        printf("\t");
-
-        for (unsigned int j = 0; j < 6; j++)
-        {
-            Panel panel;
-            if (i < 12)
-                panel = table.get(i, j);
-            else
-                panel = table.get_next()[j];
-
-            bool failed = panel.get_value() != (trace.panels[j + i * 6] & 0xF);
-            printf("%s%04x%02x%02x%s ", failed ? RED : "", panel.get_countdown(), panel.get_state(), panel.get_value(), failed ? OFF : "");
-            if (failed) missed++;
-        }
-
-        printf("\n");
-    }
-    printf("Found %d mismatches in state\n", missed);
-    printf("\n\n");
-}
-
-
-bool RunAndVerifyTrace(const std::string& trace_path)
-{
-    PanelSpeedSettings easy_speed_settings = {3, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES};
-    TraceReplaySimulation simulation(read_trace_file(trace_path), easy_speed_settings);
-
-    while (!simulation.Finished())
-    {
-        const auto& state = simulation.GetTraceState();
-        const auto& input = simulation.GetInput();
-        uint32_t frame = simulation.GetFrame();
-
-        simulation.Step();
-        bool ok = VerifyState(state, simulation.GetPanelTable());
-        if (!ok)
-        {
-            PrintDiff(state, simulation.GetPanelTable(), input, frame);
-            return false;
-        }
-    }
-    return true;
+    return std::abs(0xFFF - ((trace & 0xFFF) + (table & 0xFFF))) <= speed;
 }
 
 bool VerifyState(const FrameState& state, const PanelTable& table)
 {
     const auto& panels = table.get_panels();
     const auto& next = table.get_next();
-    if (state.timeout != table.get_timeout() && state.timeout != 0 && state.timeout > table.get_timeout())
-        return false;
+    //if (state.timeout != table.get_timeout() && state.timeout != 0 && state.timeout > table.get_timeout())
+    //    return false;
     if (state.rise + table.get_rise() != 16)
         return false;
-    if (((state.rise_counter + table.get_rise_counter()) & 0xFFF) != 0xFFF)
+    if (!RiseCounterCheck(state.counter, table.get_rise_counter(), state.speed))
         return false;
 
     for (unsigned int i = 0; i < state.panels.size(); i++)
@@ -123,7 +42,7 @@ bool VerifyState(const FrameState& state, const PanelTable& table)
 
 void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
 {
-    const TraceInput& input = state.input;
+    const Input& input = state.input;
 
     printf("Mismatch found!\n");
 
@@ -143,9 +62,9 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
     }
 
     {
-        bool failed = ((state.rise_counter + table.get_rise_counter()) & 0xFFF) != 0xFFF;
+        bool failed = !RiseCounterCheck(state.counter, table.get_rise_counter(), state.speed);
         if (failed) printf("%s", RED);
-        printf("rise counter: %x vs %x\n", state.rise_counter, table.get_rise_counter());
+        printf("rise counter: %x vs %x\n", state.counter, table.get_rise_counter());
         if (failed) printf("%s", OFF);
     }
     {
@@ -154,7 +73,7 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
         printf("rise: %d vs %d\n", state.rise, table.get_rise());
         if (failed) printf("%s", OFF);
     }
-    printf("speed: %x\n", state.rise_speed);
+    printf("speed: %x\n", state.speed);
 
     int missed = 0;
     for (unsigned int i = 0; i < 13; i++)
@@ -190,47 +109,26 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
     printf("\n\n");
 }
 
-
-bool RunAndVerifyFrames(const std::string& frames_path)
+void CheckState(const FrameState& state, const PanelTable& table, uint32_t frame)
 {
-    PanelSpeedSettings easy_speed_settings = {3, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES};
-    FrameReplaySimulation simulation(read_frames_file(frames_path), easy_speed_settings);
-
-    int x, y;
-    while (!simulation.Finished())
+    if (!VerifyState(state, table))
     {
-        simulation.Step();
-        uint32_t frame = simulation.GetFrame();
-        const auto& state = simulation.GetState();
-        bool ok = VerifyState(state, simulation.GetPanelTable());
-        simulation.GetSelectorCoords(y, x);
-        if (!ok || y != state.y || x != state.x)
-        {
-            PrintDiff(state, simulation.GetPanelTable(), frame);
-            return false;
-        }
+        PrintDiff(state, table, frame);
+        BOOST_REQUIRE(0);
     }
-    return true;
 }
 
-/*BOOST_AUTO_TEST_CASE(TestTraces)
+void RunAndVerifyFrames(const std::string& frames_path)
 {
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/swap.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/swapfall.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/swapfall2.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/match3.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/matchfall.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/match10.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/2xchain.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/antislip.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/rapidswap.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/skillchain_slip.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/skillchain_triangle.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/test1.trace"));
-    BOOST_REQUIRE(RunAndVerifyTrace("traces/tumori1.trace"));
-}*/
+    PanelSpeedSettings easy_speed_settings = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES};
+    FrameReplaySimulation simulation(read_frames_file(frames_path), easy_speed_settings);
+
+    simulation.AddStepCallback(CheckState);
+    simulation.Run();
+}
+
 
 BOOST_AUTO_TEST_CASE(TestFrames)
 {
-    //BOOST_REQUIRE(RunAndVerifyFrames("timeattack.frames"));
+    RunAndVerifyFrames("timeattack.frames");
 }

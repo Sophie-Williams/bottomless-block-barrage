@@ -130,15 +130,25 @@ public:
     void freeze(int timeout);
 
     /// Quick rise the panels
-    void quick_rise() {state = FAST_RISING;}
+    void quick_rise()
+    {
+        if (is_rising())
+        {
+            state = FAST_RISING;
+            if (rise_counter > 0)
+                rise_counter = 0xfff - speed;
+        }
+    }
 
-    /// Updates the game board.  Speed is the amount to increase rise_counter by.
-    MatchInfo update(int speed);
+    /// Updates the game board.
+    MatchInfo update();
 
     int get_rise_counter() const {return rise_counter;}
     int get_rise() const {return rise;}
     int get_timeout() const {return timeout;}
     int get_chain() const {return chain;}
+    void set_speed(int rise_speed) {speed = rise_speed;}
+
 private:
     void init();
     void generate();
@@ -181,6 +191,8 @@ private:
     int rise_counter = 0;
     /** Rise amount when this reaches 16 the panels are risen and a new line is generated */
     int rise = 0;
+    /** Panel rise speed */
+    int speed = 0;
     /** Are we currently stopped */
     bool stopped = false;
     /** Hold long we are stopped */

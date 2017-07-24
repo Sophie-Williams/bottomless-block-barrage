@@ -6,6 +6,7 @@ bool Panel::can_match() const
     return (is_idle() || is_swapped() || is_fall_end()) && normal();
 }
 
+#include <cstdio>
 bool Panel::can_swap() const
 {
     if (right == nullptr)

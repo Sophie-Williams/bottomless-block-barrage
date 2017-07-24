@@ -564,6 +564,12 @@
 		<Unit filename="testing/frame_state.hpp">
 			<Option target="test" />
 		</Unit>
+		<Unit filename="testing/input.cpp">
+			<Option target="test" />
+		</Unit>
+		<Unit filename="testing/input.hpp">
+			<Option target="test" />
+		</Unit>
 		<Unit filename="testing/panel_table_test.cpp" />
 		<Unit filename="testing/replay.cpp">
 			<Option target="test" />
@@ -575,12 +581,6 @@
 			<Option target="test" />
 		</Unit>
 		<Unit filename="testing/replay_test.cpp">
-			<Option target="test" />
-		</Unit>
-		<Unit filename="testing/trace_state.cpp">
-			<Option target="test" />
-		</Unit>
-		<Unit filename="testing/trace_state.hpp">
 			<Option target="test" />
 		</Unit>
 		<Extensions>
