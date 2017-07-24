@@ -172,11 +172,8 @@ std::vector<Panel::Type> get_next_panels(const FrameStateManager& frame_manager)
         const auto& state = frame_manager.GetState(i);
         if (table_has_risen)
         {
-            for (int j = 0; j < 6; j++) {
-                printf("%d ", state.panels[72 + j] & 0xFF);
+            for (int j = 0; j < 6; j++)
                 next.push_back((Panel::Type)(state.panels[72 + j] & 0xFF));
-            }
-            printf("\n");
             table_has_risen = false;
         }
         if (state.panels[72] == 0xFF00FF)

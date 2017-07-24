@@ -107,7 +107,6 @@ FrameStateManager read_frames_file(const std::string& filename)
         assert(timeout.find("timeout") != std::string::npos);
         {
             state.timeout = strtol(timeout.c_str() + 8, nullptr, 16);
-            printf("%d %s %d\n", frame, timeout.c_str(), state.timeout);
         }
         std::string rise;
         std::getline(file, rise);
