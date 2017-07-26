@@ -126,6 +126,12 @@ FrameStateManager read_frames_file(const std::string& filename)
         {
             state.speed = strtol(rise_speed.c_str() + 6, nullptr, 16);
         }
+        std::string state_str;
+        std::getline(file, state_str);
+        assert(state_str.find("state") != std::string::npos);
+        {
+            state.state = strtol(state_str.c_str() + 6, nullptr, 10);
+        }
 
         for (unsigned int i = 0; i < 13; i++)
         {
@@ -140,12 +146,6 @@ FrameStateManager read_frames_file(const std::string& filename)
         std::getline(file, line);
         std::getline(file, line);
 
-        if (frames.size() > 0)
-        {
-            const FrameState& back = frames.back();
-            if (back.panels[72] == 0xFF00FF && state.panels[72] == 0xFF00FF)
-                continue;
-        }
 
         if (frame != 0)
             frames.push_back(state);

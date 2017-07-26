@@ -10,6 +10,7 @@
 
 bool RiseCounterCheck(uint16_t trace, uint16_t table, uint16_t speed)
 {
+    printf("%x %x %x\n", trace, table, ((trace & 0xFFF) + (table & 0xFFF)));
     return std::abs(0xFFF - ((trace & 0xFFF) + (table & 0xFFF))) <= speed;
 }
 

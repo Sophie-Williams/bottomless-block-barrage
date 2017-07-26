@@ -258,6 +258,7 @@ void FrameReplaySimulation::Print()
     printf("counter: %x vs %x\n", state.counter, table->get_rise_counter());
     printf("rise: %d vs %d\n", state.rise, table->get_rise());
     printf("speed: %x vs %x\n", state.speed, get_speed_for_level(level));
+    printf("state: %d\n", state.state);
 
     for (unsigned int i = 0; i < 13; i++)
     {
