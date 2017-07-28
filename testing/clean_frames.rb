@@ -39,7 +39,7 @@ class FrameState
 	attr_accessor :counter
 	attr_accessor :rise
 	attr_accessor :speed
-	attr_accessor :state
+	attr_accessor :states
 	attr_accessor :panels
 
 	def write(file)
@@ -57,7 +57,7 @@ class FrameState
 		file.puts("rise #{@rise}")
 		file.puts("counter #{'%04x' % @counter}")
 		file.puts("speed #{'%04x' % @speed}")
-		file.puts("state #{@state}")
+		file.puts("states #{@states.join(' ')}")
 		13.times do |i|
 			6.times do |j|
 				id = i * 6 + j
@@ -98,6 +98,14 @@ def read_int(file, attribute, base=10)
 	return tokens[1].to_i(base)
 end
 
+def read_array_int(file, attribute, base=10)
+	val = file.readline
+	raise attribute if not val.include?(attribute)
+	tokens = val.split(' ')
+	tokens.shift
+	return tokens.collect {|e| e.to_i(base)}
+end
+
 def read_panels(file)
 	data = []
 	13.times do |i|
@@ -130,7 +138,7 @@ def read_frames(file)
 		state.rise = read_int(file, 'rise')
 		state.counter = read_int(file, 'counter', 16)
 		state.speed = read_int(file, 'speed', 16)
-		state.state = read_int(file, 'state')
+		state.states = read_array_int(file, 'states')
 		state.panels = read_panels(file)
 		frames << state
 		file.readline

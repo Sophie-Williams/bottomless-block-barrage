@@ -29,7 +29,7 @@ private:
 class FrameReplaySimulation
 {
 public:
-    typedef std::function<void(const FrameState&, const PanelTable&, uint32_t)> StepCallback;
+    typedef std::function<bool(const FrameState&, const PanelTable&, uint32_t)> StepCallback;
 
     FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings);
     void Run(bool debug = false);

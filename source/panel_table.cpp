@@ -143,7 +143,6 @@ MatchInfo PanelTable::update()
 {
     bool need_update_matches = false;
     bool need_skip_update = false;
-    bool all_idle = true;
     bool in_clink = false;
     bool in_chain = false;
 
@@ -161,12 +160,16 @@ MatchInfo PanelTable::update()
         lines++;
     }
 
+    // Do not rise the panels if any panel is in match state, in swap state, or is FALLING only.
+    bool stop_rising = false;
+
     // Iterate in reverse so that falls work correctly.
     for (unsigned int i = 0; i < panels.size(); i++)
     {
         auto& panel = panels[panels.size() - 1 - i];
         in_chain |= panel.chain;
         in_clink |= panel.is_match_process();
+        stop_rising |= panel.is_falling() || panel.is_fall_end() || panel.is_swapping() || panel.is_match_process();
         need_update_matches |= panel.update();
     }
 
@@ -187,16 +190,14 @@ MatchInfo PanelTable::update()
     info.clink = clink <= 1 ? 0 : clink - 1;
     info.chain = chain == 0 ? 0 : chain + 1;
 
-    // Iterate again to compute all idle flag.  Can't do this in the above loop due to panels falling
+    // Needed to catch newly matched panels.
     for (const auto& panel : panels)
     {
-        all_idle &= panel.is_idle();
-        // Needed to catch newly matched panels.
         in_clink |= panel.is_pending_match();
     }
 
     // Board is stopped while matches are being removed.
-    if (in_clink || need_skip_update)
+    if (need_skip_update || stop_rising)
         return info;
 
     if (stopped)
@@ -211,16 +212,12 @@ MatchInfo PanelTable::update()
     if (is_puzzle())
     {
         bool win = true;
-        bool idle = true;
         for (const auto& panel : panels)
-        {
             win = win && panel.empty();
-            idle = idle && panel.is_idle();
-        }
-        if ((moves == 0 || win) && idle)
+        if (moves == 0 || win)
             state = win ? WIN : GAMEOVER;
     }
-    else if (is_rising() && all_idle)
+    else if (is_rising())
     {
 
         if (rise_counter == 0xfff)
@@ -247,7 +244,7 @@ MatchInfo PanelTable::update()
                 state = RISED;
         }
     }
-    else if (is_fast_rising() && all_idle)
+    else if (is_fast_rising())
     {
         //rise_counter += speed;
         // One frame delay
@@ -272,7 +269,7 @@ MatchInfo PanelTable::update()
         generate_next();
         state = RISING;
     }
-    else if (is_clogged() && all_idle)
+    else if (is_clogged())
     {
         // For endless mode
         if (type == ENDLESS)
@@ -328,13 +325,20 @@ MatchInfo PanelTable::update_matches()
     match_info.swap_match = !remove.empty();
     match_info.fall_match = false;
 
+    bool chain = false;
+    for (const auto& pt: remove)
+    {
+        auto& panel = get(pt.y, pt.x);
+        chain |= panel.chain;
+    }
+
     int index = remove.size() - 1;
     for (const auto& pt : remove)
     {
         auto& panel = get(pt.y, pt.x);
         match_info.fall_match |= (panel.is_fall_end() && panel.chain);
         match_info.swap_match &= !(panel.is_fall_end() && panel.chain);
-        panel.match(index, remove.size() - 1);
+        panel.match(index, remove.size() - 1, chain);
         index--;
         match_info.x = pt.x;
         match_info.y = pt.y;

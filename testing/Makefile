@@ -14,7 +14,7 @@ replay_test : replay_test.o replay_simulation.o frame_state.o panel_source.o pan
 	g++ $^ $(CPPFLAGS) -o $@ $(LIBS)
 
 panel_table_test.o : panel_table_test.cpp $(SOURCE)/panel_table.hpp $(SOURCE)/panel.hpp $(SOURCE)/panel_source.hpp
-replay.o : replay.cpp replay_simulation.hpp $(SOURCE)/panel_table.hpp $(SOURCE)/panel.hpp $(SOURCE)/panel_source.hpp
+replay.o : replay.cpp replay_simulation.hpp frame_state.hpp $(SOURCE)/panel_table.hpp $(SOURCE)/panel.hpp $(SOURCE)/panel_source.hpp
 replay_test.o : replay_test.cpp frame_state.hpp replay_simulation.hpp input.hpp
 replay_simulation.o : replay_simulation.cpp replay_simulation.hpp  frame_state.hpp $(SOURCE)/panel_table.hpp $(SOURCE)/panel.hpp $(SOURCE)/panel_source.hpp input.hpp
 frame_state.o : frame_state.cpp frame_state.hpp input.hpp

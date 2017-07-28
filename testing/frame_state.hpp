@@ -32,7 +32,7 @@ struct FrameState
     uint16_t counter;
     uint16_t rise;
     uint16_t speed;
-    uint8_t state;
+    std::vector<uint8_t> states;
     std::vector<uint32_t> panels;
 };
 

@@ -41,7 +41,7 @@ public:
         RIGHT_SWAP = 3,
         /** Panel has been swapped */
         SWAPPED = 4,
-        /** Panel was swapped and about to fall, transitions directly to end fall now */
+        /** Panel was swapped and about to fall, transitions to falling after 1 frame */
         PENDING_FALL = 5, // nothing
         /** Falling panel */
         FALLING = 6,
@@ -106,7 +106,7 @@ public:
     bool can_swap() const;
 
     /// Start matching panels returns number of panels matched
-    int match(int index, int total);
+    int match(int index, int total, bool chain = false);
     /// Swaps panel with the one to its right.
     void swap();
     /// Rises the panel up one

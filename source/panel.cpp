@@ -48,12 +48,12 @@ void Panel::swap()
     countdown = right->countdown = settings->swap;
 }
 
-int Panel::match(int index, int total)
+int Panel::match(int index, int total, bool chain)
 {
     state = State::PENDING_MATCH;
     match_time = settings->first_removed + index * settings->subsequent_removed;
     remove_time = settings->first_removed + total * settings->subsequent_removed;
-    countdown = settings->pending_match;
+    countdown = settings->pending_match + chain;
     return 0;
 }
 
@@ -84,7 +84,12 @@ bool Panel::update()
     {
         state = State::IDLE;
     }
-    else if (is_falling() || is_pending_fall())
+    else if (is_pending_fall())
+    {
+        countdown -= 1;
+        state = FALLING;
+    }
+    else if (is_falling())
     {
         countdown -= 1;
         if (countdown <= 0)

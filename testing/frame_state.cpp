@@ -106,7 +106,7 @@ FrameStateManager read_frames_file(const std::string& filename)
         std::getline(file, timeout);
         assert(timeout.find("timeout") != std::string::npos);
         {
-            state.timeout = strtol(timeout.c_str() + 8, nullptr, 16);
+            state.timeout = strtol(timeout.c_str() + 8, nullptr, 10);
         }
         std::string rise;
         std::getline(file, rise);
@@ -128,9 +128,12 @@ FrameStateManager read_frames_file(const std::string& filename)
         }
         std::string state_str;
         std::getline(file, state_str);
-        assert(state_str.find("state") != std::string::npos);
+        assert(state_str.find("states") != std::string::npos);
         {
-            state.state = strtol(state_str.c_str() + 6, nullptr, 10);
+            std::vector<std::string> tokens;
+            split(state_str, ' ', tokens);
+            for (unsigned int i = 1; i < tokens.size(); i++)
+                state.states.push_back(strtol(tokens[i].c_str(), nullptr, 10));
         }
 
         for (unsigned int i = 0; i < 13; i++)

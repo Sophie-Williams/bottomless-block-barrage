@@ -10,8 +10,8 @@
 
 bool RiseCounterCheck(uint16_t trace, uint16_t table, uint16_t speed)
 {
-    printf("%x %x %x\n", trace, table, ((trace & 0xFFF) + (table & 0xFFF)));
-    return std::abs(0xFFF - ((trace & 0xFFF) + (table & 0xFFF))) <= speed;
+    //printf("%x %x %x\n", trace, table, ((trace & 0xFFF) + (table & 0xFFF)));
+    return std::abs(0xFFF - ((trace & 0xFFF) + (table & 0xFFF))) <= 0;
 }
 
 bool VerifyState(const FrameState& state, const PanelTable& table)
@@ -110,18 +110,24 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
     printf("\n\n");
 }
 
-void CheckState(const FrameState& state, const PanelTable& table, uint32_t frame)
+bool CheckState(const FrameState& state, const PanelTable& table, uint32_t frame)
 {
+    static bool failed_already = false;
     if (!VerifyState(state, table))
     {
         PrintDiff(state, table, frame);
-        BOOST_REQUIRE(0);
+        if (failed_already)
+            BOOST_REQUIRE(0);
+        failed_already = true;
+        return false;
     }
+    failed_already = false;
+    return true;
 }
 
 void RunAndVerifyFrames(const std::string& frames_path)
 {
-    PanelSpeedSettings easy_speed_settings = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES};
+    PanelSpeedSettings easy_speed_settings = {3, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES};
     FrameReplaySimulation simulation(read_frames_file(frames_path), easy_speed_settings);
 
     simulation.AddStepCallback(CheckState);
