@@ -106,7 +106,7 @@ public:
     bool can_swap() const;
 
     /// Start matching panels returns number of panels matched
-    int match(int index, int total, bool chain = false);
+    int match(int index, int total, int types_matched, bool chain = false);
     /// Swaps panel with the one to its right.
     void swap();
     /// Rises the panel up one
@@ -114,7 +114,6 @@ public:
 
     /// Updates the panel, true is returned to trigger a find matches
     bool update();
-
 
 private:
     /// Mesh panels owned by PanelTable
@@ -133,6 +132,8 @@ private:
     int match_time = 0;
     int remove_time = 0;
     int countdown = 0;
+    // Locked from swapping.
+    bool locked = false;
 
     friend class PanelTable;
 };

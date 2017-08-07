@@ -258,8 +258,8 @@ std::vector<Panel::Type> ReplayPanelSource::line()
     return line;
 }
 
-FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings) :
-     frame(0), table(nullptr), frames(frame_manager), level(1), next(0), x(0), y(0)
+FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings, const std::map<uint32_t, uint32_t> frame_skip_vals) :
+     frame(0), frame_skip(0), table(nullptr), frames(frame_manager), level(1), next(0), x(0), y(0), frame_skip_map(frame_skip_vals)
 {
     const FrameState& initial = frames.GetInitialState();
     ReplayPanelSource* source = new ReplayPanelSource(get_panels(initial), get_next_panels(frames));
@@ -280,14 +280,13 @@ FrameReplaySimulation::FrameReplaySimulation(const FrameStateManager& frame_mana
 void FrameReplaySimulation::Step(bool debug)
 {
     DoStep();
-    if (frame < frames.GetFinalFrame())
+    if (frame + frame_skip < frames.GetFinalFrame())
     {
-        for (const auto& callback : callbacks)
-        {
-            if (!callback(frames.GetState(frame), *table, frame))
-                callback(frames.GetState(frame + 1), *table, frame + 1);
+        if (frame_skip_map.find(frame) != frame_skip_map.end())
+            frame_skip += frame_skip_map.at(frame);
 
-        }
+        for (const auto& callback : callbacks)
+            callback(frames.GetState(frame + frame_skip), *table, frame);
         if (debug) Print();
     }
     frame++;
@@ -301,8 +300,8 @@ void FrameReplaySimulation::Run(bool debug)
 
 void FrameReplaySimulation::Print()
 {
-    const auto& state = frames.GetState(frame/*+1*/);
-    printf("frame: %d\n", frame);
+    const auto& state = frames.GetState(frame + frame_skip);
+    printf("frame: %d+%d\n", frame, frame_skip);
     printf("match info: %d %d %d\n", info.combo, info.chain, info.clink);
     printf("input: %x %x %x\n", state.input.value(), state.trigger.value(), state.repeat.value());
     printf("time: %d:%02d\n", state.time.minutes, state.time.seconds);
@@ -317,16 +316,19 @@ void FrameReplaySimulation::Print()
     printf("counter: %x vs %x\n", state.counter, table->get_rise_counter());
     printf("rise: %d vs %d\n", state.rise, table->get_rise());
     printf("speed: %x vs %x\n", state.speed, get_speed_for_level(level));
+    for (const auto& fmstate : state.match_states)
+        printf("match: %d %d %d %d %d\n", fmstate.pending, fmstate.blink, fmstate.matched, fmstate.removed, fmstate.deleted);
     printf("state: ");
     for (const auto& s : state.states)
         printf("%d ", s);
+    printf("vs %d", table->get_state());
     printf("\n");
 
     for (unsigned int i = 0; i < 13; i++)
     {
         for (unsigned int j = 0; j < 6; j++)
         {
-            printf("%08x ", state.panels[j + i * 6]);
+            printf("%012lx ", state.panels[j + i * 6]);
         }
         printf("\t\t");
         for (unsigned int j = 0; j < 6; j++)
@@ -347,7 +349,7 @@ void FrameReplaySimulation::Print()
 
 void FrameReplaySimulation::DoStep()
 {
-    const auto& state = frames.GetState(frame);
+    const auto& state = frames.GetState(frame + frame_skip);
     input_manager.update(state.input);
 
     y = state.y;
@@ -364,6 +366,9 @@ void FrameReplaySimulation::DoStep()
     if (table->is_rised())
         y = std::max(0, y - 1);*/
 
+    if (input_manager.on(Input::BUTTON_L) || input_manager.on(Input::BUTTON_R))
+        table->quick_rise();
+
     info = table->update();
     next -= info.combo;
     if (next <= 0)
@@ -373,11 +378,12 @@ void FrameReplaySimulation::DoStep()
         table->set_speed(get_speed_for_level(level));
     }
 
-    if (input_manager.triggered(Input::BUTTON_A) || input_manager.triggered(Input::BUTTON_B))
-        table->swap(y, x);
+    if (!state.repeat.any(Input::BUTTON_DIRECTIONAL))
+    {
+        if (input_manager.triggered(Input::BUTTON_A) || input_manager.triggered(Input::BUTTON_B))
+            table->swap(y, x);
+    }
 
-    if (input_manager.on(Input::BUTTON_L) || input_manager.on(Input::BUTTON_R))
-        table->quick_rise();
 
     table->freeze(table->warning() ? combo_danger_timeout[info.combo][0] : combo_timeout[info.combo][0]);
     if (info.fall_match)

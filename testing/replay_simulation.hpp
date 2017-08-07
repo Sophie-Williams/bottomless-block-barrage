@@ -31,7 +31,7 @@ class FrameReplaySimulation
 public:
     typedef std::function<bool(const FrameState&, const PanelTable&, uint32_t)> StepCallback;
 
-    FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings);
+    FrameReplaySimulation(const FrameStateManager& frame_manager, const PanelSpeedSettings& settings, const std::map<uint32_t, uint32_t> frame_skip_map = std::map<uint32_t, uint32_t>());
     void Run(bool debug = false);
     void Step(bool debug = false);
     bool Finished() const {return frame >= frames.GetFinalFrame();}
@@ -45,6 +45,7 @@ public:
 private:
     void DoStep();
     uint32_t frame;
+    uint32_t frame_skip;
     std::unique_ptr<PanelTable> table;
     FrameStateManager frames;
     InputManager input_manager;
@@ -54,6 +55,7 @@ private:
     int next;
     int x;
     int y;
+    const std::map<uint32_t, uint32_t> frame_skip_map;
 };
 
 #endif

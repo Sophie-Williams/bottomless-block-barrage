@@ -139,6 +139,16 @@ void PanelTable::freeze(int cooloff)
     }
 }
 
+void PanelTable::quick_rise()
+{
+    if (is_rising())
+    {
+        state = REQUEST_FAST_RISE;
+        if (stopped)
+            timeout = 1;
+    }
+}
+
 MatchInfo PanelTable::update()
 {
     bool need_update_matches = false;
@@ -263,6 +273,12 @@ MatchInfo PanelTable::update()
                 state = RISED;
         }
     }
+    else if (is_request_fast_rise())
+    {
+        state = FAST_RISING;
+        //if (!was_stopped)
+            rise_counter = 0xfff - speed;
+    }
     /*else if (is_rised())*/ // Handled above.
     else if (is_generate_next())
     {
@@ -326,9 +342,11 @@ MatchInfo PanelTable::update_matches()
     match_info.fall_match = false;
 
     bool chain = false;
+    std::set<Panel::Type> types_matched;
     for (const auto& pt: remove)
     {
         auto& panel = get(pt.y, pt.x);
+        types_matched.insert(panel.get_value());
         chain |= panel.chain;
     }
 
@@ -338,7 +356,7 @@ MatchInfo PanelTable::update_matches()
         auto& panel = get(pt.y, pt.x);
         match_info.fall_match |= (panel.is_fall_end() && panel.chain);
         match_info.swap_match &= !(panel.is_fall_end() && panel.chain);
-        panel.match(index, remove.size() - 1, chain);
+        panel.match(index, remove.size() - 1, types_matched.size(), chain);
         index--;
         match_info.x = pt.x;
         match_info.y = pt.y;

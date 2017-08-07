@@ -12,9 +12,13 @@ bool Panel::can_swap() const
     if (right == nullptr)
         return false;
 
+    // Must not be locked
+    if (locked || right->locked)
+        return false;
+
     // Must be in these states.
-    bool left_state = is_idle() || is_falling() || is_fall_end() || is_swapped();
-    bool right_state = right->is_idle() || right->is_falling() || right->is_fall_end() || right->is_swapped();
+    bool left_state = is_idle() || is_pending_fall() || is_falling() || is_fall_end() || is_swapped();
+    bool right_state = right->is_idle() || is_pending_fall() || right->is_falling() || right->is_fall_end() || right->is_swapped();
 
     if (!left_state || !right_state)
         return false;
@@ -48,12 +52,12 @@ void Panel::swap()
     countdown = right->countdown = settings->swap;
 }
 
-int Panel::match(int index, int total, bool chain)
+int Panel::match(int index, int total, int types_matched, bool chain)
 {
     state = State::PENDING_MATCH;
     match_time = settings->first_removed + index * settings->subsequent_removed;
     remove_time = settings->first_removed + total * settings->subsequent_removed;
-    countdown = settings->pending_match + chain;
+    countdown = settings->pending_match;// + (settings->subsequent_removed - 1) * (types_matched - 1);// + chain;
     return 0;
 }
 
@@ -105,6 +109,7 @@ bool Panel::update()
                 type = EMPTY;
                 state = IDLE;
                 chain = false;
+                locked = false;
             }
             // Slip case: Below panel is in fall process
             else if (!down->is_bottom() && !down->empty() && down->is_falling_process() && !empty())
@@ -177,6 +182,7 @@ bool Panel::update()
         // Can fall if the panel below you is falling or the panel below you is empty and (idle | swapped | match_end)
         if (down->is_falling_process() || (down->empty() && (down->is_idle() || down->is_swapped() || down->is_match_end())))
         {
+            locked = is_swapped();
             state = PENDING_FALL;
             countdown = settings->pending_fall + settings->falling;
             chain = down->is_match_end() || down->chain;

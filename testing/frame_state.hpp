@@ -2,6 +2,7 @@
 #define FRAME_STATE_HPP
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -11,6 +12,15 @@ struct FrameTime
 {
     uint8_t minutes;
     uint8_t seconds;
+};
+
+struct FrameMatchState
+{
+    uint16_t pending;
+    bool blink;
+    uint16_t matched;
+    uint16_t removed;
+    uint16_t deleted;
 };
 
 struct FrameState
@@ -33,7 +43,8 @@ struct FrameState
     uint16_t rise;
     uint16_t speed;
     std::vector<uint8_t> states;
-    std::vector<uint32_t> panels;
+    std::vector<FrameMatchState> match_states;
+    std::vector<uint64_t> panels;
 };
 
 class FrameStateManager
@@ -50,6 +61,7 @@ private:
 
 };
 
+std::map<uint32_t, uint32_t> read_skip_file(const std::string& filename);
 FrameStateManager read_frames_file(const std::string& filename);
 
 #endif

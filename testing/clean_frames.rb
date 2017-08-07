@@ -40,6 +40,11 @@ class FrameState
 	attr_accessor :rise
 	attr_accessor :speed
 	attr_accessor :states
+	attr_accessor :pending
+	attr_accessor :blink
+	attr_accessor :match
+	attr_accessor :remove
+	attr_accessor :delete
 	attr_accessor :panels
 
 	def write(file)
@@ -58,10 +63,15 @@ class FrameState
 		file.puts("counter #{'%04x' % @counter}")
 		file.puts("speed #{'%04x' % @speed}")
 		file.puts("states #{@states.join(' ')}")
+		file.puts("pending #{@pending.join(' ')}")
+		file.puts("blink #{@blink.join(' ')}")
+		file.puts("match #{@match.join(' ')}")
+		file.puts("remove #{@remove.join(' ')}")
+		file.puts("delete #{@delete.join(' ')}")
 		13.times do |i|
 			6.times do |j|
 				id = i * 6 + j
-				file.print("%08x " % @panels[id])
+				file.print("%012x " % @panels[id])
 			end
 			file.print("\n")
 		end
@@ -139,6 +149,11 @@ def read_frames(file)
 		state.counter = read_int(file, 'counter', 16)
 		state.speed = read_int(file, 'speed', 16)
 		state.states = read_array_int(file, 'states')
+		state.pending = read_array_int(file, 'pending')
+		state.blink = read_array_int(file, 'blink')
+		state.match = read_array_int(file, 'match')
+		state.remove = read_array_int(file, 'remove')
+		state.delete = read_array_int(file, 'delete')
 		state.panels = read_panels(file)
 		frames << state
 		file.readline

@@ -66,18 +66,20 @@ public:
         PUZZLE = 1,
         /// Panel Table is slowly rising.
         RISING = 2,
+        /// Request to transition to fast rising can only transition to this from rising.
+        REQUEST_FAST_RISE = 3,
         /// Panel Table is being raised quickly (holding L/R).
-        FAST_RISING = 3,
+        FAST_RISING = 4,
         /// Panel Table has risen by 1 blocks.  A new line of panels are generated here.
-        RISED = 4,
+        RISED = 5,
         /// Dummy state to generate next blocks
-        GENERATE_NEXT = 5,
+        GENERATE_NEXT = 6,
         /// State for game over delay in Versus mode.
-        CLOGGED = 6,
+        CLOGGED = 7,
         /// Puzzle has been won. Or N lines have been cleared
-        WIN = 7,
+        WIN = 8,
         /// Game over.
-        GAMEOVER = 8,
+        GAMEOVER = 9,
     };
 
     struct Options
@@ -95,11 +97,13 @@ public:
     bool is_puzzle() const {return state == PUZZLE;}
     bool is_rising() const {return state == RISING;}
     bool is_fast_rising() const {return state == FAST_RISING;}
+    bool is_request_fast_rise() const {return state == REQUEST_FAST_RISE;}
     bool is_rised() const {return state == RISED;}
     bool is_generate_next() const {return state == GENERATE_NEXT;}
     bool is_clogged() const {return state == CLOGGED;}
     bool is_gameover() const {return state == GAMEOVER;}
     bool is_win() const {return state == WIN;}
+    State get_state() const {return state;}
 
     const std::vector<Panel>& get_panels() const {return panels;}
     std::vector<Panel>& get_panels() {return panels;}
@@ -130,15 +134,7 @@ public:
     void freeze(int timeout);
 
     /// Quick rise the panels
-    void quick_rise()
-    {
-        if (is_rising())
-        {
-            state = FAST_RISING;
-            if (rise_counter > 0)
-                rise_counter = 0xfff - speed;
-        }
-    }
+    void quick_rise();
 
     /// Updates the game board.
     MatchInfo update();

@@ -24,6 +24,7 @@ struct Input
     bool button_down() const {return input & 0x400;}
     bool on(unsigned int key) const {return (input & key) == key;}
     bool only(unsigned int key) const {return input == key;}
+    bool any(unsigned int key) const {return (input & key) != 0;}
     bool off(unsigned int key) const {return !on(key);}
     uint16_t value() const {return input;}
 
@@ -41,6 +42,7 @@ struct Input
     static constexpr unsigned int BUTTON_SELECT = 0x2000;
     static constexpr unsigned int BUTTON_Y = 0x4000;
     static constexpr unsigned int BUTTON_B = 0x8000;
+    static constexpr unsigned int BUTTON_DIRECTIONAL = 0x0F00;
 };
 
 class InputManager

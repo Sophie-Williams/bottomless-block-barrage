@@ -14,6 +14,23 @@ bool RiseCounterCheck(uint16_t trace, uint16_t table, uint16_t speed)
     return std::abs(0xFFF - ((trace & 0xFFF) + (table & 0xFFF))) <= 0;
 }
 
+bool PanelCheck(uint32_t state, Panel& panel)
+{
+    return /*((panel.is_pending_match() && (state & 0x200000) == 0x200000) ||
+           (panel.is_matched() && (state & 0x201000) == 0x201000) ||
+           (panel.is_removed() && (state & 0xa01000) == 0xa01000) ||
+           (panel.is_match_end() && state == 0) ||
+           (panel.is_idle()) ||
+           (panel.is_falling()) ||
+           (panel.is_pending_fall()) ||
+           (panel.is_fall_end()) ||
+           (panel.is_fell_idle()) ||
+           (panel.is_swapped()) ||
+           (panel.is_swapping()) ||
+           (panel.is_bottom()) ) &&*/
+           ((state & 0xF) == (int)panel.get_value());
+}
+
 bool VerifyState(const FrameState& state, const PanelTable& table)
 {
     const auto& panels = table.get_panels();
@@ -35,7 +52,7 @@ bool VerifyState(const FrameState& state, const PanelTable& table)
             panel = panels[i];
         else
             panel = next[i - 72];
-        if ((state.panels[i] & 0xF) != (int)panel.get_value())
+        if (!PanelCheck(state.panels[i], panel))
             return false;
     }
     return true;
@@ -75,6 +92,8 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
         if (failed) printf("%s", OFF);
     }
     printf("speed: %x\n", state.speed);
+    for (const auto& fmstate : state.match_states)
+        printf("match: %d %d %d %d %d\n", fmstate.pending, fmstate.blink, fmstate.matched, fmstate.removed, fmstate.deleted);
 
     int missed = 0;
     for (unsigned int i = 0; i < 13; i++)
@@ -86,8 +105,8 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
                 panel = table.get(i, j);
             else
                 panel = table.get_next()[j];
-            bool failed = panel.get_value() != (state.panels[j + i * 6] & 0xF);
-            printf("%s%08x%s ", failed ? RED : "", state.panels[j + i * 6], failed ? OFF : "");
+            bool failed = !PanelCheck(state.panels[j + i * 6], panel);
+            printf("%s%012lx%s ", failed ? RED : "", state.panels[j + i * 6], failed ? OFF : "");
         }
         printf("\t");
 
@@ -99,7 +118,7 @@ void PrintDiff(const FrameState& state, const PanelTable& table, uint32_t frame)
             else
                 panel = table.get_next()[j];
 
-            bool failed = panel.get_value() != (state.panels[j + i * 6] & 0xF);
+            bool failed = !PanelCheck(state.panels[j + i * 6], panel);
             printf("%s%04x%02x%02x%s ", failed ? RED : "", panel.get_countdown(), panel.get_state(), panel.get_value(), failed ? OFF : "");
             if (failed) missed++;
         }
@@ -125,10 +144,10 @@ bool CheckState(const FrameState& state, const PanelTable& table, uint32_t frame
     return true;
 }
 
-void RunAndVerifyFrames(const std::string& frames_path)
+void RunAndVerifyFrames(const std::string& frames_path, const std::string& skip_path)
 {
-    PanelSpeedSettings easy_speed_settings = {3, 11, 1, 45, 25, 9, FALL_ANIMATION_FRAMES};
-    FrameReplaySimulation simulation(read_frames_file(frames_path), easy_speed_settings);
+    PanelSpeedSettings easy_speed_settings = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES};
+    FrameReplaySimulation simulation(read_frames_file(frames_path), easy_speed_settings, read_skip_file(skip_path));
 
     simulation.AddStepCallback(CheckState);
     simulation.Run();
@@ -137,5 +156,5 @@ void RunAndVerifyFrames(const std::string& frames_path)
 
 BOOST_AUTO_TEST_CASE(TestFrames)
 {
-    RunAndVerifyFrames("timeattack.frames");
+    RunAndVerifyFrames("timeattack.frames", "timeattack.skip");
 }

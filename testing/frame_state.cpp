@@ -135,6 +135,45 @@ FrameStateManager read_frames_file(const std::string& filename)
             for (unsigned int i = 1; i < tokens.size(); i++)
                 state.states.push_back(strtol(tokens[i].c_str(), nullptr, 10));
         }
+        {
+            std::vector<std::string> pending;
+            std::vector<std::string> blink;
+            std::vector<std::string> matched;
+            std::vector<std::string> removed;
+            std::vector<std::string> deleted;
+            std::string line;
+
+            std::getline(file, line);
+            assert(line.find("pending") != std::string::npos);
+            split(line, ' ', pending);
+
+            std::getline(file, line);
+            assert(line.find("blink") != std::string::npos);
+            split(line, ' ', blink);
+
+            std::getline(file, line);
+            assert(line.find("match") != std::string::npos);
+            split(line, ' ', matched);
+
+            std::getline(file, line);
+            assert(line.find("remove") != std::string::npos);
+            split(line, ' ', removed);
+
+            std::getline(file, line);
+            assert(line.find("delete") != std::string::npos);
+            split(line, ' ', deleted);
+
+            for (unsigned int i = 0; i < pending.size(); i++)
+            {
+                FrameMatchState fmstate;
+                fmstate.pending = atoi(pending[i].c_str());
+                fmstate.blink = atoi(blink[i].c_str());
+                fmstate.matched = atoi(matched[i].c_str());
+                fmstate.removed = atoi(removed[i].c_str());
+                fmstate.deleted = atoi(deleted[i].c_str());
+                state.match_states.push_back(fmstate);
+            }
+        }
 
         for (unsigned int i = 0; i < 13; i++)
         {
@@ -142,7 +181,7 @@ FrameStateManager read_frames_file(const std::string& filename)
             std::vector<std::string> values;
             split(line, ' ', values);
             for (const auto& val : values)
-                state.panels.push_back(strtol(val.c_str(), nullptr, 16));
+                state.panels.push_back(strtoull(val.c_str(), nullptr, 16));
         }
         state.frame = frame;
 
@@ -160,4 +199,26 @@ FrameStateManager read_frames_file(const std::string& filename)
     }
 
     return FrameStateManager(initial, frames);
+}
+
+std::map<uint32_t, uint32_t> read_skip_file(const std::string& filename)
+{
+    std::map<uint32_t, uint32_t> ret;
+
+    std::string line;
+    std::ifstream file(filename.c_str());
+    while (!file.eof())
+    {
+        std::getline(file, line);
+        if (line == "\n") continue;
+        std::vector<std::string> tokens;
+        split(line, ':', tokens);
+        if (tokens.size() != 2) continue;
+
+        uint32_t frame = atoi(tokens[0].c_str());
+        uint32_t skip = atoi(tokens[1].c_str());
+
+        ret[frame] = skip;
+    }
+    return ret;
 }
