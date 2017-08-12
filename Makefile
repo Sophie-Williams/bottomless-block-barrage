@@ -14,7 +14,7 @@ endif
 include $(DEVKITARM)/3ds_rules
 
 # ip address of 3ds for spunch/3dsxlink targets.
-IP3DS := 192.168.1.123
+IP3DS := 192.168.1.127
 
 #---------------------------------------------------------------------------------
 # Directory Setup
@@ -51,7 +51,7 @@ ASFLAGS := -g $(ARCH)
 LDFLAGS = -specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 #LIBS := -lvgmstream_player -lvgmstream -lvorbisfile -lvorbisenc -lvorbis -logg  -lmpg123  -lsfil -lpng16 -lz -lsf2d -lcitro3d -lctru -lm
-LIBS := -lsfil -lpng16 -lz -lsf2d -lctru -lm
+LIBS := -lsfil -lpng16 -lz -lsf2d -lcitro3d -lctru -lm
 #LIBDIRS := $(PORTLIBS) $(CTRULIB) $(CURDIR)/portlibs
 LIBDIRS := $(PORTLIBS) $(CTRULIB)
 

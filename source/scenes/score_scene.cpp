@@ -6,6 +6,12 @@
 #include <ctime>
 #include <sstream>
 
+void ScoreScene::initialize()
+{
+    GameScene::initialize();
+    last_frame = osGetTime();
+}
+
 void ScoreScene::init_panel_table()
 {
     GameScene::init_panel_table();
@@ -15,7 +21,7 @@ void ScoreScene::init_panel_table()
             time = config.value * 1000;
             break;
         case MOVES:
-            panel_table.moves = config.value;
+            table->set_moves(config.value);
             break;
         default:
             break;
@@ -48,58 +54,33 @@ bool ScoreScene::is_gameover() const
             base_game_over = time <= 0;
             break;
         case LINES:
-            base_game_over = panel_table.lines > config.value;
+            base_game_over = table->get_lines() > config.value;
             break;
         case MOVES:
-            base_game_over = panel_table.moves <= 0;
+            base_game_over = table->get_moves() <= 0;
             break;
     }
-    return base_game_over || panel_table.is_gameover();
+    return base_game_over || table->is_gameover();
+}
+
+void ScoreScene::update()
+{
+    time -= (int)(osGetTime() - last_frame);
+    last_frame = osGetTime();
+    GameScene::update();
 }
 
 void ScoreScene::update_windows()
 {
     GameScene::update_windows();
-    time -= (int)(osGetTime() - last_frame);
     if (config.time_mode == TIME)
         info.set_value(time);
     else if (config.time_mode == LINES)
-        info.set_value(config.value - panel_table.lines);
+        info.set_value(config.value - table->get_lines());
     else if (config.time_mode == MOVES)
-        info.set_value(panel_table.moves);
+        info.set_value(table->get_moves());
 
-    u32 held = hidKeysHeld();
-    if (held & KEY_R || held & KEY_L)
-        info.clear_timeout();
     info.update();
-}
-
-void ScoreScene::update_end_match()
-{
-    GameScene::update_end_match();
-    info.start_timeout_timer();
-}
-
-void ScoreScene::update_on_timeout()
-{
-    GameScene::update_on_timeout();
-    info.set_timeout(current_timeout);
-}
-
-void ScoreScene::update_on_matched()
-{
-    GameScene::update_on_matched();
-    int needed = get_exp_to_level(level);
-    info.set_score(score);
-    info.pause_timeout_timer();
-    info.set_level(level);
-    info.set_experience(experience, needed);
-    if (current_match.is_timeout())
-    {
-        int timeout = calculate_timeout(current_match.combo, current_match.chain + 1,
-                                        3 - (int)config.difficulty, panel_table.is_danger());
-        info.set_timeout(timeout);
-    }
 }
 
 void ScoreScene::update_on_gameover()

@@ -13,7 +13,7 @@ extern PanelSpeedSettings hard_speed_settings;
 
 int calculate_score(int combo_num, int chain_num);
 int calculate_timeout(int combo, int chain, int difficulty, bool in_danger);
-int get_current_speed(int level);
-int get_exp_to_level(int level);
+int get_speed_for_level(int level);
+int get_panels_for_level(int level);
 
 #endif

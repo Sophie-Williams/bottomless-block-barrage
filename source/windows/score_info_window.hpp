@@ -17,7 +17,7 @@ public:
     void set_difficulty(Difficulty diff) {difficulty = diff;}
     void set_score(int s) {score = s;}
     void set_level(int l) {level = l;}
-    void set_experience(int exp, int exp_req) {speed_exp_bar.set(exp, exp_req);}
+    void set_next(int exp, int exp_req) {speed_exp_bar.set(exp, exp_req);}
     void set_timeout(int timeout);
     void clear_timeout();
     void start_timeout_timer();

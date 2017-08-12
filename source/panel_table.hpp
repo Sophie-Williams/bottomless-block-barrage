@@ -117,12 +117,18 @@ public:
     bool matchable(int i, int j) const {return get(i, j).can_match();}
     bool normal(int i, int j) const {return get(i, j).normal();}
 
+    int width() const {return columns;}
+    int height() const {return rows;}
+
     void clear();
     /// Are the panels high
     bool warning() const;
 
     /// Have the panels reached the top row.
     bool danger() const;
+
+    /// Are all panels idle
+    bool all_idle() const;
 
     /// Returns a boolean for each column if they are very close to the top.
     std::vector<bool> danger_columns() const;
@@ -143,6 +149,9 @@ public:
     int get_rise() const {return rise;}
     int get_timeout() const {return timeout;}
     int get_chain() const {return chain;}
+    int get_moves() const {return moves;}
+    int get_lines() const {return lines;}
+    void set_moves(int m) {moves = m;}
     void set_speed(int rise_speed) {speed = rise_speed;}
 
 private:
@@ -167,7 +176,7 @@ private:
 
     /** Source where panels are generated */
     std::unique_ptr<PanelSource> source;
-    /** Speed setttings controlling panel speed */
+    /** Speed settings controlling panel speed */
     PanelSpeedSettings settings;
     /** The panels as a 1d vector */
     std::vector<Panel> panels;

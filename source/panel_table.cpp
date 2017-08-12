@@ -110,6 +110,16 @@ bool PanelTable::danger() const
     return false;
 }
 
+bool PanelTable::all_idle() const
+{
+    for (const auto& panel : panels)
+    {
+        if (!panel.is_idle())
+            return false;
+    }
+    return true;
+}
+
 std::vector<bool> PanelTable::danger_columns() const
 {
     std::vector<bool> danger(columns, false);

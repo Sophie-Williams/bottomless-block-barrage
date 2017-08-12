@@ -7,7 +7,7 @@
 
 #include <scenes/scene.hpp>
 #include <scenes/title_scene.hpp>
-#include <scenes/puzzle_select_scene.hpp>
+//#include <scenes/puzzle_select_scene.hpp>
 #include "puzzle_set.hpp"
 #include <util/file_helper.hpp>
 #include <util/sfw.hpp>
@@ -19,7 +19,7 @@ extern "C"
 
 Scene* current_scene = NULL;
 
-void get_official_puzzle_sets(std::map<std::string, PuzzleSet>& files)
+/*void get_official_puzzle_sets(std::map<std::string, PuzzleSet>& files)
 {
     std::vector<std::string> sets = dir_entries("romfs:/puzzles");
     for (const auto& set : sets)
@@ -35,7 +35,7 @@ void get_official_puzzle_sets(std::map<std::string, PuzzleSet>& files)
         puzzle_set.stage_names = stages;
         files.emplace(set, puzzle_set);
     }
-}
+}*/
 
 int main()
 {
@@ -47,7 +47,7 @@ int main()
 	//ndspInit();
 
     std::string current_music = "";
-    get_official_puzzle_sets(PuzzleSelectScene::puzzles);
+    //get_official_puzzle_sets(PuzzleSelectScene::puzzles);
     std::unique_ptr<Scene> scene;
     current_scene = new TitleScene();
 

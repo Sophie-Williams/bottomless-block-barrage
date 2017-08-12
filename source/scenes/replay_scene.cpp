@@ -24,15 +24,17 @@ void ReplayScene::update_input()
     recorder.keys(trigger, held);
 
     if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_x = std::max(std::min(selector_x - 1, panel_table.columns - 2), 0);
+        selector_x = std::max(std::min(selector_x - 1, table->width() - 2), 0);
     if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_x = std::max(std::min(selector_x + 1, panel_table.columns - 2), 0);
+        selector_x = std::max(std::min(selector_x + 1, table->width() - 2), 0);
     if (hidKeyRepeatQuick(repeat.get(KEY_UP), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_y = std::max(std::min(selector_y - 1, panel_table.rows - 1), 0);
+        selector_y = std::max(std::min(selector_y - 1, table->height() - 1), 0);
     if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_y = std::max(std::min(selector_y + 1, panel_table.rows - 1), 0);
+        selector_y = std::max(std::min(selector_y + 1, table->height() - 1), 0);
+
     if (trigger & KEY_A)
-        panel_table.swap(selector_y, selector_x);
+        table->swap(selector_y, selector_x);
+
     if (hidKeysDown() & KEY_START)
         current_scene = new TitleScene();
 
@@ -42,71 +44,22 @@ void ReplayScene::update_input()
 void ReplayScene::update_windows()
 {
     GameScene::update_windows();
-    if (held & KEY_R || held & KEY_L)
-        info.clear_timeout();
     info.update();
     ccc_stats.set_matchinfo(current_match);
-}
-
-void ReplayScene::update_end_match()
-{
-    GameScene::update_end_match();
-    info.start_timeout_timer();
-}
-
-void ReplayScene::update_on_timeout()
-{
-    GameScene::update_on_timeout();
-    info.set_timeout(current_timeout);
 }
 
 void ReplayScene::update_on_matched()
 {
     GameScene::update_on_matched();
-    int needed = get_exp_to_level(level);
     info.set_score(score);
-    info.pause_timeout_timer();
-    info.set_level(level);
-    info.set_experience(experience, needed);
-    if (current_match.is_timeout())
-    {
-        int timeout = calculate_timeout(current_match.combo, current_match.chain + 1,
-                                        3 - (int)config.difficulty, panel_table.is_danger());
-        info.set_timeout(timeout);
-    }
+    info.set_next(get_panels_for_level(level) - next, get_panels_for_level(level));
 }
 
-//TODO write this and GameScene so I don't have to override this method.
-void ReplayScene::update_match()
+void ReplayScene::update_on_level()
 {
-    u64 current_frame = osGetTime();
-    int max_wait = get_current_speed(level);
-
-    if (panel_table.is_rised())
-        selector_y = std::max(std::min(selector_y - 1, 10), 0);
-
-    current_match = panel_table.update(current_frame - last_frame, max_wait, held & KEY_R);
-    if (current_match.empty() && !last_match.empty())
-    {
-        if (last_match.is_timeout())
-            update_on_timeout();
-
-        update_end_match();
-
-        last_match = current_match;
-    }
-
-    if (current_match.matched())
-    {
-        update_create_markers();
-        update_score();
-        update_level();
-        update_on_matched();
-        last_match = current_match;
-    }
-
-    frames.update(panel_table.get_state(), danger_panel);
-    markers.update();
+    GameScene::update_on_level();
+    info.set_level(level);
+    info.set_next(get_panels_for_level(level) - next, get_panels_for_level(level));
 }
 
 void ReplayScene::draw_game_top()
@@ -121,20 +74,19 @@ void ReplayScene::draw_game_bottom()
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 9 + 4;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height() + 9;
     const int panel_size = PANEL_SIZE;
-    const int step = get_current_speed(level) / panel_size;
-    int offset = panel_table.rise / step;
+    int offset = table->get_rise();
 
-    for (int i = 0; i < panel_table.height() + 1; i++)
+    for (int i = 0; i < table->height() + 1; i++)
     {
-        for (int j = 0; j < panel_table.width(); j++)
+        for (int j = 0; j < table->width(); j++)
         {
-            const Panel& panel = panel_table.get(i, j);
-            if (panel.value == Panel::EMPTY) continue;
+            const Panel& panel = table->get(i, j);
+            if (panel.empty()) continue;
             int x = startx + j * panel_size;
             int y = starty + (i + 1) * panel_size - offset;
 
-            debug.draw(x, y, panel.state * 5, 0, 5, 10);
-            debug.draw(x + 11, y + 6, panel.chain * 5, 0, 5, 10);
+            debug.draw(x, y, panel.get_state() * 5, 0, 5, 10);
+            debug.draw(x + 11, y + 6, panel.get_chain() * 5, 0, 5, 10);
         }
     }
 }

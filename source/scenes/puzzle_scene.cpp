@@ -3,9 +3,85 @@
 
 #include "endless_scene.hpp"
 
+#include "basic_puzzle.hpp"
 #include "mode_select_scene.hpp"
 #include "game_common.hpp"
 #include "puzzle_set.hpp"
+
+#include <cassert>
+
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 1
+
+#define MAX_PUZZLE_ROWS 12
+#define MAX_PUZZLE_COLUMNS 6
+#define MAX_PUZZLE_MOVES 1000000
+
+PuzzleSnapshot::PuzzleSnapshot(const PanelTable& table)
+{
+    const auto& table_panels = table.get_panels();
+    panels.resize(table_panels.size());
+    for (unsigned int i = 0; i < panels.size(); i++)
+        panels[i] = (Panel::Type) table_panels[i].get_value();
+    moves = table.get_moves();
+}
+
+void PuzzleSnapshot::restore(PanelTable& table) const
+{
+    auto& table_panels = table.get_panels();
+    for (unsigned int i = 0; i < panels.size(); i++)
+        table_panels[i].set_value(panels[i]);
+    table.set_moves(moves);
+}
+
+
+class PuzzlePanelSource : public PanelSource
+{
+public:
+    PuzzlePanelSource(const BasicPuzzle& puzzle) : PanelSource(12, 6)
+    {
+        table.resize(72);
+        for (unsigned int i = 0; i < table.size(); i++)
+            table[i] = (Panel::Type) puzzle.panels[i];
+    }
+    ~PuzzlePanelSource() override {}
+    std::vector<Panel::Type> board() override {return table;}
+    Panel::Type panel() override {return Panel::Type::EMPTY;}
+private:
+    std::vector<Panel::Type> table;
+};
+
+bool read_puzzle(const std::string& filename, PanelTable::Options& opts)
+{
+    BasicPuzzle puzzle;
+    FILE* file = fopen(filename.c_str(), "rb");
+    if (!file)
+        return false;
+    fread(&puzzle, sizeof(BasicPuzzle), 1, file);
+    fclose(file);
+
+    const char* magic = puzzle.magic;
+    if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
+        return false;
+
+    const char* version = puzzle.version;
+    if (version[0] > VERSION_MAJOR || (version[0] == VERSION_MAJOR && version[1] > VERSION_MINOR))
+        return false;
+
+    if (puzzle.type != PUZZLE)
+        return false;
+
+    if (puzzle.rows != MAX_PUZZLE_ROWS || puzzle.columns != MAX_PUZZLE_COLUMNS || puzzle.starting != MAX_PUZZLE_ROWS ||
+        puzzle.moves > MAX_PUZZLE_MOVES)
+        return false;
+
+    opts.type = PanelTable::Type::MOVES;
+    opts.rows = puzzle.rows;
+    opts.columns = puzzle.columns;
+    opts.moves = puzzle.moves;
+    opts.source = new PuzzlePanelSource(puzzle);
+    return true;
+}
 
 PuzzleScene::PuzzleScene(const GameConfig& config) : GameScene(config),
     status_window(config.level_name)
@@ -15,49 +91,38 @@ PuzzleScene::PuzzleScene(const GameConfig& config) : GameScene(config),
 
 void PuzzleScene::init_panel_table()
 {
-     panel_table.create(config.puzzle_filename, easy_speed_settings);
-     snapshots.push_back(panel_table);
+    PanelTable::Options opts;
+    assert(read_puzzle(config.puzzle_filename, opts));
+    table.reset(new PanelTable(opts));
+    snapshots.push_back(PuzzleSnapshot(*table));
 }
 
 void PuzzleScene::init_menu()
 {
     GameScene::init_menu();
-    status_window.set_moves(panel_table.moves);
+    status_window.set_moves(table->get_moves());
 }
 
 void PuzzleScene::update_input()
 {
+    GameScene::update_input();
     u32 trigger = hidKeysDown();
-    u32 held = hidKeysHeld();
-
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_x = std::max(std::min(selector_x - 1, panel_table.columns - 2), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_x = std::max(std::min(selector_x + 1, panel_table.columns - 2), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_UP), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_y = std::max(std::min(selector_y - 1, panel_table.rows - 1), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_y = std::max(std::min(selector_y + 1, panel_table.rows - 1), 0);
-    if (trigger & KEY_A)
-    {
-        if (panel_table.can_swap(selector_y, selector_x))
-        {
-            if (panel_table.all_idle())
-                snapshots.push_back(panel_table);
-            panel_table.swap(selector_y, selector_x);
-            status_window.set_moves(panel_table.moves);
-        }
-    }
     if (trigger & KEY_Y)
     {
-        panel_table = snapshots.back();
+        const PuzzleSnapshot& snapshot = snapshots.back();
+        snapshot.restore(*table);
         if (snapshots.size() != 1)
             snapshots.pop_back();
-        status_window.set_moves(panel_table.moves);
+        status_window.set_moves(table->get_moves());
     }
+}
 
-    if (trigger & KEY_START)
-        current_scene = new ModeSelectScene();
+void PuzzleScene::update_on_swap()
+{
+    if (table->all_idle())
+        snapshots.push_back(*table);
+    table->swap(selector_y, selector_x);
+    status_window.set_moves(table->get_moves());
 }
 
 void PuzzleScene::update_windows()
@@ -67,25 +132,24 @@ void PuzzleScene::update_windows()
 
 void PuzzleScene::update_on_gameover()
 {
-    if (panel_table.is_gameover())
+    if (table->is_gameover())
         result_text.create("Game Over\nPress Any Button", 0, 0);
-    else if (panel_table.is_win_puzzle())
+    else if (table->is_win())
         result_text.create("Level clear\nPress Any Button", 0, 0);
 
     result_text.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
 }
-
 
 void PuzzleScene::update_gameover()
 {
     u32 trigger = hidKeysDown();
     if (trigger & KEY_A)
     {
-        if (panel_table.is_gameover())
+        if (table->is_gameover())
         {
             current_scene = new PuzzleScene(config);
         }
-        else if (panel_table.is_win_puzzle())
+        else if (table->is_win())
         {
             GameConfig next;
             std::string set_name = config.set_name;
@@ -119,7 +183,7 @@ void PuzzleScene::update_gameover()
 
 bool PuzzleScene::is_gameover() const
 {
-    return panel_table.is_gameover() || panel_table.is_win_puzzle();
+    return table->is_gameover() || table->is_win();
 }
 
 void PuzzleScene::draw_bottom()

@@ -14,5 +14,7 @@ struct AnimationParams
     unsigned int selector_counter;
 };
 
+int get_panel_frame(const Panel& panel, int def, int danger_panel, bool danger, bool gameover);
+
 #endif
 

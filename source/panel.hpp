@@ -61,26 +61,14 @@ public:
         BOTTOM = 13,
     };
 
-    enum FrameGraphic
-    {
-        NO_DRAW = -1,
-        NORMAL = 0,
-        SLIGHT_UP = 1,
-        UP = 2,
-        DOWN = 3,
-        PENDING = 4,
-        MATCH = 5,
-        BLINK = 6,
-        LOST = 7,
-        GRAPHICS_SIZE = 8,
-    };
-
     bool empty() const {return type == EMPTY;}
     bool special() const {return type == SPECIAL;}
     bool normal() const {return type != EMPTY && type != SPECIAL;}
 
     Type get_value() const {return type;}
+    void set_value(Type value) {type = value;}
     State get_state() const {return state;}
+    bool get_chain() const {return chain;}
     int get_countdown() const {return countdown;}
 
     bool is_idle() const {return state == IDLE || state == IDLE_FELL;}

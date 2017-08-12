@@ -16,12 +16,9 @@ protected:
 
     bool is_gameover() const {return false;}
     void update_input();
-    void update_end_match();
-    void update_on_timeout();
     void update_on_matched();
-    // Reimplemented from GameScene::update_match
-    void update_match();
     void update_windows();
+    void update_on_level();
 
     void draw_game_top();
     void draw_game_bottom();

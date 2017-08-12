@@ -6,7 +6,6 @@ bool Panel::can_match() const
     return (is_idle() || is_swapped() || is_fall_end()) && normal();
 }
 
-#include <cstdio>
 bool Panel::can_swap() const
 {
     if (right == nullptr)
@@ -57,7 +56,7 @@ int Panel::match(int index, int total, int types_matched, bool chain)
     state = State::PENDING_MATCH;
     match_time = settings->first_removed + index * settings->subsequent_removed;
     remove_time = settings->first_removed + total * settings->subsequent_removed;
-    countdown = settings->pending_match;// + (settings->subsequent_removed - 1) * (types_matched - 1);// + chain;
+    countdown = settings->pending_match + (settings->subsequent_removed - 1) * (types_matched - 1);// + chain;
     return 0;
 }
 

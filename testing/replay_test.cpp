@@ -156,5 +156,6 @@ void RunAndVerifyFrames(const std::string& frames_path, const std::string& skip_
 
 BOOST_AUTO_TEST_CASE(TestFrames)
 {
-    RunAndVerifyFrames("timeattack.frames", "timeattack.skip");
+    RunAndVerifyFrames("testdata/timeattack.frames", "testdata/timeattack.skip");
+    RunAndVerifyFrames("testdata/slowtimeattack.frames", "testdata/slowtimeattack.skip");
 }

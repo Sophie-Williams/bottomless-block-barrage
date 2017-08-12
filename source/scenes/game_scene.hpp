@@ -1,12 +1,16 @@
 #ifndef GAME_SCENE_HPP
 #define GAME_SCENE_HPP
 
-#include "scene.hpp"
+#include <memory>
+#include <string>
+
+
 #include <util/background.hpp>
 #include <util/command_window.hpp>
 #include <util/text.hpp>
 #include <util/texture.hpp>
-#include <string>
+
+#include "scene.hpp"
 #include "panel_table.hpp"
 #include "animation_params.hpp"
 #include "moves_recorder.hpp"
@@ -47,6 +51,9 @@ public:
         std::string replay_filename;
 
         // All modes
+        int rows = 11;
+        int columns = 6;
+        PanelTable::Type type = PanelTable::Type::ENDLESS;
         Difficulty difficulty = EASY;
         int level = 1;
         std::string panel_gfx = "";
@@ -68,18 +75,27 @@ protected:
     virtual void init_menu();
 
     virtual bool is_gameover() const;
-    virtual void update_input();
+
     virtual void update_windows() {}
     virtual void update_on_gameover() {}
     virtual void update_gameover();
 
+    virtual void update_input();
+    virtual void update_move();
+    virtual void update_on_move(int x, int y);
+    virtual void update_selector();
+    virtual void update_on_swap();
+    virtual void update_quick_rise();
+    virtual void update_on_quick_rise();
+    virtual void update_exit();
+
     virtual void update_match();
-    virtual void update_end_match() {}
     virtual void update_on_timeout();
 
     void update_create_markers();
     void update_score();
     void update_level();
+    virtual void update_on_level() {}
     virtual void update_on_matched() {}
 
     virtual void draw_game_top() {}
@@ -101,15 +117,13 @@ protected:
     Texture debug;
 
     // Core game stuff
-    PanelTable panel_table;
-    MatchInfo last_match;
+    std::unique_ptr<PanelTable> table;
     MatchInfo current_match;
     int selector_x = 2;
     int selector_y = 6;
     int score = 0;
     int level = 0;
-    int experience = 0;
-    int current_timeout = 0;
+    int next = 0;
     std::string scene_music;
 
     // Animation
@@ -124,12 +138,7 @@ protected:
     Background background_top;
     Background background_bottom;
 
-    // Housekeeping
-    // Frame id
     int frame = 0;
-    // Frame in milliseconds
-    u64 last_frame = 0;
-
 };
 
 #endif

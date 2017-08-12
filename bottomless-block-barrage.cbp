@@ -578,6 +578,7 @@
 			<Option target="test" />
 		</Unit>
 		<Unit filename="testing/replay_simulation.hpp">
+			<Option virtualFolder="source/" />
 			<Option target="test" />
 		</Unit>
 		<Unit filename="testing/replay_test.cpp">

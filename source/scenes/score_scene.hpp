@@ -11,27 +11,26 @@ public:
     ScoreScene(const GameConfig& c) : GameScene(c) {}
     ~ScoreScene() {}
 protected:
-    void init_menu();
-    void init_panel_table();
+    void initialize() override;
+    void init_menu() override;
+    void init_panel_table() override;
 
-    bool is_gameover() const;
+    bool is_gameover() const override;
 
-    void update_end_match();
-    void update_on_timeout();
-    void update_on_matched();
-    void update_on_gameover();
+    void update() override;
+    void update_windows() override;
+    void update_gameover() override;
+    void update_on_gameover() override;
 
-    void update_windows();
-    void update_gameover();
-
-    void draw_game_top();
-    void draw_gameover_top();
+    void draw_game_top() override;
+    void draw_gameover_top() override;
 private:
     ScoreInfoWindow info;
 
     Text game_over;
     CommandWindow try_again_command;
     int time;
+    u64 last_frame;
 };
 
 #endif

@@ -12,10 +12,9 @@ public:
 protected:
     void init_menu();
 
-    void update_end_match();
-    void update_on_timeout();
     void update_on_matched();
     void update_on_gameover();
+    void update_on_level();
 
     void update_windows();
     void update_gameover();
