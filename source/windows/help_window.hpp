@@ -17,7 +17,7 @@ private:
     std::string text;
     u64 last_frame_ms;
     u64 speed_ms;
-    int pos;
+    unsigned int pos;
 };
 
 #endif

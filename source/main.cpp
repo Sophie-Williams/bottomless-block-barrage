@@ -70,7 +70,6 @@ int main()
             current_music = scene->music();
             vgmstream_play(current_music, 0);
         }*/
-        sf2d_swapbuffers();
     }
 
     //vgmstream_stop();

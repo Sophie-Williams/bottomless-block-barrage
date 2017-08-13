@@ -16,7 +16,7 @@ public:
     void set_choices(const std::vector<std::string>& c);
 private:
     std::vector<std::string> choices;
-    int index = 0;
+    unsigned int index = 0;
 };
 
 
