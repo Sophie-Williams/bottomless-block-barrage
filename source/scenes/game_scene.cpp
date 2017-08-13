@@ -302,10 +302,11 @@ void GameScene::draw_panels()
         }
     }
 
+    const auto& next = table->get_next();
     for (int j = 0; j < table->width(); j++)
     {
         const int i = table->height();
-        const Panel& panel = table->get(i, j);
+        const Panel& panel = next[j];
         int status = get_panel_frame(panel, frames.panel, danger_panel, column_danger[j], is_gameover());
 
         int x = j * panel_size + startx;
