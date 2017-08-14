@@ -72,7 +72,6 @@ void EndlessScene::update_gameover()
 
     save_replay_command.update();
     try_again_command.update();
-    u32 trigger = hidKeysDown();
 
     if (save_replay_command.is_active())
     {

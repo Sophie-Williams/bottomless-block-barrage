@@ -100,9 +100,6 @@ void ScoreScene::update_on_gameover()
 void ScoreScene::update_gameover()
 {
     GameScene::update_gameover();
-
-    u32 trigger = hidKeysDown();
-
     try_again_command.update();
 
     if (trigger & KEY_A)

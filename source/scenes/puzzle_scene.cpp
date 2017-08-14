@@ -106,7 +106,6 @@ void PuzzleScene::init_menu()
 void PuzzleScene::update_input()
 {
     GameScene::update_input();
-    u32 trigger = hidKeysDown();
     if (trigger & KEY_Y)
     {
         const PuzzleSnapshot& snapshot = snapshots.back();
@@ -142,7 +141,6 @@ void PuzzleScene::update_on_gameover()
 
 void PuzzleScene::update_gameover()
 {
-    u32 trigger = hidKeysDown();
     if (trigger & KEY_A)
     {
         if (table->is_gameover())

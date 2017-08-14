@@ -92,9 +92,11 @@ void GameScene::init_menu()
 void GameScene::update()
 {
     Scene::update();
+    update_read_input();
 
     if (!is_gameover())
     {
+        recorder.add(frame, trigger, held);
         update_input();
         update_match();
         update_windows();
@@ -120,19 +122,20 @@ bool GameScene::is_gameover() const
 
 void GameScene::update_input()
 {
-    u32 trigger = hidKeysDown();
-    u32 held = hidKeysHeld();
-    recorder.add(frame, trigger, held);
-
     update_move();
     update_quick_rise();
     update_selector();
     update_exit();
 }
 
+void GameScene::update_read_input()
+{
+    trigger = hidKeysDown();
+    held = hidKeysHeld();
+}
+
 void GameScene::update_move()
 {
-    u32 held = hidKeysHeld();
     if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
         update_on_move(-1, 0);
     if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
@@ -151,14 +154,12 @@ void GameScene::update_on_move(int x, int y)
 
 void GameScene::update_selector()
 {
-    u32 trigger = hidKeysDown();
     if (trigger & KEY_A || trigger & KEY_B)
         update_on_swap();
 }
 
 void GameScene::update_quick_rise()
 {
-    u32 held = hidKeysHeld();
     if (held & KEY_L || held & KEY_R)
         update_on_quick_rise();
 }
@@ -175,7 +176,6 @@ void GameScene::update_on_swap()
 
 void GameScene::update_exit()
 {
-    u32 trigger = hidKeysDown();
     if (trigger & KEY_START)
         current_scene = new ModeSelectScene();
 }

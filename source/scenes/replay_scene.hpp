@@ -25,8 +25,6 @@ protected:
 private:
     InfoWindow info;
     CCCWindow ccc_stats;
-    u32 held = 0;
-    u32 trigger = 0;
 };
 
 #endif

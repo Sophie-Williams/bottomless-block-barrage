@@ -81,6 +81,7 @@ protected:
     virtual void update_gameover();
 
     virtual void update_input();
+    void update_read_input();
     virtual void update_move();
     virtual void update_on_move(int x, int y);
     virtual void update_selector();
@@ -137,6 +138,10 @@ protected:
     // Nice things
     Background background_top;
     Background background_bottom;
+
+    // Input
+    u32 held;
+    u32 trigger;
 
     int frame = 0;
 };
