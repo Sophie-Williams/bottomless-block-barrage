@@ -2,6 +2,7 @@
 #define ENDLESS_SCENE_HPP
 
 #include "game_scene.hpp"
+#include <memory>
 #include <windows/info_window.hpp>
 
 class EndlessScene : public GameScene
@@ -15,6 +16,7 @@ protected:
     void update_on_matched();
     void update_on_gameover();
     void update_on_level();
+    void update_on_timeout();
 
     void update_windows();
     void update_gameover();

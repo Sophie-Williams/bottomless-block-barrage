@@ -4,15 +4,18 @@
 #include <scenes/scene.hpp> // for TOP_SCREEN_HEIGHT
 
 InfoWindow::InfoWindow() : Window(0, 0, 8 * 16, TOP_SCREEN_HEIGHT - WINDOW_BORDER_SIZE * 2),
-speed_exp_bar(0, 100, 40, 124, 6 * 16, 6, 0xFF809018, 0xFF101010),
+next_exp_bar(0, 100, 40, 124, 6 * 16, 6, 0xFF809018, 0xFF101010),
 time_left_bar(0, 1, 40, 190, 6 * 16, 6, 0xFF000080, 0xFF101010),
-score(0)
+score(0), timeout(0)
 {
     start_time = osGetTime();
 }
 
 void InfoWindow::update()
 {
+    time_left_bar.set(table->get_timeout(), timeout);
+    if (table->get_timeout() == 0)
+        timeout = 0;
 }
 
 void InfoWindow::draw()
@@ -36,11 +39,11 @@ void InfoWindow::draw()
     draw_text(buf, 0, 48, width, 16, 0xFFFFFFFF, RIGHT_CENTER);
 
     sprintf(buf, "%d", level);
-    draw_text("Speed:", 0, 64);
+    draw_text("Level:", 0, 64);
     draw_text(buf, 0, 80, width, 16, 0xFFFFFFFF, RIGHT_CENTER);
 
-    draw_text("Exp:", 0, 96);
-    speed_exp_bar.draw();
+    draw_text("Next:", 0, 96);
+    next_exp_bar.draw();
 
     draw_text("Level:", 0, 128);
     switch(difficulty)
@@ -56,6 +59,9 @@ void InfoWindow::draw()
             break;
     }
 
-    draw_text("Timeout: ", 0, 160);
-    time_left_bar.draw();
+    if (timeout != 0)
+    {
+        draw_text("Timeout: ", 0, 160);
+        time_left_bar.draw();
+    }
 }

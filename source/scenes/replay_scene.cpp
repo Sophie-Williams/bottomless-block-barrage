@@ -15,6 +15,7 @@ void ReplayScene::init_menu()
     GameScene::init_menu();
     info.set_level(config.level);
     info.set_difficulty(config.difficulty);
+    info.set_panel_table(table.get());
 }
 
 void ReplayScene::update_input()

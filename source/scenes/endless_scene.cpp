@@ -26,6 +26,7 @@ void EndlessScene::init_menu()
     try_again_command.set_hidden(true);
     try_again_command.center(TOP_SCREEN_WIDTH, TOP_SCREEN_HEIGHT);
 
+    info.set_panel_table(table.get());
     info.set_level(config.level);
     info.set_difficulty(config.difficulty);
 }
@@ -48,6 +49,12 @@ void EndlessScene::update_on_level()
     GameScene::update_on_level();
     info.set_level(level);
     info.set_next(get_panels_for_level(level) - next, get_panels_for_level(level));
+}
+
+void EndlessScene::update_on_timeout()
+{
+    GameScene::update_on_timeout();
+    info.set_timeout(table->get_timeout());
 }
 
 void EndlessScene::update_on_gameover()
