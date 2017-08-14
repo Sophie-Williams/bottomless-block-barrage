@@ -48,15 +48,17 @@ std::vector<int> generate_values(int n, int total, int max)
     std::vector<int> values(n, 0);
     while(1)
     {
+		int sum = 0;
         for (int i = 0; i < n - 1; i++)
         {
             int value = randomInt(max);
             values[i] = value;
-            total -= value;
+            sum += value;
         }
-        if (total >= 0 && total <= max)
+		int left = total - sum;
+        if (left >= 0 && left <= max)
         {
-            values[n - 1] = total;
+            values[n - 1] = left;
             break;
         }
     }
@@ -70,7 +72,7 @@ RandomPanelSource::RandomPanelSource(int rows, int columns, int _colors) : Panel
 
 std::vector<int> RandomPanelSource::board_layout()
 {
-    return generate_values(columns, columns * 5, rows - 3);
+    return generate_values(columns, columns * 5, rows - 5);
 }
 
 Panel::Type RandomPanelSource::panel()

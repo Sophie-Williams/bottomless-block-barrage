@@ -228,7 +228,7 @@ cia : $(OUTPUT_FILE).cia
 elf : $(OUTPUT_FILE).elf
 
 citra : 3dsx
-	citra $(OUTPUT_FILE).3dsx
+	citra-qt $(OUTPUT_FILE).3dsx
 
 release : $(OUTPUT_FILE).zip cia 3ds
 
