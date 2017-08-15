@@ -203,18 +203,19 @@ MatchInfo PanelTable::update()
         info = update_matches();
 
     if (info.fall_match)
+    {
         chain++;
+        info.chain = chain == 0 ? 0 : chain + 1;
+    }
     if (info.swap_match)
+    {
         clink++;
-
-    info.clink = clink <= 1 ? 0 : clink - 1;
-    info.chain = chain == 0 ? 0 : chain + 1;
+        info.clink = clink <= 1 ? 0 : clink - 1;
+    }
 
     // Needed to catch newly matched panels.
     for (const auto& panel : panels)
-    {
         in_clink |= panel.is_pending_match();
-    }
 
     // Board is stopped while matches are being removed.
     if (need_skip_update || stop_rising)

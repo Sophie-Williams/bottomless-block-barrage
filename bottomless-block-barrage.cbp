@@ -564,12 +564,14 @@
 		<Unit filename="testing/frame_state.hpp">
 			<Option target="test" />
 		</Unit>
+		<Unit filename="testing/global_test.cpp" />
 		<Unit filename="testing/input.cpp">
 			<Option target="test" />
 		</Unit>
 		<Unit filename="testing/input.hpp">
 			<Option target="test" />
 		</Unit>
+		<Unit filename="testing/panel_source_test.cpp" />
 		<Unit filename="testing/panel_table_test.cpp" />
 		<Unit filename="testing/replay.cpp">
 			<Option target="test" />
