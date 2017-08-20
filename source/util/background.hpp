@@ -1,6 +1,7 @@
 #ifndef BACKGROUND_HPP
 #define BACKGROUND_HPP
 
+#include "batch.hpp"
 #include "texture.hpp"
 #include "widget.hpp"
 #include <string>
@@ -43,7 +44,7 @@ public:
         TopScreen = 8,
     };
 
-    Background() {}
+    Background() : batch(50) {}
     /** Creates a new Background.
       * @param src_buffer pixel data.
       * @param sw Width of image.
@@ -58,6 +59,7 @@ public:
     void draw();
 
 private:
+    Batch batch;
     Texture texture;
     int speed_x, speed_y;
 };

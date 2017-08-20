@@ -273,6 +273,7 @@ void GameScene::draw_gameover_bottom()
 
 void GameScene::draw_panels()
 {
+    batch.start();
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 9 + 4;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height() + 9;
     const int panel_size = PANEL_SIZE;
@@ -298,7 +299,7 @@ void GameScene::draw_panels()
             if (panel.is_right_swap()) x -= panel_size / 2;
             if (panel.is_left_swap()) x += panel_size / 2;
 
-            panels.draw(x, y, (panel.get_value() - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
+            batch.draw(panels, x, y, (panel.get_value() - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
         }
     }
 
@@ -312,23 +313,24 @@ void GameScene::draw_panels()
         int x = j * panel_size + startx;
         int y = (i + 1) * panel_size - offset + starty;
 
-        panels.draw(x, y, (panel.get_value() - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
+        batch.draw(panels, x, y, (panel.get_value() - 1) * PANEL_SIZE, status * PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
     }
+    batch.end();
 
     markers.draw(startx, starty + panel_size - offset);
-    /*
+
     for (int i = 0; i < table->height() + 1; i++)
     {
          for (int j = 0; j < table->width(); j++)
          {
              const Panel& panel = table->get(i, j);
              if (panel.empty()) continue;
-             int x = j * panel_size + 2 + startx + panel_size / 2;
-             int y = (i + 1) * panel_size + 2 - offset + starty + panel_size / 2;
-             debug.draw(x, y, panel.state * 5, 0, 5, 10);
-             debug.draw(x + 11, y + 6, panel.chain * 5, 0, 5, 10);
+             int x = startx + j * panel_size;
+             int y = starty + (i + 1) * panel_size - offset;
+             debug.draw(x, y, panel.get_state() * 5, 0, 5, 10);
+             debug.draw(x + 11, y + 6, panel.get_chain() * 5, 0, 5, 10);
         }
-    }*/
+    }
 }
 
 void GameScene::draw_selector()

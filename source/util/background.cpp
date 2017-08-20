@@ -2,7 +2,7 @@
 #include "scenes/scene.hpp" // for screen sizes
 
 Background::Background(const std::string& path, int sx, int sy, unsigned int style) :
-    Widget(0, 0, 0, 0, style), texture(path), speed_x(sx), speed_y(sy)
+    Widget(0, 0, 0, 0, style), batch(50), texture(path), speed_x(sx), speed_y(sy)
 {
     width = texture.width();
     height = texture.height();
@@ -56,6 +56,7 @@ void Background::update()
 
 void Background::draw()
 {
+    batch.start();
     int iw, ih, vw, vh;
     iw = texture.width();
     ih = texture.height();
@@ -74,7 +75,7 @@ void Background::draw()
 
     if (mode == (Background::Stationary | Background::Once))
     {
-        texture.draw(0, 0);
+        batch.draw(texture);
     }
     else if (mode == (Background::Stationary | Background::Repeating))
     {
@@ -85,13 +86,13 @@ void Background::draw()
         {
             for (int j = 0; j <= sxf; j++)
             {
-                texture.draw(j * iw, i * ih);
+                batch.draw(texture, j * iw, i * ih);
             }
         }
     }
     else if (mode == (Background::Autoscroll | Background::Once))
     {
-        texture.draw(x, y);
+        batch.draw(texture, x, y);
     }
     else if (mode == (Background::Autoscroll | Background::Repeating))
     {
@@ -102,7 +103,7 @@ void Background::draw()
         {
             for (int j = -1; j <= sxf; j++)
             {
-                texture.draw(x + j * iw, y + i * ih);
+                batch.draw(texture, x + j * iw, y + i * ih);
             }
         }
     }
@@ -125,4 +126,5 @@ void Background::draw()
             }
         }
     }*/
+    batch.end();
 }

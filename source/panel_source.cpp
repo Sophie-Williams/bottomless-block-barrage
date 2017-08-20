@@ -1,5 +1,6 @@
 #include "panel_source.hpp"
 #include <cstdlib>
+#include <algorithm>
 
 inline int randomInt(int max)
 {
@@ -10,6 +11,57 @@ inline int randomInt(int start, int end)
 {
     return randomInt(end - start + 1) + start;
 }
+
+#define BOARD_CONFIGURATION_SIZE 46
+// Array of combinations of 6 values summing to 30.
+int board_configurations[BOARD_CONFIGURATION_SIZE][6] = {
+    {0, 2, 7, 7, 7, 7},
+    {0, 3, 6, 7, 7, 7},
+    {0, 4, 5, 7, 7, 7},
+    {0, 4, 6, 6, 7, 7},
+    {0, 5, 5, 6, 7, 7},
+    {0, 5, 6, 6, 6, 7},
+    {0, 6, 6, 6, 6, 6},
+    {1, 1, 7, 7, 7, 7},
+    {1, 2, 6, 7, 7, 7},
+    {1, 3, 5, 7, 7, 7},
+    {1, 3, 6, 6, 7, 7},
+    {1, 4, 4, 7, 7, 7},
+    {1, 4, 5, 6, 7, 7},
+    {1, 4, 6, 6, 6, 7},
+    {1, 5, 5, 5, 7, 7},
+    {1, 5, 5, 6, 6, 7},
+    {1, 5, 6, 6, 6, 6},
+    {2, 2, 5, 7, 7, 7},
+    {2, 2, 6, 6, 7, 7},
+    {2, 3, 4, 7, 7, 7},
+    {2, 3, 5, 6, 7, 7},
+    {2, 3, 6, 6, 6, 7},
+    {2, 4, 4, 6, 7, 7},
+    {2, 4, 5, 5, 7, 7},
+    {2, 4, 5, 6, 6, 7},
+    {2, 4, 6, 6, 6, 6},
+    {2, 5, 5, 5, 6, 7},
+    {2, 5, 5, 6, 6, 6},
+    {3, 3, 3, 7, 7, 7},
+    {3, 3, 4, 6, 7, 7},
+    {3, 3, 5, 5, 7, 7},
+    {3, 3, 5, 6, 6, 7},
+    {3, 3, 6, 6, 6, 6},
+    {3, 4, 4, 5, 7, 7},
+    {3, 4, 4, 6, 6, 7},
+    {3, 4, 5, 5, 6, 7},
+    {3, 4, 5, 6, 6, 6},
+    {3, 5, 5, 5, 5, 7},
+    {3, 5, 5, 5, 6, 6},
+    {4, 4, 4, 4, 7, 7},
+    {4, 4, 4, 5, 6, 7},
+    {4, 4, 4, 6, 6, 6},
+    {4, 4, 5, 5, 5, 7},
+    {4, 4, 5, 5, 6, 6},
+    {4, 5, 5, 5, 5, 6},
+    {5, 5, 5, 5, 5, 5},
+};
 
 PanelSource::PanelSource(int _rows, int _columns) : rows(_rows), columns(_columns)
 {
@@ -42,7 +94,7 @@ std::vector<Panel::Type> PanelSource::line()
 
 
 /// Generates n values which sum to total each value being < max
-/// TODO make this better.
+/// TODO Remove this function.
 std::vector<int> generate_values(int n, int total, int max)
 {
     std::vector<int> values(n, 0);
@@ -65,6 +117,15 @@ std::vector<int> generate_values(int n, int total, int max)
     return values;
 }
 
+std::vector<int> generate_board_setup()
+{
+    int configuration = randomInt(BOARD_CONFIGURATION_SIZE);
+    std::vector<int> ret(board_configurations[configuration], board_configurations[configuration] + 6);
+    std::random_shuffle(ret.begin(), ret.end());
+    return ret;
+
+}
+
 RandomPanelSource::RandomPanelSource(int rows, int columns, int _colors) : PanelSource(rows, columns), colors(_colors)
 {
 
@@ -72,7 +133,7 @@ RandomPanelSource::RandomPanelSource(int rows, int columns, int _colors) : Panel
 
 std::vector<int> RandomPanelSource::board_layout()
 {
-    return generate_values(columns, columns * 5, rows - 5);
+    return generate_board_setup();
 }
 
 Panel::Type RandomPanelSource::panel()

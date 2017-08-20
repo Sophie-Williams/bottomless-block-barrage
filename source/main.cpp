@@ -43,6 +43,7 @@ int main()
     sf2d_init();
     sf2d_set_clear_color(RGBA8(0x0, 0x0, 0x0, 0xFF));
     sf2d_set_3D(0);
+    //sf2d_set_fps(30.0f);
     sfw_init();
 	//ndspInit();
 

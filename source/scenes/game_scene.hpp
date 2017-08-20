@@ -6,6 +6,7 @@
 
 
 #include <util/background.hpp>
+#include <util/batch.hpp>
 #include <util/command_window.hpp>
 #include <util/text.hpp>
 #include <util/texture.hpp>
@@ -59,7 +60,7 @@ public:
         std::string panel_gfx = "";
     };
 
-    GameScene(const GameConfig& c) : config(c), level(c.level) {}
+    GameScene(const GameConfig& c) : config(c), batch(200), level(c.level) {}
     virtual ~GameScene() {}
 
     void initialize();
@@ -110,6 +111,9 @@ protected:
 
     // Configuration
     GameConfig config;
+
+    // Batch
+    Batch batch;
 
     // Images
     Texture panels;
