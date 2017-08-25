@@ -380,6 +380,8 @@
 			<Option target="spunch" />
 			<Option target="3dsxlink" />
 		</Unit>
+		<Unit filename="source/util/batch.cpp" />
+		<Unit filename="source/util/batch.hpp" />
 		<Unit filename="source/util/button.cpp" />
 		<Unit filename="source/util/button.hpp" />
 		<Unit filename="source/util/choice.cpp" />

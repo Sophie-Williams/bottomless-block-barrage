@@ -319,7 +319,7 @@ void GameScene::draw_panels()
 
     markers.draw(startx, starty + panel_size - offset);
 
-    for (int i = 0; i < table->height() + 1; i++)
+    /*for (int i = 0; i < table->height() + 1; i++)
     {
          for (int j = 0; j < table->width(); j++)
          {
@@ -330,7 +330,7 @@ void GameScene::draw_panels()
              debug.draw(x, y, panel.get_state() * 5, 0, 5, 10);
              debug.draw(x + 11, y + 6, panel.get_chain() * 5, 0, 5, 10);
         }
-    }
+    }*/
 }
 
 void GameScene::draw_selector()

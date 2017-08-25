@@ -80,6 +80,7 @@ void ScoreScene::update_windows()
     else if (config.time_mode == MOVES)
         info.set_value(table->get_moves());
 
+    info.set_score(score);
     info.update();
 }
 
