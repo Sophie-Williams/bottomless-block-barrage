@@ -126,6 +126,8 @@ void GameScene::update_input()
     update_quick_rise();
     update_selector();
     update_exit();
+    if (trigger & KEY_Y)
+        debug_drawing = !debug_drawing;
 }
 
 void GameScene::update_read_input()
@@ -248,6 +250,8 @@ void GameScene::draw_top()
         draw_gameover_top();
     else
         draw_game_top();
+    if (debug_drawing)
+        draw_debug_top();
 }
 
 void GameScene::draw_bottom()
@@ -257,6 +261,8 @@ void GameScene::draw_bottom()
         draw_gameover_bottom();
     else
         draw_game_bottom();
+    if (debug_drawing)
+        draw_debug_bottom();
 }
 
 void GameScene::draw_game_bottom()
@@ -318,19 +324,6 @@ void GameScene::draw_panels()
     batch.end();
 
     markers.draw(startx, starty + panel_size - offset);
-
-    /*for (int i = 0; i < table->height() + 1; i++)
-    {
-         for (int j = 0; j < table->width(); j++)
-         {
-             const Panel& panel = table->get(i, j);
-             if (panel.empty()) continue;
-             int x = startx + j * panel_size;
-             int y = starty + (i + 1) * panel_size - offset;
-             debug.draw(x, y, panel.get_state() * 5, 0, 5, 10);
-             debug.draw(x + 11, y + 6, panel.get_chain() * 5, 0, 5, 10);
-        }
-    }*/
 }
 
 void GameScene::draw_selector()
@@ -353,4 +346,38 @@ void GameScene::draw_board()
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();
     border.draw(startx, starty);
+}
+
+void GameScene::draw_debug_top()
+{
+    extern Font* default_font;
+    char buf[256];
+    sprintf(buf, "CPU: %6.2f", C3D_GetProcessingTime());
+    u32 width, height;
+    default_font->dimensions(buf, width, height);
+
+    default_font->draw(buf, TOP_SCREEN_WIDTH - width, 0);
+    sprintf(buf, "GPU: %6.2f", C3D_GetDrawingTime());
+    default_font->draw(buf, TOP_SCREEN_WIDTH - width, height);
+}
+
+void GameScene::draw_debug_bottom()
+{
+    int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 9 + 4;
+    int starty = BOTTOM_SCREEN_HEIGHT - border.height() + 9;
+    const int panel_size = PANEL_SIZE;
+    int offset = table->get_rise();
+
+    for (int i = 0; i < table->height() + 1; i++)
+    {
+         for (int j = 0; j < table->width(); j++)
+         {
+             const Panel& panel = table->get(i, j);
+             if (panel.empty()) continue;
+             int x = startx + j * panel_size;
+             int y = starty + (i + 1) * panel_size - offset;
+             debug.draw(x, y, panel.get_state() * 5, 0, 5, 10);
+             debug.draw(x + 11, y + 6, panel.get_chain() * 5, 0, 5, 10);
+        }
+    }
 }

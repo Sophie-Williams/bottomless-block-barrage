@@ -100,14 +100,18 @@ protected:
     virtual void update_on_level() {}
     virtual void update_on_matched() {}
 
+    // Top draw Helpers
     virtual void draw_game_top() {}
-    virtual void draw_game_bottom();
     virtual void draw_gameover_top() {}
-    virtual void draw_gameover_bottom();
+    virtual void draw_debug_top();
 
+    // Bottom draw helpers
+    virtual void draw_gameover_bottom();
+    virtual void draw_game_bottom();
     void draw_selector();
     void draw_board();
     void draw_panels();
+    virtual void draw_debug_bottom();
 
     // Configuration
     GameConfig config;
@@ -138,6 +142,7 @@ protected:
 
     // Debugging
     MovesRecorder recorder;
+    bool debug_drawing = false;
 
     // Nice things
     Background background_top;
