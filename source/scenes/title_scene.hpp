@@ -6,7 +6,7 @@
 #include <util/texture.hpp>
 #include <util/text.hpp>
 
-class TitleScene : public Scene
+class TitleScene : public Scene2D
 {
 public:
     void initialize();

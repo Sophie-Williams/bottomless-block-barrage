@@ -7,7 +7,7 @@
 #include <vector>
 
 
-class ReplaySelectScene : public Scene
+class ReplaySelectScene : public Scene2D
 {
 public:
     void initialize();

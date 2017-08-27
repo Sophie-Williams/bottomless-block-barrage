@@ -31,7 +31,8 @@ enum TimingMode
     MOVES = 2,
 };
 
-class GameScene : public Scene
+/// TODO clean up this class and provide a much clearer interface to write other modes.
+class GameScene : public Scene2D
 {
 public:
     struct GameConfig

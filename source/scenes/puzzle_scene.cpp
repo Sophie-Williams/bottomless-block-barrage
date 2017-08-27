@@ -4,6 +4,7 @@
 #include "endless_scene.hpp"
 
 #include "basic_puzzle.hpp"
+#include "puzzle_panel_source.hpp"
 #include "mode_select_scene.hpp"
 #include "game_common.hpp"
 #include "puzzle_set.hpp"
@@ -16,40 +17,6 @@
 #define MAX_PUZZLE_ROWS 12
 #define MAX_PUZZLE_COLUMNS 6
 #define MAX_PUZZLE_MOVES 1000000
-
-PuzzleSnapshot::PuzzleSnapshot(const PanelTable& table)
-{
-    const auto& table_panels = table.get_panels();
-    panels.resize(table_panels.size());
-    for (unsigned int i = 0; i < panels.size(); i++)
-        panels[i] = (Panel::Type) table_panels[i].get_value();
-    moves = table.get_moves();
-}
-
-void PuzzleSnapshot::restore(PanelTable& table) const
-{
-    auto& table_panels = table.get_panels();
-    for (unsigned int i = 0; i < panels.size(); i++)
-        table_panels[i].set_value(panels[i]);
-    table.set_moves(moves);
-}
-
-
-class PuzzlePanelSource : public PanelSource
-{
-public:
-    PuzzlePanelSource(const BasicPuzzle& puzzle) : PanelSource(12, 6)
-    {
-        table.resize(72);
-        for (unsigned int i = 0; i < table.size(); i++)
-            table[i] = (Panel::Type) puzzle.panels[i];
-    }
-    ~PuzzlePanelSource() override {}
-    std::vector<Panel::Type> board() override {return table;}
-    Panel::Type panel() override {return Panel::Type::EMPTY;}
-private:
-    std::vector<Panel::Type> table;
-};
 
 bool read_puzzle(const std::string& filename, PanelTable::Options& opts)
 {
@@ -81,6 +48,23 @@ bool read_puzzle(const std::string& filename, PanelTable::Options& opts)
     opts.moves = puzzle.moves;
     opts.source = new PuzzlePanelSource(puzzle);
     return true;
+}
+
+PuzzleSnapshot::PuzzleSnapshot(const PanelTable& table)
+{
+    const auto& table_panels = table.get_panels();
+    panels.resize(table_panels.size());
+    for (unsigned int i = 0; i < panels.size(); i++)
+        panels[i] = (Panel::Type) table_panels[i].get_value();
+    moves = table.get_moves();
+}
+
+void PuzzleSnapshot::restore(PanelTable& table) const
+{
+    auto& table_panels = table.get_panels();
+    for (unsigned int i = 0; i < panels.size(); i++)
+        table_panels[i].set_value(panels[i]);
+    table.set_moves(moves);
 }
 
 PuzzleScene::PuzzleScene(const GameConfig& config) : GameScene(config),

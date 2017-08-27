@@ -12,7 +12,7 @@
 #include <util/text.hpp>
 #include <util/texture.hpp>
 
-class ScoreConfigScene : public Scene
+class ScoreConfigScene : public Scene2D
 {
 public:
     ScoreConfigScene(const ScoreScene::GameConfig& config = ScoreScene::GameConfig()) : saved_config(config) {}

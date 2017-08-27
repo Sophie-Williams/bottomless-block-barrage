@@ -11,7 +11,7 @@
 #include <util/text.hpp>
 #include <util/texture.hpp>
 
-class EndlessConfigScene : public Scene
+class EndlessConfigScene : public Scene2D
 {
 public:
     EndlessConfigScene(const EndlessScene::GameConfig& config = EndlessScene::GameConfig()) : saved_config(config) {}

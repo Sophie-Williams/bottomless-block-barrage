@@ -9,7 +9,7 @@
 #include <util/command_window.hpp>
 #include "puzzle_set.hpp"
 
-class PuzzleSelectScene : public Scene
+class PuzzleSelectScene : public Scene2D
 {
 public:
     void initialize();

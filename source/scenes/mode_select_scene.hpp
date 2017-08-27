@@ -20,7 +20,7 @@ enum
     MODES_SIZE = 7,
 };
 
-class ModeSelectScene : public Scene
+class ModeSelectScene : public Scene2D
 {
 public:
     void initialize();
