@@ -50,6 +50,8 @@ void GameScene::init_panel_table()
     }
 
     table.reset(new PanelTable(opts));
+    table->set_speed(get_speed_for_level(level));
+    next = get_panels_for_level(level);
 }
 
 void GameScene::init_sprites()
