@@ -41,7 +41,7 @@ RSF             := $(TOPDIR)/$(RESOURCES)/template.rsf
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH        := -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
-COMMON      := -Wall -O3 -mword-relocations -fomit-frame-pointer -ffunction-sections $(ARCH) $(INCLUDE) -DARM11 -D_3DS
+COMMON      := -Wall -Wno-psabi -O3 -mword-relocations -fomit-frame-pointer -ffunction-sections $(ARCH) $(INCLUDE) -DARM11 -D_3DS
 CFLAGS      := $(COMMON) -std=gnu99
 CXXFLAGS    := $(COMMON) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS     := $(ARCH)

@@ -46,6 +46,8 @@ int main()
     sfw_init();
 	//ndspInit();
 
+	//input_source.reset(new InputSource());
+
     std::string current_music = "";
     get_official_puzzle_sets(PuzzleSelectScene::puzzles);
     std::unique_ptr<Scene> scene;

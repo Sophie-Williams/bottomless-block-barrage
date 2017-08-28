@@ -24,14 +24,14 @@ void ReplayScene::update_input()
     held = 0;
     recorder.keys(trigger, held);
 
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_x = std::max(std::min(selector_x - 1, table->width() - 2), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_x = std::max(std::min(selector_x + 1, table->width() - 2), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_UP), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_y = std::max(std::min(selector_y - 1, table->height() - 1), 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        selector_y = std::max(std::min(selector_y + 1, table->height() - 1), 0);
+    if (input->repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        update_on_move(-1, 0);
+    if (input->repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        update_on_move(1, 0);
+    if (input->repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        update_on_move(0, -1);
+    if (input->repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+        update_on_move(0, 1);
 
     if (trigger & KEY_A)
         table->swap(selector_y, selector_x);

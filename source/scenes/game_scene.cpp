@@ -134,19 +134,19 @@ void GameScene::update_input()
 
 void GameScene::update_read_input()
 {
-    trigger = hidKeysDown();
-    held = hidKeysHeld();
+    trigger = input->triggered();
+    held = input->held();
 }
 
 void GameScene::update_move()
 {
-    if (hidKeyRepeatQuick(repeat.get(KEY_LEFT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+    if (input->repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
         update_on_move(-1, 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_RIGHT), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+    if (input->repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
         update_on_move(1, 0);
-    if (hidKeyRepeatQuick(repeat.get(KEY_UP), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+    if (input->repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
         update_on_move(0, -1);
-    if (hidKeyRepeatQuick(repeat.get(KEY_DOWN), SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
+    if (input->repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
         update_on_move(0, 1);
 }
 

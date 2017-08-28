@@ -3,66 +3,64 @@
 KeyRepeatItem& KeyRepeatStore::get(int key)
 {
     if (key_repeat_store_map.find(key) == key_repeat_store_map.end())
-    {
         key_repeat_store_map[key].key = key;
-    }
 
     return key_repeat_store_map[key];
 }
 
-u64* KeyRepeatStore::get_frame(int key)
+u64& KeyRepeatStore::get_frame(int key)
 {
-    return &get(key).frame;
+    return get(key).frame;
 }
 
-int* KeyRepeatStore::get_step(int key)
+int& KeyRepeatStore::get_step(int key)
 {
-    return &get(key).step;
+    return get(key).step;
 }
 
 bool hidKeyRepeat(KeyRepeatItem& kri, unsigned int repeat_ms, u32 fake_held)
 {
-    return hidKeyRepeat(kri.key, &kri.frame, repeat_ms, fake_held);
+    return hidKeyRepeat(kri.key, kri.frame, repeat_ms, fake_held);
 }
 
 bool hidKeyRepeatQuick(KeyRepeatItem& kri, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held)
 {
-    return hidKeyRepeatQuick(kri.key, &kri.frame, &kri.step, repeat_ms, triggers_until_quick, repeat_quick_ms, fake_held);
+    return hidKeyRepeatQuick(kri.key, kri.frame, kri.step, repeat_ms, triggers_until_quick, repeat_quick_ms, fake_held);
 }
 
-bool hidKeyRepeat(int key, u64* old_time, unsigned int repeat_ms, u32 fake_held)
+bool hidKeyRepeat(int key, u64& old_time, unsigned int repeat_ms, u32 fake_held)
 {
     u32 held = (fake_held == KEY_SENTINEL) ? hidKeysHeld() : fake_held;
     if ((held & key) == 0)
     {
-        *old_time = 0;
+        old_time = 0;
         return false;
     }
 
-    if (osGetTime() - *old_time > repeat_ms)
+    if (osGetTime() - old_time > repeat_ms)
     {
-        *old_time = osGetTime();
+        old_time = osGetTime();
         return held & key;
     }
 
     return false;
 }
 
-bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held)
+bool hidKeyRepeatQuick(int key, u64& old_time, int& step, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held)
 {
     u32 held = (fake_held == KEY_SENTINEL) ? hidKeysHeld() : fake_held;
     if ((held & key) == 0)
     {
-        *step = 0;
-        *old_time = 0;
+        step = 0;
+        old_time = 0;
         return false;
     }
 
-    if (*step < triggers_until_quick + 1)
+    if (step < triggers_until_quick + 1)
     {
         if (hidKeyRepeat(key, old_time, repeat_ms, held))
         {
-            *step += 1;
+            step += 1;
             return true;
         }
     }
@@ -73,3 +71,30 @@ bool hidKeyRepeatQuick(int key, u64* old_time, int* step, unsigned int repeat_ms
 
     return false;
 }
+
+u32 InputSource::triggered() const
+{
+    return hidKeysDown();
+}
+
+u32 InputSource::held() const
+{
+    return hidKeysHeld();
+}
+
+bool InputSource::repeat(u32 key, u32 repeat_ms, u32 fake_held)
+{
+    KeyRepeatItem& item = repeat_store.get(key);
+    return hidKeyRepeat(item, repeat_ms, fake_held);
+}
+
+bool InputSource::repeat_quick(u32 key, u32 repeat_ms, u32 triggers_until_quick, u32 repeat_quick_ms, u32 fake_held)
+{
+    return hidKeyRepeatQuick(repeat_store.get(key), repeat_ms, triggers_until_quick, repeat_quick_ms, fake_held);
+}
+
+void InputSource::update()
+{
+    hidScanInput();
+}
+
