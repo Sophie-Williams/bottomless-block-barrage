@@ -31,13 +31,19 @@ class InputSource
 public:
     InputSource() {}
     virtual ~InputSource() {}
-    virtual u32 triggered() const;
+    virtual u32 trigger() const;
     virtual u32 held() const;
-    virtual bool repeat(u32 key, u32 repeat_ms, u32 fake_held = KEY_SENTINEL);
-    virtual bool repeat_quick(u32 key, u32 repeat_ms, u32 triggers_until_quick, u32 repeat_quick_ms, u32 fake_held = KEY_SENTINEL);
-    void update();
+    virtual bool trigger(u32 key) const;
+    virtual bool held(u32 key) const;
+    virtual bool repeat(u32 key, u32 repeat_ms);
+    virtual bool repeat(u32 key, u32 repeat_ms, u32 fake_held);
+    virtual bool repeat_quick(u32 key, u32 repeat_ms, u32 triggers_until_quick, u32 repeat_quick_ms);
+    virtual bool repeat_quick(u32 key, u32 repeat_ms, u32 triggers_until_quick, u32 repeat_quick_ms, u32 fake_held);
+    virtual void update();
 private:
     KeyRepeatStore repeat_store;
+    u32 held_;
+    u32 trigger_;
 };
 
 #endif

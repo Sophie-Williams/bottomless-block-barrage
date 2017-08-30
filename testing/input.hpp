@@ -51,7 +51,7 @@ public:
     InputManager() {}
     void update(const Input& input);
 
-    bool triggered(unsigned int key);
+    bool trigger(unsigned int key);
     bool triggered_only(unsigned int key);
     bool held(unsigned int key);
     bool held_only(unsigned int key);

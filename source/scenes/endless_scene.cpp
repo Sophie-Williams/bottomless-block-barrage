@@ -75,10 +75,12 @@ void EndlessScene::update_gameover()
 
     if (save_replay_command.is_active())
     {
-        if (trigger & KEY_A)
+        if (input->trigger(KEY_A))
         {
             if (save_replay_command.selection() == 0)
-                recorder.save();
+            {
+                // save replay
+            }
 
             save_replay_command.set_active(false);
             save_replay_command.set_hidden(true);
@@ -90,7 +92,7 @@ void EndlessScene::update_gameover()
     }
     else if (try_again_command.is_active())
     {
-        if (trigger & KEY_A)
+        if (input->trigger(KEY_A))
         {
             if (try_again_command.selection() == 0)
             {

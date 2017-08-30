@@ -12,19 +12,11 @@
 
 void GameScene::initialize()
 {
-    init_recorder();
-    srand(recorder.seed);
+    srand((unsigned int) time(NULL));
     init_panel_table();
     init_sprites();
     init_menu();
     scene_music = get_track("Demo.brstm");
-}
-
-void GameScene::init_recorder()
-{
-    recorder.seed = (unsigned int) time(NULL);
-    recorder.difficulty = config.difficulty;
-    recorder.level = config.level;
 }
 
 void GameScene::init_panel_table()
@@ -94,11 +86,9 @@ void GameScene::init_menu()
 void GameScene::update()
 {
     Scene::update();
-    update_read_input();
 
     if (!is_gameover())
     {
-        recorder.add(frame, trigger, held);
         update_input();
         update_match();
         update_windows();
@@ -124,64 +114,30 @@ bool GameScene::is_gameover() const
 
 void GameScene::update_input()
 {
-    update_move();
-    update_quick_rise();
-    update_selector();
-    update_exit();
-    if (trigger & KEY_Y)
-        debug_drawing = !debug_drawing;
-}
+    int mx = 0, my = 0;
+    if (input->repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        mx = -1;
+    if (input->repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        mx = 1;
+    if (input->repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        my = -1;
+    if (input->repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        my = 1;
 
-void GameScene::update_read_input()
-{
-    trigger = input->triggered();
-    held = input->held();
-}
+    selector_x = std::max(std::min(selector_x + mx, table->width() - 2), 0);
+    selector_y = std::max(std::min(selector_y + my, table->height() - 1), 0);
 
-void GameScene::update_move()
-{
-    if (input->repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(-1, 0);
-    if (input->repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(1, 0);
-    if (input->repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(0, -1);
-    if (input->repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(0, 1);
-}
+    if (input->held(KEY_L) || input->held(KEY_R))
+        table->quick_rise();
 
-void GameScene::update_on_move(int x, int y)
-{
-    selector_x = std::max(std::min(selector_x + x, table->width() - 2), 0);
-    selector_y = std::max(std::min(selector_y + y, table->height() - 1), 0);
-}
+    if (input->trigger(KEY_A) || input->trigger(KEY_B))
+        table->swap(selector_y, selector_x);
 
-void GameScene::update_selector()
-{
-    if (trigger & KEY_A || trigger & KEY_B)
-        update_on_swap();
-}
-
-void GameScene::update_quick_rise()
-{
-    if (held & KEY_L || held & KEY_R)
-        update_on_quick_rise();
-}
-
-void GameScene::update_on_quick_rise()
-{
-    table->quick_rise();
-}
-
-void GameScene::update_on_swap()
-{
-    table->swap(selector_y, selector_x);
-}
-
-void GameScene::update_exit()
-{
-    if (trigger & KEY_START)
+    if (input->trigger(KEY_START))
         current_scene = new ModeSelectScene();
+
+    if (input->trigger(KEY_Y))
+        debug_drawing = !debug_drawing;
 }
 
 void GameScene::update_gameover()

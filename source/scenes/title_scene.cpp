@@ -18,14 +18,11 @@ void TitleScene::update()
 {
     Scene::update();
 
-    u32 trigger = hidKeysDown();
-    u32 held = hidKeysHeld();
-
-    if (held == (KEY_L | KEY_R | KEY_START))
+    if (input->held(KEY_L) && input->held(KEY_R) && input->held(KEY_START))
         current_scene = new ReplaySelectScene();
-    else if (trigger & KEY_START)
+    else if (input->trigger(KEY_START))
         current_scene = new ModeSelectScene();
-    else if (trigger & KEY_B)
+    else if (input->trigger(KEY_B))
         current_scene = NULL;
 }
 

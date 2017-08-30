@@ -3,13 +3,6 @@
 #include "game_common.hpp"
 #include "panels_gfx.hpp"
 
-void ReplayScene::init_recorder()
-{
-    recorder.load(config.replay_filename);
-    config.level = level = recorder.level;
-    config.difficulty = static_cast<Difficulty>(recorder.difficulty);
-}
-
 void ReplayScene::init_menu()
 {
     GameScene::init_menu();
@@ -20,26 +13,9 @@ void ReplayScene::init_menu()
 
 void ReplayScene::update_input()
 {
-    trigger = 0;
-    held = 0;
-    recorder.keys(trigger, held);
-
-    if (input->repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(-1, 0);
-    if (input->repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(1, 0);
-    if (input->repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(0, -1);
-    if (input->repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS, held))
-        update_on_move(0, 1);
-
-    if (trigger & KEY_A)
-        table->swap(selector_y, selector_x);
 
     if (hidKeysDown() & KEY_START)
         current_scene = new TitleScene();
-
-    recorder.update();
 }
 
 void ReplayScene::update_windows()

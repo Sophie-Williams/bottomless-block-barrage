@@ -11,7 +11,6 @@ public:
     ReplayScene(const GameConfig& c) : GameScene(c) {}
     ~ReplayScene() {}
 protected:
-    void init_recorder();
     void init_menu();
 
     bool is_gameover() const {return false;}

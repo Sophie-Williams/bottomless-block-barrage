@@ -56,7 +56,7 @@ void EndlessConfigScene::update()
     panel_select.update();
     start_button.update();
 
-    if (hidKeysDown() & KEY_START)
+    if (input->trigger(KEY_START))
     {
         EndlessScene::GameConfig config;
         config.difficulty = (Difficulty) difficulty_choices.selection();
@@ -78,27 +78,23 @@ void EndlessConfigScene::update()
 
 void EndlessConfigScene::update_difficulty_select()
 {
-    u32 trigger = hidKeysDown();
-
-    if (trigger & KEY_A)
+    if (input->trigger(KEY_A))
     {
         difficulty_choices.set_active(false);
         level_slider.set_active(true);
     }
-    else if (trigger & KEY_B)
+    else if (input->trigger(KEY_B))
         current_scene = new ModeSelectScene();
 }
 
 void EndlessConfigScene::update_level_select()
 {
-    u32 trigger = hidKeysDown();
-
-    if (trigger & KEY_A)
+    if (input->trigger(KEY_A))
     {
         panel_select.set_active(true);
         level_slider.set_active(false);
     }
-    else if (trigger & KEY_B)
+    else if (input->trigger(KEY_B))
     {
         difficulty_choices.set_active(true);
         level_slider.set_active(false);
@@ -107,14 +103,12 @@ void EndlessConfigScene::update_level_select()
 
 void EndlessConfigScene::update_panel_select()
 {
-    u32 trigger = hidKeysDown();
-
-    if (trigger & KEY_A)
+    if (input->trigger(KEY_A))
     {
         panel_select.set_active(false);
         start_button.set_active(true);
     }
-    else if (trigger & KEY_B)
+    else if (input->trigger(KEY_B))
     {
         panel_select.set_active(false);
         level_slider.set_active(true);
@@ -123,9 +117,7 @@ void EndlessConfigScene::update_panel_select()
 
 void EndlessConfigScene::update_press_start()
 {
-    u32 trigger = hidKeysDown();
-
-    if (trigger & KEY_A)
+    if (input->trigger(KEY_A))
     {
         EndlessScene::GameConfig config;
         config.difficulty = (Difficulty) difficulty_choices.selection();
@@ -134,7 +126,7 @@ void EndlessConfigScene::update_press_start()
         current_scene = new EndlessScene(config);
         return;
     }
-    else if (trigger & KEY_B)
+    else if (input->trigger(KEY_B))
     {
         panel_select.set_active(true);
         start_button.set_active(false);

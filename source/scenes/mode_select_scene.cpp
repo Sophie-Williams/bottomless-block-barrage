@@ -41,7 +41,6 @@ void ModeSelectScene::update()
     menu_background_top.update();
     menu_background_bottom.update();
 
-    u32 trigger = hidKeysDown();
 
     /// TODO implement events so hacks like this aren't necessary
     if (mode != command_window.selection())
@@ -50,7 +49,7 @@ void ModeSelectScene::update()
         help_window.set_text(help_text[mode]);
     }
 
-    if (trigger & KEY_A)
+    if (input->trigger(KEY_A))
     {
         switch (command_window.selection())
         {
@@ -77,7 +76,7 @@ void ModeSelectScene::update()
                 break;
         }
     }
-    else if (trigger & KEY_B)
+    else if (input->trigger(KEY_B))
         current_scene = new TitleScene();
 }
 

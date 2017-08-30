@@ -14,7 +14,6 @@
 #include "scene.hpp"
 #include "panel_table.hpp"
 #include "animation_params.hpp"
-#include "moves_recorder.hpp"
 #include "marker_manager.hpp"
 
 enum Difficulty
@@ -71,7 +70,6 @@ protected:
     void draw_top();
     void draw_bottom();
 
-    virtual void init_recorder();
     virtual void init_panel_table();
     virtual void init_sprites();
     virtual void init_menu();
@@ -83,14 +81,6 @@ protected:
     virtual void update_gameover();
 
     virtual void update_input();
-    void update_read_input();
-    virtual void update_move();
-    virtual void update_on_move(int x, int y);
-    virtual void update_selector();
-    virtual void update_on_swap();
-    virtual void update_quick_rise();
-    virtual void update_on_quick_rise();
-    virtual void update_exit();
 
     virtual void update_match();
     virtual void update_on_timeout();
@@ -142,16 +132,11 @@ protected:
     int danger_panel;
 
     // Debugging
-    MovesRecorder recorder;
     bool debug_drawing = false;
 
     // Nice things
     Background background_top;
     Background background_bottom;
-
-    // Input
-    u32 held;
-    u32 trigger;
 
     int frame = 0;
 };

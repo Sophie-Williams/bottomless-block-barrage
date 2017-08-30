@@ -380,7 +380,7 @@ void FrameReplaySimulation::DoStep()
 
     if (!state.repeat.any(Input::BUTTON_DIRECTIONAL))
     {
-        if (input_manager.triggered(Input::BUTTON_A) || input_manager.triggered(Input::BUTTON_B))
+        if (input_manager.trigger(Input::BUTTON_A) || input_manager.trigger(Input::BUTTON_B))
             table->swap(y, x);
     }
 

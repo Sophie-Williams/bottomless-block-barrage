@@ -6,7 +6,7 @@ void InputManager::update(const Input& input)
     current = input;
 }
 
-bool InputManager::triggered(unsigned int key)
+bool InputManager::trigger(unsigned int key)
 {
     return current.on(key) && last.off(key);
 }

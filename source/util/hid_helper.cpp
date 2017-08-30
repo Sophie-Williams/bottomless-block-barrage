@@ -72,14 +72,34 @@ bool hidKeyRepeatQuick(int key, u64& old_time, int& step, unsigned int repeat_ms
     return false;
 }
 
-u32 InputSource::triggered() const
+u32 InputSource::trigger() const
 {
-    return hidKeysDown();
+    return trigger_;
 }
 
 u32 InputSource::held() const
 {
-    return hidKeysHeld();
+    return held_;
+}
+
+bool InputSource::trigger(u32 key) const
+{
+    return trigger() & key;
+}
+
+bool InputSource::held(u32 key) const
+{
+    return held() & key;
+}
+
+bool InputSource::repeat(u32 key, u32 repeat_ms)
+{
+    return repeat(key, repeat_ms, held_);
+}
+
+bool InputSource::repeat_quick(u32 key, u32 repeat_ms, u32 triggers_until_quick, u32 repeat_quick_ms)
+{
+    return repeat_quick(key, repeat_ms, triggers_until_quick, repeat_quick_ms, held_);
 }
 
 bool InputSource::repeat(u32 key, u32 repeat_ms, u32 fake_held)
@@ -95,6 +115,8 @@ bool InputSource::repeat_quick(u32 key, u32 repeat_ms, u32 triggers_until_quick,
 
 void InputSource::update()
 {
-    hidScanInput();
+    //hidScanInput();
+    held_ = hidKeysHeld();
+    trigger_ = hidKeysDown();
 }
 

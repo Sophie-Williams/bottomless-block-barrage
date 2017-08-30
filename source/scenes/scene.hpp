@@ -22,7 +22,10 @@ public:
     Scene() : input(input_source.get()) {}
     virtual ~Scene() {}
     virtual void initialize() {}
-    virtual void update() {}
+    virtual void update()
+    {
+        input->update();
+    }
     virtual void draw() {}
     virtual std::string music() {return get_track("Select.brstm");}
 protected:
