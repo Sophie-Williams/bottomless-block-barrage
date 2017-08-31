@@ -562,6 +562,7 @@
 		</Unit>
 		<Unit filename="testing/panel_source_test.cpp" />
 		<Unit filename="testing/panel_table_test.cpp" />
+		<Unit filename="testing/recorder_test.cpp" />
 		<Unit filename="testing/replay.cpp">
 			<Option target="test" />
 		</Unit>
