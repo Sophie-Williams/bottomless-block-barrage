@@ -4,7 +4,11 @@
 #define RECORDER_MAJOR_VERSION 0
 #define RECORDER_MINOR_VERSION 2
 
+#ifdef TESTING
 unsigned long osGetTime();
+#else
+#include <3ds.h>
+#endif
 
 const std::string generate_filename()
 {

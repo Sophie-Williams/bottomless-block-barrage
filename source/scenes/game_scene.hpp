@@ -15,6 +15,7 @@
 #include "panel_table.hpp"
 #include "animation_params.hpp"
 #include "marker_manager.hpp"
+#include "recorder.hpp"
 
 enum Difficulty
 {
@@ -70,12 +71,14 @@ protected:
     void draw_top();
     void draw_bottom();
 
+    void init_recorder();
     virtual void init_panel_table();
     virtual void init_sprites();
     virtual void init_menu();
 
     virtual bool is_gameover() const;
 
+    void update_recorder();
     virtual void update_windows() {}
     virtual void update_on_gameover() {}
     virtual void update_gameover();
@@ -133,6 +136,8 @@ protected:
 
     // Debugging
     bool debug_drawing = false;
+    Recorder recorder;
+    bool next_generated = false;
 
     // Nice things
     Background background_top;

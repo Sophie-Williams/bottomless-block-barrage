@@ -13,7 +13,9 @@
 void GameScene::initialize()
 {
     srand((unsigned int) time(NULL));
+
     init_panel_table();
+    init_recorder();
     init_sprites();
     init_menu();
     scene_music = get_track("Demo.brstm");
@@ -44,6 +46,21 @@ void GameScene::init_panel_table()
     table.reset(new PanelTable(opts));
     table->set_speed(get_speed_for_level(level));
     next = get_panels_for_level(level);
+}
+
+void GameScene::init_recorder()
+{
+    recorder.settings(config.rows, config.columns, config.type, (int)config.difficulty, config.level);
+
+    std::vector<Panel::Type> initial;
+    for (const auto& panel : table->get_panels())
+        initial.push_back(panel.get_value());
+    recorder.set_initial(initial);
+
+    std::vector<Panel::Type> next;
+    for (const auto& panel : table->get_next())
+        next.push_back(panel.get_value());
+    recorder.add_next(next);
 }
 
 void GameScene::init_sprites()
@@ -87,12 +104,14 @@ void GameScene::update()
 {
     Scene::update();
 
+
     if (!is_gameover())
     {
         update_input();
         update_match();
         update_windows();
 
+        update_recorder();
         if (is_gameover())
             update_on_gameover();
     }
@@ -136,7 +155,7 @@ void GameScene::update_input()
     if (input->trigger(KEY_START))
         current_scene = new ModeSelectScene();
 
-    if (input->trigger(KEY_Y))
+    if (input->trigger(KEY_X))
         debug_drawing = !debug_drawing;
 }
 
@@ -150,6 +169,9 @@ void GameScene::update_match()
 {
     if (table->is_rised())
         selector_y = std::max(std::min(selector_y - 1, table->height() - 1), 0);
+
+    // Needed for recorder. Will a next set of panels be generated this frame?
+    next_generated = table->is_generate_next();
 
     current_match = table->update();
 
@@ -198,6 +220,18 @@ void GameScene::update_level()
         next += get_panels_for_level(level);
         table->set_speed(get_speed_for_level(level));
         update_on_level();
+    }
+}
+
+void GameScene::update_recorder()
+{
+    recorder.add_input(input->trigger(), input->held());
+    if (next_generated)
+    {
+        std::vector<Panel::Type> next;
+        for (const auto& panel : table->get_next())
+            next.push_back(panel.get_value());
+        recorder.add_next(next);
     }
 }
 

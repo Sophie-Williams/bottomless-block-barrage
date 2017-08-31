@@ -32,7 +32,7 @@ panel_table.o : $(SOURCE)/panel_table.cpp $(SOURCE)/panel_table.hpp $(SOURCE)/pa
 panel.o : $(SOURCE)/panel.cpp $(SOURCE)/panel.hpp
 	g++ -c $(CPPFLAGS) $<
 recorder.o : $(SOURCE)/recorder.cpp $(SOURCE)/recorder.hpp $(SOURCE)/panel.hpp $(SOURCE)/panel_table.hpp
-	g++ -c $(CPPFLAGS) $<
+	g++ -c -DTESTING $(CPPFLAGS) $<
 
 clean :
 	rm -rf panel_table_test recorder_test recorder.o panel_table.o panel_source.o panel.o panel_table_test replay replay.o replay_test replay_test.o replay_simulation.o frame_state.o input.o
