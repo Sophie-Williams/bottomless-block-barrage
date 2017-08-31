@@ -95,7 +95,6 @@ BOOST_AUTO_TEST_CASE(TestRecorder)
 
     std::stringstream file(std::stringstream::out | std::stringstream::binary);
     recorder.save(file);
-    recorder.save();
 
     std::string binary_data = file.str();
     // NUL terminator
