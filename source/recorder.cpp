@@ -1,4 +1,5 @@
 #include "recorder.hpp"
+#include <ctime>
 
 #define RECORDER_MAJOR_VERSION 0
 #define RECORDER_MINOR_VERSION 2
