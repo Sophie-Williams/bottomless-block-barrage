@@ -198,22 +198,6 @@
 		</Unit>
 		<Unit filename="source/marker_manager.cpp" />
 		<Unit filename="source/marker_manager.hpp" />
-		<Unit filename="source/moves_recorder.cpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
-		<Unit filename="source/moves_recorder.hpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
 		<Unit filename="source/panel.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -270,6 +254,8 @@
 		<Unit filename="source/panels_gfx.hpp" />
 		<Unit filename="source/puzzle_panel_source.hpp" />
 		<Unit filename="source/puzzle_set.hpp" />
+		<Unit filename="source/recorder.cpp" />
+		<Unit filename="source/recorder.hpp" />
 		<Unit filename="source/scenes/endless_config_scene.cpp">
 			<Option target="release" />
 			<Option target="citra" />
