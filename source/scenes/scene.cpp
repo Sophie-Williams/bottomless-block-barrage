@@ -1,7 +1,7 @@
 #include "scene.hpp"
 #include <sf2d.h>
 
-std::unique_ptr<InputSource> input_source(new InputSource);
+std::unique_ptr<InputDataSourceInterface> input_data_source(new InputDataSource());
 
 void Scene2D::draw()
 {

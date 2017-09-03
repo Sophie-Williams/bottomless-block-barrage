@@ -63,7 +63,7 @@ const char kExpected[] =
 "\3\5\3\3\1\1"
 
 "\5\0\0\0"          // number of input entires
-"\0\0\0\0" "\0\0\0\0" "\3\0\0\0" // trigger held frames
+"\0\0\0\0" "\0\0\0\0" "\3\0\0\0"    // trigger held frames
 "\1\0\0\0" "\0\0\0\0" "\1\0\0\0"
 "\0\0\0\0" "\0\0\0\0" "\2\0\0\0"
 "\0\0\0\0" "\1\0\0\0" "\1\0\0\0"
@@ -104,6 +104,4 @@ BOOST_AUTO_TEST_CASE(TestRecorder)
     for (unsigned int i = 0; i < binary_data.size(); i++)
         BOOST_CHECK_EQUAL(binary_data[i], expected[i]);
     BOOST_CHECK_EQUAL_COLLECTIONS(binary_data.begin(), binary_data.end(), expected.begin(), expected.end());
-
-
 }

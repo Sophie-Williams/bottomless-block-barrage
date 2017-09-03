@@ -1,9 +1,6 @@
 #include "recorder.hpp"
 #include <ctime>
 
-#define RECORDER_MAJOR_VERSION 0
-#define RECORDER_MINOR_VERSION 2
-
 #ifdef TESTING
 unsigned long osGetTime();
 #else
@@ -85,11 +82,7 @@ bool Recorder::save(std::ostream& file)
     size = input.size();
     file.write(reinterpret_cast<char*>(&size), sizeof(size));
     for (const auto& move : input)
-    {
-        file.write(reinterpret_cast<const char*>(&move.trigger), sizeof(move.trigger));
-        file.write(reinterpret_cast<const char*>(&move.held), sizeof(move.held));
-        file.write(reinterpret_cast<const char*>(&move.frames), sizeof(move.frames));
-    }
+        file.write(reinterpret_cast<const char*>(&move), sizeof(move));
 
     return true;
 }

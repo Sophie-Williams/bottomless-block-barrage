@@ -134,28 +134,28 @@ bool GameScene::is_gameover() const
 void GameScene::update_input()
 {
     int mx = 0, my = 0;
-    if (input->repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+    if (input.repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
         mx = -1;
-    if (input->repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+    if (input.repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
         mx = 1;
-    if (input->repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+    if (input.repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
         my = -1;
-    if (input->repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+    if (input.repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
         my = 1;
 
     selector_x = std::max(std::min(selector_x + mx, table->width() - 2), 0);
     selector_y = std::max(std::min(selector_y + my, table->height() - 1), 0);
 
-    if (input->held(KEY_L) || input->held(KEY_R))
+    if (input.held(KEY_L) || input.held(KEY_R))
         table->quick_rise();
 
-    if (input->trigger(KEY_A) || input->trigger(KEY_B))
+    if (input.trigger(KEY_A) || input.trigger(KEY_B))
         table->swap(selector_y, selector_x);
 
-    if (input->trigger(KEY_START))
+    if (input.trigger(KEY_START))
         current_scene = new ModeSelectScene();
 
-    if (input->trigger(KEY_X))
+    if (input.trigger(KEY_X))
         debug_drawing = !debug_drawing;
 }
 
@@ -225,7 +225,7 @@ void GameScene::update_level()
 
 void GameScene::update_recorder()
 {
-    recorder.add_input(input->trigger(), input->held());
+    recorder.add_input(input.trigger(), input.held());
     if (next_generated)
     {
         std::vector<Panel::Type> next;

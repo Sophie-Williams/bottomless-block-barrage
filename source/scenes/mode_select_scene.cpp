@@ -49,7 +49,7 @@ void ModeSelectScene::update()
         help_window.set_text(help_text[mode]);
     }
 
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         switch (command_window.selection())
         {
@@ -76,7 +76,7 @@ void ModeSelectScene::update()
                 break;
         }
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
         current_scene = new TitleScene();
 }
 

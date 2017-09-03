@@ -90,7 +90,7 @@ void PuzzleScene::init_menu()
 void PuzzleScene::update_input()
 {
     GameScene::update_input();
-    if (input->trigger(KEY_Y))
+    if (input.trigger(KEY_Y))
     {
         const PuzzleSnapshot& snapshot = snapshots.back();
         snapshot.restore(*table);
@@ -125,7 +125,7 @@ void PuzzleScene::update_on_gameover()
 
 void PuzzleScene::update_gameover()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         if (table->is_gameover())
         {

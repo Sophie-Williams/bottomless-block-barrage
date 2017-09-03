@@ -3,17 +3,50 @@
 #include "game_common.hpp"
 #include "panels_gfx.hpp"
 
+void ReplayScene::initialize()
+{
+    GameScene::initialize();
+    if (!load_replay(config.replay_filename, replay_info))
+        current_scene = new TitleScene();
+    input.set_data_source(replay_info.input.get());
+}
+
+void ReplayScene::init_panel_table()
+{
+    PanelTable::Options opts;
+    opts.rows = replay_info.rows;
+    opts.columns = replay_info.columns;
+    opts.type = static_cast<PanelTable::Type>(replay_info.type);
+    switch (static_cast<Difficulty>(replay_info.difficulty))
+    {
+        case EASY:
+            opts.settings = easy_speed_settings;
+            break;
+        case NORMAL:
+            opts.settings = normal_speed_settings;
+            break;
+        case HARD:
+            opts.settings = hard_speed_settings;
+            break;
+    }
+    opts.source = replay_info.source.get();
+    level = replay_info.level;
+
+    table.reset(new PanelTable(opts));
+    table->set_speed(get_speed_for_level(level));
+    next = get_panels_for_level(level);
+}
+
 void ReplayScene::init_menu()
 {
     GameScene::init_menu();
-    info.set_level(config.level);
-    info.set_difficulty(config.difficulty);
+    info.set_level(replay_info.level);
+    info.set_difficulty(static_cast<Difficulty>(replay_info.difficulty));
     info.set_panel_table(table.get());
 }
 
 void ReplayScene::update_input()
 {
-
     if (hidKeysDown() & KEY_START)
         current_scene = new TitleScene();
 }

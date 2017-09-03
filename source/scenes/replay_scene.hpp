@@ -2,6 +2,7 @@
 #define REPLAY_SCENE_HPP
 
 #include "game_scene.hpp"
+#include "replay_helpers.hpp"
 #include <windows/info_window.hpp>
 #include <windows/ccc_window.hpp>
 
@@ -11,6 +12,8 @@ public:
     ReplayScene(const GameConfig& c) : GameScene(c) {}
     ~ReplayScene() {}
 protected:
+    void initialize();
+    void init_panel_table();
     void init_menu();
 
     bool is_gameover() const {return false;}
@@ -24,6 +27,7 @@ protected:
 private:
     InfoWindow info;
     CCCWindow ccc_stats;
+    ReplayInfo replay_info;
 };
 
 #endif

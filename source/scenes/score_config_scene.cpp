@@ -83,7 +83,7 @@ void ScoreConfigScene::update()
     panel_select.update();
     start_button.update();
 
-    if (input->trigger(KEY_START))
+    if (input.trigger(KEY_START))
     {
         ScoreScene::GameConfig config;
         config.time_mode = (TimingMode) type_choices.selection();
@@ -111,24 +111,24 @@ void ScoreConfigScene::update()
 
 void ScoreConfigScene::update_type_select()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         type_choices.set_active(false);
         number_choices.set_choices(type_choices_values[type_choices.selection()]);
         number_choices.set_active(true);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
         current_scene = new ModeSelectScene();
 }
 
 void ScoreConfigScene::update_number_select()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         number_choices.set_active(false);
         difficulty_choices.set_active(true);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
     {
         type_choices.set_active(true);
         number_choices.set_active(false);
@@ -137,12 +137,12 @@ void ScoreConfigScene::update_number_select()
 
 void ScoreConfigScene::update_difficulty_select()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         level_slider.set_active(true);
         difficulty_choices.set_active(false);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
     {
         number_choices.set_active(true);
         difficulty_choices.set_active(false);
@@ -151,12 +151,12 @@ void ScoreConfigScene::update_difficulty_select()
 
 void ScoreConfigScene::update_level_select()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         panel_select.set_active(true);
         level_slider.set_active(false);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
     {
         difficulty_choices.set_active(true);
         level_slider.set_active(false);
@@ -165,12 +165,12 @@ void ScoreConfigScene::update_level_select()
 
 void ScoreConfigScene::update_panel_select()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         panel_select.set_active(false);
         start_button.set_active(true);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
     {
         panel_select.set_active(false);
         level_slider.set_active(true);
@@ -179,7 +179,7 @@ void ScoreConfigScene::update_panel_select()
 
 void ScoreConfigScene::update_press_start()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         ScoreScene::GameConfig config;
         config.time_mode = (TimingMode) type_choices.selection();
@@ -190,7 +190,7 @@ void ScoreConfigScene::update_press_start()
         current_scene = new ScoreScene(config);
         return;
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
     {
         start_button.set_active(false);
         panel_select.set_active(true);

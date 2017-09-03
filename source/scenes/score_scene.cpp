@@ -103,7 +103,7 @@ void ScoreScene::update_gameover()
     GameScene::update_gameover();
     try_again_command.update();
 
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         if (try_again_command.selection() == 0)
         {

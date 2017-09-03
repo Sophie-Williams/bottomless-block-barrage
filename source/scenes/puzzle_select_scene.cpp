@@ -47,7 +47,7 @@ void PuzzleSelectScene::update()
 
 void PuzzleSelectScene::update_set_select()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         std::vector<std::string> names = puzzles[set_choices.choice()].get_stages();
         set_choices.set_active(false);
@@ -56,13 +56,13 @@ void PuzzleSelectScene::update_set_select()
         stage_choices.set_choices(names);
         stage_choices.set_height(names.size() * 16);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
         current_scene = new ModeSelectScene();
 }
 
 void PuzzleSelectScene::update_stage_select()
 {
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         std::vector<std::string> names = puzzles[set_choices.choice()].stages[stage_choices.choice()].levels;
         stage_choices.set_active(false);
@@ -71,7 +71,7 @@ void PuzzleSelectScene::update_stage_select()
         level_choices.set_choices(names);
         level_choices.set_height(names.size() * 16);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
     {
         set_choices.set_active(true);
         stage_choices.set_active(false);
@@ -81,7 +81,7 @@ void PuzzleSelectScene::update_stage_select()
 
 void PuzzleSelectScene::update_level_select()
 {
-    if (input->trigger(KEY_A) || input->trigger(KEY_START))
+    if (input.trigger(KEY_A) || input.trigger(KEY_START))
     {
         PuzzleScene::GameConfig config;
         config.puzzle_filename = construct_puzzle_filename(set_choices.choice(), stage_choices.choice(), level_choices.choice());
@@ -91,7 +91,7 @@ void PuzzleSelectScene::update_level_select()
         config.level_name = level_choices.choice();
         current_scene = new PuzzleScene(config);
     }
-    else if (input->trigger(KEY_B))
+    else if (input.trigger(KEY_B))
     {
         stage_choices.set_active(true);
         level_choices.set_active(false);

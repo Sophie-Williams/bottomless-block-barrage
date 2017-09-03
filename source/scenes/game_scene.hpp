@@ -135,8 +135,8 @@ protected:
     int danger_panel;
 
     // Debugging
-    bool debug_drawing = false;
     Recorder recorder;
+    bool debug_drawing = false;
     bool next_generated = false;
 
     // Nice things

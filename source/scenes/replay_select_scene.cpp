@@ -37,7 +37,7 @@ void ReplaySelectScene::update()
     Scene::update();
     replays.update();
 
-    if (input->trigger(KEY_A))
+    if (input.trigger(KEY_A))
     {
         std::string choice = replays.choice();
         choice = "/bbb-moves/" + choice;
@@ -45,7 +45,7 @@ void ReplaySelectScene::update()
         config.replay_filename = choice;
         current_scene = new ReplayScene(config);
     }
-    else if (input->trigger(KEY_B) || (input->trigger() == 0 && replays.empty()))
+    else if (input.trigger(KEY_B) || (input.trigger() == 0 && replays.empty()))
     {
         current_scene = new TitleScene();
     }

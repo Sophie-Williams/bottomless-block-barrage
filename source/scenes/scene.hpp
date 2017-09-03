@@ -14,22 +14,19 @@
 #define BOTTOM_SCREEN_HEIGHT 240
 
 extern std::unique_ptr<Font> font;
-extern std::unique_ptr<InputSource> input_source;
+extern std::unique_ptr<InputDataSourceInterface> input_data_source;
 
 class Scene
 {
 public:
-    Scene() : input(input_source.get()) {}
+    Scene() : input(input_data_source.get()) {}
     virtual ~Scene() {}
     virtual void initialize() {}
-    virtual void update()
-    {
-        input->update();
-    }
+    virtual void update() {input.update();}
     virtual void draw() {}
     virtual std::string music() {return get_track("Select.brstm");}
 protected:
-    InputSource* input;
+    InputSource input;
 };
 
 class Scene2D : public Scene
