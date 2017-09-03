@@ -4,14 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <recorder.hpp>
+#include <replay_helpers.hpp>
 
-// Dummy implementation
-unsigned long osGetTime()
-{
-    return 1504164600;
-}
-
-std::vector<int> kInitial =
+const std::vector<int> kInitial =
 {
     0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0,
@@ -26,17 +21,17 @@ std::vector<int> kInitial =
     1, 2, 0, 0, 0, 0,
 };
 
-std::vector<int> kNext1 =
+const std::vector<int> kNext1 =
 {
     1, 2, 3, 4, 5, 6
 };
 
-std::vector<int> kNext2 =
+const std::vector<int> kNext2 =
 {
     6, 5, 4, 3, 2, 1
 };
 
-std::vector<int> kNext3 =
+const std::vector<int> kNext3 =
 {
     3, 5, 3, 3, 1, 1
 };
@@ -94,7 +89,7 @@ BOOST_AUTO_TEST_CASE(TestRecorder)
     recorder.add_input(1, 0);
 
     std::stringstream file(std::stringstream::out | std::stringstream::binary);
-    recorder.save(file);
+    BOOST_REQUIRE(recorder.save(file));
 
     std::string binary_data = file.str();
     // NUL terminator
@@ -104,4 +99,99 @@ BOOST_AUTO_TEST_CASE(TestRecorder)
     for (unsigned int i = 0; i < binary_data.size(); i++)
         BOOST_CHECK_EQUAL(binary_data[i], expected[i]);
     BOOST_CHECK_EQUAL_COLLECTIONS(binary_data.begin(), binary_data.end(), expected.begin(), expected.end());
+}
+
+
+const char kInput[] =
+"BBB\0" // magic
+"\0\2" // version
+"\xB\x6\x1\x0\x63"  // header info
+"\0\0\0\0\0\0"      // row 1 initial
+"\0\0\0\0\0\0"
+"\0\0\0\0\0\0"
+"\0\0\0\0\0\0"
+"\0\0\0\0\0\0"
+"\0\0\0\0\0\0"
+"\0\0\0\0\0\0"
+"\0\0\0\0\0\0"
+"\0\0\0\0\0\0"
+"\1\0\0\0\0\0"
+"\1\2\0\0\0\0"
+
+"\x12\0\0\0"        // number of next entries
+"\1\2\3\4\5\6"
+"\6\5\4\3\2\1"
+"\3\5\3\3\1\1"
+
+"\5\0\0\0"          // number of input entires
+"\0\0\0\0" "\0\0\0\0" "\3\0\0\0"    // trigger held frames
+"\1\0\0\0" "\0\0\0\0" "\1\0\0\0"
+"\0\0\0\0" "\0\0\0\0" "\2\0\0\0"
+"\0\0\0\0" "\1\0\0\0" "\1\0\0\0"
+"\1\0\0\0" "\0\0\0\0" "\1\0\0\0";
+
+const std::vector<int> kExpectedBoard =
+{
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    1, 0, 0, 0, 0, 0,
+    1, 2, 0, 0, 0, 0,
+};
+
+const std::vector<int> kExpectedNext =
+{
+    1, 2, 3, 4, 5, 6,
+    6, 5, 4, 3, 2, 1,
+    3, 5, 3, 3, 1, 1
+};
+
+const std::vector<unsigned int> kExpectedTriggers =
+{
+    0, 0, 0, 1, 0, 0, 0, 1
+};
+
+const std::vector<unsigned int> kExpectedHelds =
+{
+    0, 0, 0, 0, 0, 0, 1, 0
+};
+
+BOOST_AUTO_TEST_CASE(TestReplay)
+{
+    std::stringstream stream(std::string(kInput, sizeof(kInput) - 1));
+    ReplayInfo info;
+    BOOST_REQUIRE(load_replay(stream, info));
+
+    BOOST_CHECK_EQUAL(info.rows, 11);
+    BOOST_CHECK_EQUAL(info.columns, 6);
+    BOOST_CHECK_EQUAL(info.type, 1);
+    BOOST_CHECK_EQUAL(info.difficulty, 0);
+    BOOST_CHECK_EQUAL(info.level, 99);
+
+    std::vector<Panel::Type> board = info.source->board();
+    std::vector<int> actualBoard(board.begin(), board.end());
+    BOOST_CHECK_EQUAL_COLLECTIONS(kExpectedBoard.begin(), kExpectedBoard.end(), actualBoard.begin(), actualBoard.end());
+
+    for (const auto& expected : kExpectedNext)
+        BOOST_CHECK_EQUAL(expected, info.source->panel());
+    BOOST_CHECK_EQUAL(Panel::EMPTY, info.source->panel());
+
+
+    BOOST_CHECK_EQUAL(kExpectedTriggers[0], info.input->trigger());
+    BOOST_CHECK_EQUAL(kExpectedHelds[0], info.input->held());
+    for (unsigned int i = 0; i < kExpectedTriggers.size(); i++)
+    {
+        BOOST_CHECK_EQUAL(kExpectedTriggers[i], info.input->trigger());
+        BOOST_CHECK_EQUAL(kExpectedHelds[i], info.input->held());
+        info.input->update();
+    }
+
+    BOOST_CHECK_EQUAL(0, info.input->trigger());
+    BOOST_CHECK_EQUAL(0, info.input->held());
 }

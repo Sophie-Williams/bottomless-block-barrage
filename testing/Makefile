@@ -7,7 +7,7 @@ all : panel_table_test replay replay_test
 panel_table_test : panel_table_test.o panel_source.o panel_table.o panel.o
 	g++ $^ $(CPPFLAGS) -o $@ $(LIBS)
 
-recorder_test : recorder_test.o recorder.o panel_table.o panel.o
+recorder_test : recorder_test.o replay_helpers.o recorder.o panel_source.o panel_table.o panel.o
 	g++ $^ $(CPPFLAGS) -o $@ $(LIBS)
 
 replay : replay.o replay_simulation.o frame_state.o panel_source.o panel_table.o panel.o input.o
@@ -32,7 +32,9 @@ panel_table.o : $(SOURCE)/panel_table.cpp $(SOURCE)/panel_table.hpp $(SOURCE)/pa
 panel.o : $(SOURCE)/panel.cpp $(SOURCE)/panel.hpp
 	g++ -c $(CPPFLAGS) $<
 recorder.o : $(SOURCE)/recorder.cpp $(SOURCE)/recorder.hpp $(SOURCE)/panel.hpp $(SOURCE)/panel_table.hpp
-	g++ -c -DTESTING $(CPPFLAGS) $<
+	g++ -c $(CPPFLAGS) $<
+replay_helpers.o : $(SOURCE)/replay_helpers.cpp $(SOURCE)/replay_helpers.hpp $(SOURCE)/util/input_data_source_interface.hpp $(SOURCE)/recorder.hpp $(SOURCE)/panel.hpp $(SOURCE)/panel_table.hpp
+	g++ -c $(CPPFLAGS) $<
 
 clean :
-	rm -rf panel_table_test recorder_test recorder.o panel_table.o panel_source.o panel.o panel_table_test replay replay.o replay_test replay_test.o replay_simulation.o frame_state.o input.o
+	rm -rf panel_table_test recorder_test recorder.o replay_helpers.o panel_table.o panel_source.o panel.o panel_table_test replay replay.o replay_test replay_test.o replay_simulation.o frame_state.o input.o

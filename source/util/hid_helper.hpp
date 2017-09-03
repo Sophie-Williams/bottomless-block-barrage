@@ -4,6 +4,7 @@
 #include <3ds.h>
 #include <map>
 #include <memory>
+#include "input_data_source_interface.hpp"
 
 #define KEY_SENTINEL 0xFFFFFFFFU
 
@@ -26,16 +27,6 @@ bool hidKeyRepeat(int key, u64& old_time, unsigned int repeat_ms, u32 fake_held 
 bool hidKeyRepeat(KeyRepeatItem& kri, unsigned int repeat_ms, u32 fake_held = KEY_SENTINEL);
 bool hidKeyRepeatQuick(int key, u64& old_time, int& step, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held = KEY_SENTINEL);
 bool hidKeyRepeatQuick(KeyRepeatItem& kri, unsigned int repeat_ms, int triggers_until_quick, unsigned int repeat_quick_ms, u32 fake_held = KEY_SENTINEL);
-
-class InputDataSourceInterface
-{
-public:
-    InputDataSourceInterface() {}
-    virtual ~InputDataSourceInterface() {}
-    virtual u32 trigger() const = 0;
-    virtual u32 held() const = 0;
-    virtual void update() = 0;
-};
 
 class InputSource
 {

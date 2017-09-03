@@ -7,7 +7,6 @@ extern "C"
 #include <dirent.h>
 }
 
-
 std::vector<std::string> get_replays()
 {
     std::vector<std::string> files;

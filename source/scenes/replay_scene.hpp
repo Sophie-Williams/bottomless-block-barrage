@@ -14,6 +14,7 @@ public:
 protected:
     void initialize();
     void init_panel_table();
+    void init_recorder() {}
     void init_menu();
 
     bool is_gameover() const {return false;}

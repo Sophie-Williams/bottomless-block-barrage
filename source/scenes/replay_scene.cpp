@@ -5,9 +5,9 @@
 
 void ReplayScene::initialize()
 {
-    GameScene::initialize();
     if (!load_replay(config.replay_filename, replay_info))
         current_scene = new TitleScene();
+    GameScene::initialize();
     input.set_data_source(replay_info.input.get());
 }
 
