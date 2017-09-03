@@ -1,4 +1,5 @@
 #include "recorder.hpp"
+#include <algorithm>
 #include <ctime>
 
 #ifdef TESTING
@@ -11,8 +12,10 @@ const std::string generate_filename()
 {
     char buffer[128];
 
-    time_t val = osGetTime();
-    sprintf(buffer, "/bbb-moves/%s", asctime(gmtime(&val)));
+    time_t val = time(NULL);
+    struct tm* timeinfo = localtime(&val);
+    strftime(buffer, 128, "/bbb-moves/%F_%H%M.bbb", timeinfo);
+
     return buffer;
 }
 
@@ -53,7 +56,7 @@ bool Recorder::save()
 {
     const std::string filename = generate_filename();
     std::ofstream file(filename.c_str(), std::ios::binary);
-    if (!file.good()) return false;
+    //if (!file.good()) return false;
     bool ret = save(file);
     file.close();
     return ret;

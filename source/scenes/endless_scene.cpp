@@ -78,7 +78,13 @@ void EndlessScene::update_gameover()
         if (input.trigger(KEY_A))
         {
             if (save_replay_command.selection() == 0)
-                recorder.save();
+            {
+                if (!recorder.save())
+                {
+                    game_over.set_value("Replay save failed\nTry Save again?");
+                    return;
+                }
+            }
 
             save_replay_command.set_active(false);
             save_replay_command.set_hidden(true);
