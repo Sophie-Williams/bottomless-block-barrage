@@ -48,7 +48,7 @@ void EndlessConfigScene::initialize()
 
 void EndlessConfigScene::update()
 {
-    Scene::update();
+    Scene2D::update();
     difficulty_choices.update();
     level_slider.update();
     menu_background_top.update();

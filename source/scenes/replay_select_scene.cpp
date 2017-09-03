@@ -33,7 +33,7 @@ void ReplaySelectScene::initialize()
 
 void ReplaySelectScene::update()
 {
-    Scene::update();
+    Scene2D::update();
     replays.update();
 
     if (input.trigger(KEY_A))

@@ -30,7 +30,7 @@ void PuzzleSelectScene::initialize()
 
 void PuzzleSelectScene::update()
 {
-    Scene::update();
+    Scene2D::update();
     set_choices.update();
     stage_choices.update();
     level_choices.update();

@@ -47,6 +47,8 @@ void ReplayScene::init_menu()
 
 void ReplayScene::update_input()
 {
+    replay_info.input->update();
+    GameScene::update_input();
     if (hidKeysDown() & KEY_START)
         current_scene = new TitleScene();
 }

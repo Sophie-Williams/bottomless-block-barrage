@@ -16,7 +16,7 @@ void TitleScene::initialize()
 
 void TitleScene::update()
 {
-    Scene::update();
+    Scene2D::update();
 
     if (input.held(KEY_L) && input.held(KEY_R) && input.held(KEY_START))
         current_scene = new ReplaySelectScene();

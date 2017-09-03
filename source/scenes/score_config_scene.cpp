@@ -73,7 +73,7 @@ void ScoreConfigScene::initialize()
 
 void ScoreConfigScene::update()
 {
-    Scene::update();
+    Scene2D::update();
     type_choices.update();
     number_choices.update();
     difficulty_choices.update();

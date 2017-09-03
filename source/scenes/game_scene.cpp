@@ -102,7 +102,7 @@ void GameScene::init_menu()
 
 void GameScene::update()
 {
-    Scene::update();
+    Scene2D::update();
 
 
     if (!is_gameover())

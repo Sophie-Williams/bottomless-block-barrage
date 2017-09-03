@@ -35,7 +35,7 @@ void ModeSelectScene::initialize()
 
 void ModeSelectScene::update()
 {
-    Scene::update();
+    Scene2D::update();
     command_window.update();
     help_window.update();
     menu_background_top.update();
