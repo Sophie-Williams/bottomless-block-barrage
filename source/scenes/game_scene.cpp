@@ -88,6 +88,7 @@ void GameScene::init_sprites()
     selector.create("romfs:/graphics/game/selector.png");
     border.create("romfs:/graphics/borders/red.png");
     debug.create("romfs:/graphics/game/debug_text.png");
+    line_markers.create("romfs:/graphics/game/line_markers.png");
 
     frames.reset();
 }
@@ -339,6 +340,29 @@ void GameScene::draw_board()
     int starty = BOTTOM_SCREEN_HEIGHT - border.height();
     border.draw(startx, starty);
 }
+
+void GameScene::draw_line_marker(int line, LineMarker type)
+{
+    int bottom_line = table->get_lines();
+    int top_line = bottom_line - table->height();
+
+    if (!(line >= top_line && line <= bottom_line))
+        return;
+
+    int offset_line = top_line - line;
+    int column_underlined = frame % table->width();
+
+    int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 9 + 4;
+    int starty = BOTTOM_SCREEN_HEIGHT - border.height() + 9;
+    const int panel_size = PANEL_SIZE;
+    int offset = table->get_rise();
+
+    int x = startx + table->width() * panel_size + 6;
+    int y = starty + (offset_line + 1) * panel_size - offset;
+
+    line_markers.draw(x, y, 0, type * 16, 40, 16);
+}
+
 
 void GameScene::draw_debug_top()
 {

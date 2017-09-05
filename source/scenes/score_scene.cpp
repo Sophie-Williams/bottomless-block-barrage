@@ -121,6 +121,13 @@ void ScoreScene::draw_game_top()
     info.draw();
 }
 
+void ScoreScene::draw_game_bottom()
+{
+    GameScene::draw_game_bottom();
+    if (config.time_mode == LINES)
+        draw_line_marker(config.value, GOAL);
+}
+
 void ScoreScene::draw_gameover_top()
 {
     game_over.draw();

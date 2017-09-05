@@ -31,6 +31,13 @@ enum TimingMode
     MOVES = 2,
 };
 
+/// Represents the type of line marker to draw
+enum LineMarker
+{
+    CLEAR = 0,
+    GOAL = 1,
+};
+
 /// TODO clean up this class and provide a much clearer interface to write other modes.
 class GameScene : public Scene2D
 {
@@ -105,6 +112,7 @@ protected:
     void draw_selector();
     void draw_board();
     void draw_panels();
+    void draw_line_marker(int line, LineMarker type);
     virtual void draw_debug_bottom();
 
     // Configuration
@@ -118,6 +126,7 @@ protected:
     Texture selector;
     Texture border;
     Texture debug;
+    Texture line_markers;
 
     // Core game stuff
     std::unique_ptr<PanelTable> table;

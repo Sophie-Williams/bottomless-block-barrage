@@ -23,6 +23,7 @@ protected:
     void update_on_gameover() override;
 
     void draw_game_top() override;
+    void draw_game_bottom() override;
     void draw_gameover_top() override;
 private:
     ScoreInfoWindow info;
