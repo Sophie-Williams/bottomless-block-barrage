@@ -279,7 +279,7 @@ void GameScene::draw_panels()
     int offset = table->get_rise();
 
     /// TODO clean up this section of code.
-    if (table->is_puzzle() || table->is_clogged() || is_gameover() || table->is_rised())
+    if (table->is_puzzle() || table->is_clogged() || table->is_gameover() || table->is_rised())
         offset = panel_size;
 
     std::vector<bool> column_danger = table->danger_columns();
@@ -349,8 +349,8 @@ void GameScene::draw_line_marker(int line, LineMarker type)
     if (!(line >= top_line && line <= bottom_line))
         return;
 
-    int offset_line = top_line - line;
-    int column_underlined = frame % table->width();
+    int offset_line = line - top_line + 1;
+    int column_underlined = (frame / 3) % table->width();
 
     int startx = (BOTTOM_SCREEN_WIDTH - border.width()) / 2 + 9 + 4;
     int starty = BOTTOM_SCREEN_HEIGHT - border.height() + 9;
@@ -358,9 +358,11 @@ void GameScene::draw_line_marker(int line, LineMarker type)
     int offset = table->get_rise();
 
     int x = startx + table->width() * panel_size + 6;
-    int y = starty + (offset_line + 1) * panel_size - offset;
+    int y = starty + offset_line * panel_size - offset - 10;
 
     line_markers.draw(x, y, 0, type * 16, 40, 16);
+
+    sf2d_draw_rectangle(startx + column_underlined * panel_size, starty + offset_line * panel_size - offset, panel_size, 2, 0xFFFFFFFF);
 }
 
 

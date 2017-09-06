@@ -256,6 +256,8 @@
 		<Unit filename="source/puzzle_set.hpp" />
 		<Unit filename="source/recorder.cpp" />
 		<Unit filename="source/recorder.hpp" />
+		<Unit filename="source/replay_helpers.cpp" />
+		<Unit filename="source/replay_helpers.hpp" />
 		<Unit filename="source/scenes/endless_config_scene.cpp">
 			<Option target="release" />
 			<Option target="citra" />
@@ -427,6 +429,7 @@
 		<Unit filename="source/util/hid_helper.hpp" />
 		<Unit filename="source/util/image_selector.cpp" />
 		<Unit filename="source/util/image_selector.hpp" />
+		<Unit filename="source/util/input_data_source_interface.hpp" />
 		<Unit filename="source/util/resource_manager.cpp">
 			<Option target="release" />
 			<Option target="citra" />

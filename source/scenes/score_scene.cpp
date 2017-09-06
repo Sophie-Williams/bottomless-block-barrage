@@ -54,10 +54,10 @@ bool ScoreScene::is_gameover() const
             base_game_over = time <= 0;
             break;
         case LINES:
-            base_game_over = table->get_lines() > config.value;
+            base_game_over = table->cleared_lines(config.value) && table->all_idle();
             break;
         case MOVES:
-            base_game_over = table->get_moves() <= 0;
+            base_game_over = table->get_moves() <= 0 && table->all_idle();
             break;
     }
     return base_game_over || table->is_gameover();
@@ -76,7 +76,7 @@ void ScoreScene::update_windows()
     if (config.time_mode == TIME)
         info.set_value(time);
     else if (config.time_mode == LINES)
-        info.set_value(config.value - table->get_lines());
+        info.set_value(std::max(config.value - table->get_lines(), 0));
     else if (config.time_mode == MOVES)
         info.set_value(table->get_moves());
 

@@ -120,6 +120,26 @@ bool PanelTable::all_idle() const
     return true;
 }
 
+bool PanelTable::cleared_lines(int line)
+{
+    int bottom_line = lines;
+    int top_line = lines - rows;
+
+    if (!(line >= top_line && line <= bottom_line))
+        return false;
+
+    int offset = std::min(line - top_line, rows - 1);
+    for (int i = 0; i < offset; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            if (!empty(i, j))
+                return false;
+        }
+    }
+    return true;
+}
+
 std::vector<bool> PanelTable::danger_columns() const
 {
     std::vector<bool> danger(columns, false);

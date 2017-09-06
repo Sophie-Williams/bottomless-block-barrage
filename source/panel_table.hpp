@@ -145,6 +145,9 @@ public:
     /// Updates the game board.
     MatchInfo update();
 
+    /// Returns a boolean if X lines have been risen and cleared.
+    bool cleared_lines(int lines);
+
     int get_rise_counter() const {return rise_counter;}
     int get_rise() const {return rise;}
     int get_timeout() const {return timeout;}
