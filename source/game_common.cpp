@@ -2,10 +2,10 @@
 #include <algorithm>
 #include <map>
 
-PanelSpeedSettings slow_speed_settings   = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings easy_speed_settings   = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings normal_speed_settings = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES};
-PanelSpeedSettings hard_speed_settings   = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings slow_speed_settings   = {3, 11, 1, 54, 30, 10, FALL_ANIMATION_FRAMES};
+PanelSpeedSettings easy_speed_settings   = {3, 11, 1, 46, 25, 9, FALL_ANIMATION_FRAMES}; // 22 + 1 * 2, 22 + 3, 8 + 1
+PanelSpeedSettings normal_speed_settings = {3, 11, 1, 38, 20, 8, FALL_ANIMATION_FRAMES}; // 18 + 1 * 2, 17 + 3, 7 + 1
+PanelSpeedSettings hard_speed_settings   = {3, 11, 1, 30, 15, 7, FALL_ANIMATION_FRAMES}; // 14 + 1 * 2, 12 + 3, 6 + 1
 
 const int CHAIN_VALUE[24] =
 {
@@ -32,8 +32,6 @@ int calculate_score(int combo_num, int chain_num)
 {
     return CHAIN_VALUE[chain_num] + COMBO_VALUE[combo_num];
 }
-
-
 int combo_timeout[31][3] = {
  {0x000, 0x000, 0x000},
  {0x000, 0x000, 0x000},
