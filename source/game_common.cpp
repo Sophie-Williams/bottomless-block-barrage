@@ -32,6 +32,7 @@ int calculate_score(int combo_num, int chain_num)
 {
     return CHAIN_VALUE[chain_num] + COMBO_VALUE[combo_num];
 }
+
 int combo_timeout[31][3] = {
  {0x000, 0x000, 0x000},
  {0x000, 0x000, 0x000},
