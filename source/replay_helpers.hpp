@@ -38,7 +38,7 @@ private:
 class ReplayInputDataSource : public InputDataSourceInterface
 {
 public:
-    ReplayInputDataSource(const std::vector<ReplayInputItem>& items) : data(items), index(0) {}
+    ReplayInputDataSource(const std::vector<ReplayInputItem>& items) : data(items), index(0), start(0), frame(0) {}
     ~ReplayInputDataSource() {}
     u32 trigger() const override;
     u32 held() const override;

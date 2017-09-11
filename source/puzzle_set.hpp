@@ -8,7 +8,7 @@
 struct PuzzleStage
 {
     PuzzleStage() {}
-    PuzzleStage(const std::string& n) : name(n) {}
+    explicit PuzzleStage(const std::string& n) : name(n) {}
 
     std::string name;
     std::vector<std::string> levels;
@@ -17,7 +17,7 @@ struct PuzzleStage
 struct PuzzleSet
 {
     PuzzleSet() {}
-    PuzzleSet(const std::string& n) : name(n) {}
+    explicit PuzzleSet(const std::string& n) : name(n) {}
     std::vector<std::string> get_stages() const {return stage_names;}
 
     std::string name;

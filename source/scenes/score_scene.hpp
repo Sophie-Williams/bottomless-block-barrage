@@ -9,15 +9,15 @@ class ScoreScene : public GameScene
 {
 public:
     ScoreScene(const GameConfig& c) : GameScene(c) {}
-    ~ScoreScene() {}
-protected:
     void initialize() override;
+    void update() override;
+
+protected:
     void init_menu() override;
     void init_panel_table() override;
 
     bool is_gameover() const override;
 
-    void update() override;
     void update_windows() override;
     void update_gameover() override;
     void update_on_gameover() override;
@@ -25,9 +25,9 @@ protected:
     void draw_game_top() override;
     void draw_game_bottom() override;
     void draw_gameover_top() override;
+
 private:
     ScoreInfoWindow info;
-
     Text game_over;
     CommandWindow try_again_command;
     int time;

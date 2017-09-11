@@ -27,7 +27,7 @@ class MarkerManager
 {
 public:
     MarkerManager() {}
-    MarkerManager(PanelSpeedSettings* s);
+    explicit MarkerManager(PanelSpeedSettings* s);
     void create(PanelSpeedSettings* s);
     void add(int x, int y, Marker::Type type, int value);
     void update();

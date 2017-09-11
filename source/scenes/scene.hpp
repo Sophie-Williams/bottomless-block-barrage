@@ -33,7 +33,7 @@ class Scene2D : public Scene
 {
 public:
     Scene2D() {}
-    ~Scene2D() {}
+    virtual ~Scene2D() {}
     void draw() override;
 protected:
     virtual void draw_top() {}
@@ -44,7 +44,7 @@ class Scene3D : public Scene
 {
 public:
     Scene3D() {}
-    ~Scene3D() {}
+    virtual ~Scene3D() {}
     void draw() override;
 protected:
     virtual void draw_top_left() {}

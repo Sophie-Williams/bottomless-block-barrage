@@ -78,7 +78,7 @@ protected:
     void draw_top();
     void draw_bottom();
 
-    void init_recorder();
+    virtual void init_recorder();
     virtual void init_panel_table();
     virtual void init_sprites();
     virtual void init_menu();
@@ -153,6 +153,8 @@ protected:
     Background background_bottom;
 
     int frame = 0;
+private:
+    bool gameover_state = false;
 };
 
 #endif

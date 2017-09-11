@@ -4,6 +4,7 @@
 #include "endless_config_scene.hpp"
 #include "score_config_scene.hpp"
 #include "puzzle_select_scene.hpp"
+#include "options_scene.hpp"
 
 const std::string menu_background = "romfs:/graphics/menu/menu_background.png";
 
@@ -16,14 +17,18 @@ const char* help_text[MODES_SIZE] =
     "",
     "",
     "",
-    "",
+    "Change game options\nhere!"
 };
 
 void ModeSelectScene::initialize()
 {
-    command_window.create(0, 0,  7 * 16, 16, 1, {"Endless", "Score", "Puzzle"/*, "Mission", "Versus", "Online", "Options"*/});
+    command_window.create(0, 0,  7 * 16, 16, 1, {"Endless", "Score", "Puzzle", "Mission", "Versus", "Online", "Options"});
     command_window.center(BOTTOM_SCREEN_WIDTH, BOTTOM_SCREEN_WIDTH);
     command_window.set_active(true);
+    command_window.set_color(MISSION, 0xFF808080);
+    command_window.set_color(VERSUS, 0xFF808080);
+    command_window.set_color(ONLINE, 0xFF808080);
+    command_window.set_color(OPTIONS, 0xFF808080);
 
     help_window.create(0, 0, TOP_SCREEN_WIDTH / 3 - WINDOW_BORDER_SIZE, TOP_SCREEN_HEIGHT - WINDOW_BORDER_SIZE * 2, 10);
     help_window.set_active(true);
@@ -63,16 +68,9 @@ void ModeSelectScene::update()
                 current_scene = new PuzzleSelectScene();
                 break;
             case MISSION:
-                current_scene = NULL;
-                break;
             case VERSUS:
-                current_scene = NULL;
-                break;
             case ONLINE:
-                current_scene = NULL;
-                break;
             case OPTIONS:
-                current_scene = NULL;
                 break;
         }
     }

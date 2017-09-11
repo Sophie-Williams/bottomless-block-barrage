@@ -9,7 +9,6 @@ class EndlessScene : public GameScene
 {
 public:
     EndlessScene(const GameConfig& c) : GameScene(c) {}
-    ~EndlessScene() {}
 protected:
     void init_menu();
 

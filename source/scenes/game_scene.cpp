@@ -105,8 +105,7 @@ void GameScene::update()
 {
     Scene2D::update();
 
-
-    if (!is_gameover())
+    if (!gameover_state)
     {
         update_input();
         update_match();
@@ -114,7 +113,10 @@ void GameScene::update()
 
         update_recorder();
         if (is_gameover())
+        {
+            gameover_state = true;
             update_on_gameover();
+        }
     }
     else
     {

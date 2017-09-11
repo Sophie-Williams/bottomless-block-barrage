@@ -24,7 +24,7 @@ int get_panel_frame(const Panel& panel, int def, int danger_panel, bool danger, 
     else if (panel.is_bottom())
         frame = PENDING;
     else if (panel.is_pending_match())
-        frame = panel.get_countdown() & 1 ? BLINK : NORMAL;
+        frame = (panel.get_countdown() & 1) ? BLINK : NORMAL;
     else if (panel.is_matched())
         frame = MATCH;
     else if (panel.is_removed())

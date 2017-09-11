@@ -92,7 +92,7 @@ public:
         int moves;
     };
     /// Create a new Panel Table
-    PanelTable(const Options& opts);
+    explicit PanelTable(const Options& opts);
 
     bool is_puzzle() const {return state == PUZZLE;}
     bool is_rising() const {return state == RISING;}

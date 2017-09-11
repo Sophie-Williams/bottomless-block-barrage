@@ -10,21 +10,21 @@ class ReplayScene : public GameScene
 {
 public:
     ReplayScene(const GameConfig& c) : GameScene(c) {}
-    ~ReplayScene() {}
+    void initialize() override;
 protected:
-    void initialize();
-    void init_panel_table();
-    void init_recorder() {}
-    void init_menu();
+    void init_panel_table() override;
+    void init_recorder() override {}
+    void init_menu() override;
 
-    bool is_gameover() const {return false;}
-    void update_input();
-    void update_on_matched();
-    void update_windows();
-    void update_on_level();
+    bool is_gameover() const override {return table->is_gameover();}
+    void update_input() override;
+    void update_on_matched() override;
+    void update_windows() override;
+    void update_on_level() override;
+    void update_gameover() override;
 
-    void draw_game_top();
-    void draw_game_bottom();
+    void draw_game_top() override;
+    void draw_game_bottom() override;
 private:
     InfoWindow info;
     CCCWindow ccc_stats;

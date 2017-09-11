@@ -1,7 +1,7 @@
 #ifndef PUZZLE_PANEL_SOURCE_HPP
 #define PUZZLE_PANEL_SOURCE_HPP
 
-#include "basic_puzzle.hpp"
+#include "preset_configuration.hpp"
 #include "panel.hpp"
 
 class PuzzlePanelSource : public PanelSource

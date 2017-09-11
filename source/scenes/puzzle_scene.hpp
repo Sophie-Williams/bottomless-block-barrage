@@ -24,19 +24,19 @@ public:
     PuzzleScene(const GameConfig& config);
     ~PuzzleScene() {}
 
-    void init_panel_table();
-    void init_menu();
+protected:
+    void init_panel_table() override;
+    void init_menu() override;
 
-    void update_input();
-    void update_on_swap();
-    void update_windows();
-    void update_gameover();
-    void update_on_gameover();
+    void update_input() override;
+    void update_windows() override;
+    void update_gameover() override;
+    void update_on_gameover() override;
 
-    bool is_gameover() const;
+    bool is_gameover() const override;
 
-    void draw_bottom();
-    void draw_gameover_top();
+    void draw_bottom() override;
+    void draw_gameover_top() override;
 private:
     std::deque<PuzzleSnapshot> snapshots;
     TimeWindow time_window;

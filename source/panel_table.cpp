@@ -157,13 +157,12 @@ void PanelTable::swap(int i, int j)
 
     left.swap();
 
-    if (type == MOVES)
-        moves -= 1;
+    moves -= 1;
 }
 
 void PanelTable::freeze(int cooloff)
 {
-    if (cooloff != 0 && cooloff > timeout) {
+    if (cooloff != 0 && cooloff > timeout && !is_puzzle()) {
         timeout = cooloff;
         stopped = true;
     }
@@ -255,7 +254,7 @@ MatchInfo PanelTable::update()
         bool win = true;
         for (const auto& panel : panels)
             win = win && panel.empty();
-        if (moves == 0 || win)
+        if ((moves == 0 || win) && all_idle())
             state = win ? WIN : GAMEOVER;
     }
     else if (is_rising())
@@ -528,4 +527,3 @@ std::set<Point> PanelTable::check_vertical_combo(int i, int j)
 
     return remove;
 }
-

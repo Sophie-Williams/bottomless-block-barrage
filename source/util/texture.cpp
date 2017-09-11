@@ -56,3 +56,4 @@ void Texture::draw(int x, int y, int sx, int sy, int sw, int sh, float opacity)
     unsigned char percent = 255 * opacity;
     sf2d_draw_texture_part_blend(texture, x, y, sx, sy, sw, sh, RGBA8(0xff, 0xff, 0xff, percent));
 }
+

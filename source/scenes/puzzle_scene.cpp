@@ -3,52 +3,11 @@
 
 #include "endless_scene.hpp"
 
-#include "basic_puzzle.hpp"
-#include "puzzle_panel_source.hpp"
+#include "preset_configuration.hpp"
 #include "mode_select_scene.hpp"
+#include "title_scene.hpp"
 #include "game_common.hpp"
 #include "puzzle_set.hpp"
-
-#include <cassert>
-
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 1
-
-#define MAX_PUZZLE_ROWS 12
-#define MAX_PUZZLE_COLUMNS 6
-#define MAX_PUZZLE_MOVES 1000000
-
-bool read_puzzle(const std::string& filename, PanelTable::Options& opts)
-{
-    BasicPuzzle puzzle;
-    FILE* file = fopen(filename.c_str(), "rb");
-    if (!file)
-        return false;
-    fread(&puzzle, sizeof(BasicPuzzle), 1, file);
-    fclose(file);
-
-    const char* magic = puzzle.magic;
-    if (!(magic[0] == 'B' && magic[1] == 'B' && magic[2] == 'B' && magic[3] == 0))
-        return false;
-
-    const char* version = puzzle.version;
-    if (version[0] > VERSION_MAJOR || (version[0] == VERSION_MAJOR && version[1] > VERSION_MINOR))
-        return false;
-
-    if (puzzle.type != PUZZLE)
-        return false;
-
-    if (puzzle.rows != MAX_PUZZLE_ROWS || puzzle.columns != MAX_PUZZLE_COLUMNS || puzzle.starting != MAX_PUZZLE_ROWS ||
-        puzzle.moves > MAX_PUZZLE_MOVES)
-        return false;
-
-    opts.type = PanelTable::Type::MOVES;
-    opts.rows = puzzle.rows;
-    opts.columns = puzzle.columns;
-    opts.moves = puzzle.moves;
-    opts.source = new PuzzlePanelSource(puzzle);
-    return true;
-}
 
 PuzzleSnapshot::PuzzleSnapshot(const PanelTable& table)
 {
@@ -76,8 +35,14 @@ PuzzleScene::PuzzleScene(const GameConfig& config) : GameScene(config),
 void PuzzleScene::init_panel_table()
 {
     PanelTable::Options opts;
-    assert(read_puzzle(config.puzzle_filename, opts));
+    if (!read_puzzle(config.puzzle_filename, opts))
+    {
+        current_scene = new TitleScene();
+        return;
+    }
+
     table.reset(new PanelTable(opts));
+
     snapshots.push_back(PuzzleSnapshot(*table));
 }
 
@@ -89,8 +54,31 @@ void PuzzleScene::init_menu()
 
 void PuzzleScene::update_input()
 {
-    GameScene::update_input();
-    if (input.trigger(KEY_Y))
+    int mx = 0, my = 0;
+    if (input.repeat_quick(KEY_LEFT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        mx = -1;
+    if (input.repeat_quick(KEY_RIGHT, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        mx = 1;
+    if (input.repeat_quick(KEY_UP, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        my = -1;
+    if (input.repeat_quick(KEY_DOWN, SELECTOR_REPEAT_MS, 1, SELECTOR_QUICK_MS))
+        my = 1;
+
+    selector_x = std::max(std::min(selector_x + mx, table->width() - 2), 0);
+    selector_y = std::max(std::min(selector_y + my, table->height() - 1), 0);
+
+    if (input.trigger(KEY_A) || input.trigger(KEY_B))
+    {
+        if (table->all_idle())
+            snapshots.push_back(*table);
+        table->swap(selector_y, selector_x);
+        status_window.set_moves(table->get_moves());
+    }
+
+    if (input.trigger(KEY_START))
+        current_scene = new ModeSelectScene();
+
+    if (input.trigger(KEY_Y) && table->all_idle())
     {
         const PuzzleSnapshot& snapshot = snapshots.back();
         snapshot.restore(*table);
@@ -98,14 +86,6 @@ void PuzzleScene::update_input()
             snapshots.pop_back();
         status_window.set_moves(table->get_moves());
     }
-}
-
-void PuzzleScene::update_on_swap()
-{
-    if (table->all_idle())
-        snapshots.push_back(*table);
-    table->swap(selector_y, selector_x);
-    status_window.set_moves(table->get_moves());
 }
 
 void PuzzleScene::update_windows()
@@ -165,7 +145,7 @@ void PuzzleScene::update_gameover()
 
 bool PuzzleScene::is_gameover() const
 {
-    return table->is_gameover() || table->is_win();
+    return (table->is_gameover() || table->is_win());
 }
 
 void PuzzleScene::draw_bottom()

@@ -294,6 +294,8 @@
 		<Unit filename="source/scenes/game_scene.hpp" />
 		<Unit filename="source/scenes/mode_select_scene.cpp" />
 		<Unit filename="source/scenes/mode_select_scene.hpp" />
+		<Unit filename="source/scenes/options_scene.cpp" />
+		<Unit filename="source/scenes/options_scene.hpp" />
 		<Unit filename="source/scenes/puzzle_scene.cpp" />
 		<Unit filename="source/scenes/puzzle_scene.hpp" />
 		<Unit filename="source/scenes/puzzle_select_scene.cpp">
@@ -519,6 +521,8 @@
 			<Option target="elf" />
 		</Unit>
 		<Unit filename="source/version.hpp" />
+		<Unit filename="source/windows/ccc_window.cpp" />
+		<Unit filename="source/windows/ccc_window.hpp" />
 		<Unit filename="source/windows/help_window.cpp" />
 		<Unit filename="source/windows/help_window.hpp" />
 		<Unit filename="source/windows/info_window.cpp">
