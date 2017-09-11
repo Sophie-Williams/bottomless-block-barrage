@@ -71,6 +71,7 @@ recurse = $(shell find $2 -type $1 -name '$3' 2> /dev/null)
 export TOPDIR      := $(CURDIR)
 export OUTPUT_DIR  := $(TOPDIR)/$(OUTPUT)
 export OUTPUT_FILE := $(OUTPUT_DIR)/$(TARGET)
+export OUTPUT_NAME := $(TARGET)
 export VPATH       := $(foreach dir,$(SOURCES),$(CURDIR)/$(dir) $(call recurse,d,$(CURDIR)/$(dir),*))\
 					  $(foreach dir,$(DATA),$(CURDIR)/$(dir) $(call recurse,d,$(CURDIR)/$(dir),*))
 export DEPSDIR     := $(TOPDIR)/$(BUILD)
@@ -126,6 +127,9 @@ elf : bootstrap
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 citra : bootstrap
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
+
+zip : bootstrap
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile $@
 
 release : bootstrap
@@ -206,11 +210,11 @@ $(OUTPUT_FILE).cia : $(OUTPUT_FILE).elf banner.bnr icon.icn
 	@$(MAKEROM) -f cia -o $(OUTPUT_FILE).cia -DAPP_ENCRYPTED=false $(COMMON_MAKEROM_PARAMS)
 
 $(OUTPUT_FILE).zip : $(OUTPUT_FILE).smdh $(OUTPUT_FILE).3dsx
-	@cd $(OUTPUT_DIR) \
-	mkdir -p 3ds/$(TARGET) \
-	cp $(OUTPUT_FILE).3dsx 3ds/$(TARGET) \
-	cp $(OUTPUT_FILE).smdh 3ds/$(TARGET) \
-	zip -r $(OUTPUT_FILE).zip 3ds > /dev/null \
+	cd $(OUTPUT_DIR)
+	mkdir -p 3ds/$(OUTPUT_NAME)
+	cp $(OUTPUT_FILE).3dsx 3ds/$(OUTPUT_NAME)
+	cp $(OUTPUT_FILE).smdh 3ds/$(OUTPUT_NAME)
+	zip -r $(OUTPUT_FILE).zip 3ds > /dev/null
 	rm -r 3ds
 
 banner.bnr : $(BANNER_IMAGE_FILE) $(BANNER_AUDIO_FILE)
@@ -227,10 +231,12 @@ cia : $(OUTPUT_FILE).cia
 
 elf : $(OUTPUT_FILE).elf
 
+zip : $(OUTPUT_FILE).zip
+
 citra : 3dsx
 	citra-qt $(OUTPUT_FILE).3dsx
 
-release : $(OUTPUT_FILE).zip cia 3ds
+release : zip cia 3ds
 
 #---------------------------------------------------------------------------------
 # Binary Data Rules
