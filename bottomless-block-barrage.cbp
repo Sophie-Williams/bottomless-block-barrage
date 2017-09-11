@@ -178,14 +178,6 @@
 			<Option target="3ds" />
 			<Option target="elf" />
 		</Unit>
-		<Unit filename="source/basic_puzzle.hpp">
-			<Option target="release" />
-			<Option target="citra" />
-			<Option target="3dsx" />
-			<Option target="cia" />
-			<Option target="3ds" />
-			<Option target="elf" />
-		</Unit>
 		<Unit filename="source/game_common.cpp" />
 		<Unit filename="source/game_common.hpp" />
 		<Unit filename="source/main.cpp">
@@ -252,6 +244,8 @@
 		</Unit>
 		<Unit filename="source/panels_gfx.cpp" />
 		<Unit filename="source/panels_gfx.hpp" />
+		<Unit filename="source/preset_configuration.cpp" />
+		<Unit filename="source/preset_configuration.hpp" />
 		<Unit filename="source/puzzle_panel_source.hpp" />
 		<Unit filename="source/puzzle_set.hpp" />
 		<Unit filename="source/recorder.cpp" />
