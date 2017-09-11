@@ -205,7 +205,7 @@ $(OUTPUT_FILE).3ds : $(OUTPUT_FILE).elf banner.bnr icon.icn
 $(OUTPUT_FILE).cia : $(OUTPUT_FILE).elf banner.bnr icon.icn
 	@$(MAKEROM) -f cia -o $(OUTPUT_FILE).cia -DAPP_ENCRYPTED=false $(COMMON_MAKEROM_PARAMS)
 
-$(OUTPUT_FILE).zip : $(OUTPUT_FILE).smdh $(OUTPUT).3dsx
+$(OUTPUT_FILE).zip : $(OUTPUT_FILE).smdh $(OUTPUT_FILE).3dsx
 	@cd $(OUTPUT_DIR) \
 	mkdir -p 3ds/$(TARGET) \
 	cp $(OUTPUT_FILE).3dsx 3ds/$(TARGET) \
