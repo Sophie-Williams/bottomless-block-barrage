@@ -1,5 +1,6 @@
-# bottomless-block-barrage
-Bottomless Block Barrage (BBB) aims to be a Panel de Pon clone for the 3ds with new styles / modes of gameplay.  (Work in progrees)
+# bottomless-block-barrage 
+Bottomless Block Barrage (BBB) aims to be a Puzzle League clone for the 3ds with new styles / modes of gameplay.
+This game is a work in progress!
 
 ## Roadmap
 As of now the basic engine is complete, work is now being done implementing the various modes.  Basic graphics are used now until better ones are found/made.
@@ -17,7 +18,10 @@ New Gameplay features
 
 ## The demo
 ### Screenshots
-![Main Screen](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/screenshots/endless_wip.png)
+![Title](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/screenshots/title_wip.png)
+![Config](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/screenshots/config_wip.png)
+![Score Mdoe](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/screenshots/score_wip.png)
+![Endless Mode](https://github.com/TricksterGuy/bottomless-block-barrage/blob/master/screenshots/endless_wip.png)
 
 ### Controls
 * Up/Down/Left/Right moves the cursor
