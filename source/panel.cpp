@@ -48,6 +48,12 @@ void Panel::swap()
     state = State::LEFT_SWAP;
     right->state = State::RIGHT_SWAP;
 
+    // Forfeit chain flag if you become empty.
+    if (empty())
+        chain = 0;
+    if (right->empty())
+        right->chain = 0;
+
     countdown = right->countdown = settings->swap;
 }
 
